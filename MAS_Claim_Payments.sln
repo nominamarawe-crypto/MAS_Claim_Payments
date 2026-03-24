@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_Claim_Payments", "MAS_Claim_Payments.csproj", "{3664B4CF-E6E1-454A-AF0A-13E417B1CBC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3664B4CF-E6E1-454A-AF0A-13E417B1CBC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3664B4CF-E6E1-454A-AF0A-13E417B1CBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3664B4CF-E6E1-454A-AF0A-13E417B1CBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3664B4CF-E6E1-454A-AF0A-13E417B1CBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D19F283-15B2-4DEC-8677-5C9AE7050FF8}
+	EndGlobalSection
+EndGlobal

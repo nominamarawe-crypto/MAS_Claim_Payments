@@ -1,0 +1,112 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="PolCont001.aspx.cs" Inherits="PolCont001" %>
+<%@ Reference Page="~/EPage.aspx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Untitled Page</title>
+    <script src="JavaScript/ValidateNumeric.js" language="javascript" type="text/javascript"></script>
+    <script type="text/javascript">          
+     function test(source, arguments)
+    {
+    	    	
+     if (!IsNumeric(arguments.Value))
+            {arguments.IsValid = false;}          
+              
+     else
+            {arguments.IsValid = true;}
+    }   
+    
+<!--
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+}
+//-->
+
+</script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div style="text-align: center">
+        <table style="font-size: 12pt; width: 603px; font-family: 'Trebuchet MS'; text-align: center">
+            <tr>
+                <td colspan="4" style="height: 22px; background-color: #f0f0f0">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 22px; background-color: #ffffff; text-align: center">
+                    <strong><span style="font-size: 14pt">Sri Lanka Insurance<br />
+                    </span>Policy Continuation After a Death </strong></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 22px; background-color: #f0f0f0">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 57px; height: 26px">
+                </td>
+                <td style="width: 170px; height: 26px; text-align: left">
+                    <span style="font-size: 10pt"><strong>Policy Number</strong></span></td>
+                <td colspan="2" style="height: 26px; text-align: left">
+                    <span><strong></strong>
+                        <asp:TextBox ID="txtpolno" runat="server" Font-Names="Trebuchet MS" Font-Size="10pt"
+                            MaxLength="8" Width="107px" onblur="validateInt(this);"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtpolno"
+                            Display="Dynamic" ErrorMessage="Please Give the Policy Number" Font-Bold="False"
+                            Font-Size="10pt" Width="184px"></asp:RequiredFieldValidator>
+                    </span>
+                </td>
+            </tr>
+            <tr style="font-size: 12pt">
+                <td style="width: 57px; height: 22px; background-color: #f0f0f0">
+                </td>
+                <td colspan="3" style="height: 22px; background-color: #f0f0f0; text-align: left">
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td style="width: 57px; height: 26px">
+                </td>
+                <td style="width: 170px; height: 26px; text-align: left">
+                    <span style="font-size: 10pt"><strong>Main Life or Spouse</strong></span></td>
+                <td colspan="2" style="height: 26px; text-align: left">
+                    <span>
+                        <asp:DropDownList ID="ddlMOS" runat="server" Font-Names="Trebuchet MS" Font-Size="10pt"
+                            Width="100px">
+                        </asp:DropDownList></span></td>
+            </tr>
+            <tr>
+                <td style="width: 170px; height: 22px; background-color: #f0f0f0">
+                </td>
+                <td style="width: 170px; height: 22px; background-color: #f0f0f0">
+                </td>
+                <td style="width: 170px; height: 22px; background-color: #f0f0f0">
+                </td>
+                <td style="width: 170px; height: 22px; background-color: #f0f0f0">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 57px; height: 22px; background-color: #ffffff">
+                </td>
+                <td style="width: 170px; height: 22px; background-color: #ffffff">
+                </td>
+                <td style="width: 220px; height: 22px; background-color: #ffffff; text-align: left">
+                    <asp:Button ID="btnsubmit" runat="server" Font-Bold="True" Font-Names="Trebuchet MS" Text="Submit" Width="106px" OnClick="btnsubmit_Click" />
+                    <asp:HyperLink ID="HyperLink1" runat="server" Font-Bold="True" Font-Names="Trebuchet MS"
+                        Font-Size="10pt" ForeColor="Blue" NavigateUrl="~/Home.aspx"><<--Back</asp:HyperLink></td>
+                <td style="width: 79px; height: 22px; background-color: #ffffff">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 22px; background-color: #f0f0f0">
+                    <asp:Label ID="lblerr" runat="server" Font-Bold="True" Font-Size="10pt" ForeColor="Red"
+                        Width="513px"></asp:Label></td>
+            </tr>
+        </table>
+    
+    </div>
+        <asp:HiddenField ID="hdfepf" runat="server" />
+        <asp:HiddenField ID="hdfbrn" runat="server" />
+    </form>
+</body>
+</html>

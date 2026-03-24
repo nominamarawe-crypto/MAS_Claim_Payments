@@ -1,0 +1,203 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="MAS_Claim_Payments.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    
+
+    <link href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+    
+    <script src="../js/jquery-1.6.2.min.js"></script>
+    <script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+  
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+
+        <link href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />        
+    <script src="../js/jquery-1.6.2.min.js"></script>
+    <script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+
+    </asp:ContentPlaceHolder>
+   
+
+         <style type="text/css">
+             .subMenuStyle {
+  left: 20%;
+  right: auto !important;
+  transform: translateX(-20%) !important;
+}
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-family: "Times New Roman", Times, serif;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-family: "Courier New", Courier, monospace;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .menu
+        {
+            font-size: 9pt;
+        }
+        .button
+	 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4682B4;
+}
+
+.button1:hover {
+    background-color: #4682B4;
+    color: white;
+}
+    </style>
+
+    <style type="text/css" media="print">
+    .notprint
+    {
+      display:none;
+    }
+</style>
+
+</head>
+<body>
+
+    <form runat="server" >
+    <div class="page" style="width: 1000px">
+        <div class="header" >
+            <div class="title">
+                <h1>
+                   MAS Claims Payments
+                </h1>
+            </div>
+            <div class="clear hideSkiplink notprint">
+                <asp:Menu ID="Menu1" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <LevelMenuItemStyles>
+                            <asp:MenuItemStyle CssClass=""/>
+                                <asp:MenuItemStyle CssClass="subMenuStyle"/>
+                        </LevelMenuItemStyles>
+                    <Items >
+                        <asp:MenuItem NavigateUrl="~/Home.aspx" Text="Home " Value="Home ">                            
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/ClaimEntry.aspx" Text="Claim Entry " Value="Claim Entry ">                            
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/VoucherCreation.aspx" Text="Voucher Creation" 
+                            Value="Voucher Creation">                            
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/VoucherReprint.aspx" Text="Voucher Reprint" 
+                            Value="Voucher Reprint">                            
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/VoucherAuthorization.aspx" Text="Voucher Authorization" 
+                            Value="Voucher Authorization">                            
+                        </asp:MenuItem>
+                         <asp:MenuItem Text="Reports" Value="Reports">
+                            <asp:MenuItem NavigateUrl="ClaimReport.aspx" 
+                                Text="Claims Report" Value="Claims Report" >
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/UploadData.aspx" Text="Upload Data" 
+                            Value="Upload Data">                            
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/DeleteEmployees.aspx" Text="Delete Employees" 
+                            Value="Delete Employees">                            
+                        </asp:MenuItem>
+                        
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        
+    </div>
+    </form>
+</body>
+
+    
+</html>

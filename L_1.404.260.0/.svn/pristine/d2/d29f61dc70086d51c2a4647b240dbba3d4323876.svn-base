@@ -1,0 +1,47 @@
+﻿/* Div container to wrap the datagrid */
+div#div-datagrid {
+width:auto;
+height:450px;
+overflow: auto;
+}
+div#div1-datagrid {
+width:auto;
+height:450px;
+overflow: auto;
+}
+div#div2-datagrid {
+width:auto;
+height:450px;
+overflow: auto;
+}
+/* Locks the left column */
+td.locked, th.locked {
+font-size: 14px;
+font-weight: bold;
+text-align: center;
+background-color: navy;
+color: white;
+border-right: 1px solid silver;
+position:relative;
+cursor: default; 
+}	
+
+/* Locks table header */
+th {
+font-size: 14px;
+font-weight: bold;
+text-align: center;
+background-color: #5D7B9D;
+color: white;
+border-right: 1px solid silver;
+position:relative;
+cursor: default; 
+z-index: 10;
+}
+
+/* Keeps the header as the top most item. Important for top left item*/
+th.locked {z-index: 99;}
+
+/* DataGrid Item and AlternatingItem Style*/
+.GridRow {font-size: 10pt; color: black; font-family: Arial; background-color:#ffffff; height:35px;}
+.GridAltRow {font-size: 10pt; color: black; font-family: Arial; background-color:#eeeeee; height:35px;}

@@ -1,0 +1,134 @@
+  public ArrayList getdue()
+    {
+        AgestmentDetails ajust=new AgestmentDetails();
+        ArrayList df = getdefaults();
+        ArrayList month = ajust.getmonths(txtfrom.Text.ToString(), txtto.Text.ToString(), int.Parse(md.Value.ToString()));
+        ArrayList pd = getdemands();
+        ArrayList finalarr = new ArrayList();
+        
+        for (int i = 0; i < month.Count; i++)
+        {
+            if (pd.Count > 0)
+            {
+                for (int j = 0; j < pd.Count; j++)
+                {
+                    if (pd[j].ToString() != month[i].ToString())
+                    {
+                        finalarr.Add(month[i].ToString());
+
+
+                    }
+                }
+            }
+            else
+                finalarr.Add(month[i].ToString());
+
+        }
+            for (int k = 0; k < df.Count; k++)
+            {
+                finalarr.Add(df[k].ToString());
+            }
+
+       
+        return finalarr;
+
+    }
+    public ArrayList get_pure_demands()
+    {
+       
+         ArrayList demands = getdemandspayment();
+         ArrayList pdem = new ArrayList();
+        
+        string year = DateTime.Now.Year.ToString();
+        string month = DateTime.Now.Month.ToString();
+       
+        if (month.Length == 1)
+            month = "0" + month;
+        int tsmonth = int.Parse(year + month);
+
+            if (demands.Count != 0)
+            {
+                
+                    for (int i = 1; i < demands.Count; i++)
+                    {
+                        if (int.Parse(demands[i].ToString()) <= tsmonth)
+                        {
+                            pdem.Add(demands[i]);
+                        }
+                    }
+               
+            }
+            return pdem;
+    }
+
+    public ArrayList getdemandspayment()
+    {
+        AgestmentDetails ajust = new AgestmentDetails();
+        string year = DateTime.Now.Year.ToString();
+        string month = DateTime.Now.Month.ToString();
+        ArrayList demands = new ArrayList();
+        if (month.Length == 1)
+            month = "0" + month;
+        int tsmonth = int.Parse(year + month);
+        if (tsmonth > int.Parse(txtto.Text.ToString()))
+        {
+            demands = ajust.getmonths(txtto.Text.ToString(), tsmonth.ToString(), int.Parse(md.Value.ToString()));
+
+        }
+        return demands;
+    }
+
+    public ArrayList getdefaults()
+    {
+        ArrayList df = new ArrayList();
+        string txt;
+        for (int i = 1; i <= 21; i++)
+        {
+            txt = "txtdp" + i.ToString();
+            TextBox tb = this.form1.FindControl(txt) as TextBox;
+            if (tb.Text != "")
+            {
+                df.Add(tb.Text.ToString());
+            }
+        }
+        return df;
+    }
+    public ArrayList getdemands()
+    {
+        ArrayList df = new ArrayList();
+        string txt;
+        for (int i = 1; i <= 6; i++)
+        {
+            txt = "txtpd" + i.ToString();
+            TextBox tb = this.form1.FindControl(txt) as TextBox;
+            if (tb.Text != "")
+            {
+                df.Add(tb.Text.ToString());
+            }
+        }
+        return df;
+    }
+
+    public int epfcode(string epf)
+    {
+
+        string inte = "0";
+        char temp;
+        char[] validchar ={ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        for (int i = 0; i < epf.Length; i++)
+        {
+            temp = char.Parse(epf.Substring(i, 1));
+            for (int n = 0; n < 10; n++)
+            {
+                if (validchar[n] == temp)
+                {
+                    inte += temp;
+                }
+            }
+
+        }
+
+        return int.Parse(inte);
+    }
+
+}

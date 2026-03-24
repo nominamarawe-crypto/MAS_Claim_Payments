@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://localhost/DeathClaims/", "http://localhost/DeathClaims", "{BD990EE1-8959-496E-A088-A3C3B29AF2B9}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""$/DeathClaims", ZVOAAAAA"
+		SccAuxPath = ""
+		SccLocalPath = "."
+		SccProvider = "MSSCCI:Microsoft Visual SourceSafe"
+		Debug.AspNetCompiler.VirtualPath = "/DeathClaims"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DeathClaims\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/DeathClaims"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DeathClaims\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""$/DeathClaims", ZVOAAAAA"
+		SccAuxPath = ""
+		SccLocalPath = "."
+		SccProvider = "MSSCCI:Microsoft Visual SourceSafe"
+		Debug.AspNetCompiler.VirtualPath = "/DeathClaims"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DeathClaims\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/DeathClaims"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DeathClaims\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\..\..\..\..\..\inetpub\wwwroot\DeathClaims\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD990EE1-8959-496E-A088-A3C3B29AF2B9}.Debug|.NET.ActiveCfg = Debug|.NET
+		{BD990EE1-8959-496E-A088-A3C3B29AF2B9}.Debug|.NET.Build.0 = Debug|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64F2F70B-1F67-45EF-9A6E-9C3F1C16B5AC}
+	EndGlobalSection
+EndGlobal
