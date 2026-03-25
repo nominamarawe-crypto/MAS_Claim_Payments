@@ -16,7 +16,7 @@ namespace MAS_Claim_Payments.App_Code
             bool exists = false;
             dMngr = new DataManager();
 
-            string sql = "select * from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
+            string sql = "select * from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
 
             if(dMngr.existRecored(sql) != 0)
             {
@@ -32,7 +32,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string name = "";
 
-            string sql = "select MEMBER_NAME from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
+            string sql = "select MEMBER_NAME from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -54,7 +54,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string contactNo = "";
 
-            string sql = "select CONTACT_NO from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
+            string sql = "select CONTACT_NO from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -77,7 +77,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string email = "";
 
-            string sql = "select EMAIL from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
+            string sql = "select EMAIL from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -99,7 +99,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string epf = "";
 
-            string sql = "select EPF from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
+            string sql = "select EPF from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {

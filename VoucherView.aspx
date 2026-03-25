@@ -200,7 +200,7 @@
                         <td class="auto-style2" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">Claim Date</td>
                         <td class="auto-style4" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C0C0C0"><a name="pageup22">
                             <asp:Label ID="lblClmDt" runat="server" Font-Bold="False" Style="text-align: center; font-size: small;"></asp:Label>
-                            </a></td>
+                            </a>&nbsp; </td>
                     </tr>
                     </table>
             </td>

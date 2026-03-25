@@ -40,8 +40,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Web.DynamicData" />
@@ -96,6 +96,7 @@
     <Content Include="VoucherAuthorization.aspx" />
     <Content Include="VoucherAuthorization2.aspx" />
     <Content Include="VoucherCreation.aspx" />
+    <Content Include="VoucherEdit.aspx" />
     <Content Include="VoucherPrint.aspx" />
     <Content Include="VoucherReprint.aspx" />
     <Content Include="VoucherReprint2.aspx" />
@@ -217,6 +218,13 @@
     </Compile>
     <Compile Include="VoucherCreation.aspx.designer.cs">
       <DependentUpon>VoucherCreation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VoucherEdit.aspx.cs">
+      <DependentUpon>VoucherEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VoucherEdit.aspx.designer.cs">
+      <DependentUpon>VoucherEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="VoucherPrint.aspx.cs">
       <DependentUpon>VoucherPrint.aspx</DependentUpon>
