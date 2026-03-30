@@ -70,7 +70,7 @@
                 style="text-align: left; border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;">
                 <asp:Label ID="lblTopic11" runat="server" Font-Bold="True" 
                     Font-Names="Trebuchet MS" Font-Size="10pt" 
-                    style="text-align: center; font-size: 11pt;" Text="MAS Claim Voucher-"></asp:Label>
+                    style="text-align: center; font-size: 11pt;" Text="LAB Claim Voucher-"></asp:Label>
                 <asp:Label ID="lblVouGenBranch" runat="server" Font-Bold="True" 
                     Font-Names="Trebuchet MS" Font-Size="10" 
                     style="text-align: center; font-size: 11pt;"></asp:Label>
@@ -140,7 +140,7 @@
             <td colspan="3">
                 <asp:Label ID="lblHeadOfAccount2" runat="server" Font-Bold="False" 
                     Font-Names="Trebuchet MS" Font-Size="10pt" 
-                    style="text-align: center; font-size: 10pt;" Text="MAS Claim Payments"></asp:Label>
+                    style="text-align: center; font-size: 10pt;" Text="LAB Claim Payments"></asp:Label>
             </td>
         </tr>
         <tr>
