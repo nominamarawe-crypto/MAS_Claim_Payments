@@ -461,17 +461,32 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string payeeName, string contactNo, string email)
+        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string payeeName, string contactNo, string email, out string message)
         {
             bool success = false;
+            message = "";
             DataManager dm = new DataManager();
             GetDBData dbGt = new GetDBData();
 
             try
             {
+                // 1. Verify the claim exists
+                string checkSql = "SELECT COUNT(*) FROM SLIC_CHP.VOU_DETAILS_MAS WHERE CLAIM_NO = :claimNo";
+                dm.readSql(checkSql);
+                dm.oraComm.Parameters.Clear();
+                dm.oraComm.Parameters.Add("claimNo", OracleType.VarChar).Value = claimNo;
+                int count = Convert.ToInt32(dm.oraComm.ExecuteScalar());
+                if (count == 0)
+                {
+                    message = "Claim number not found.";
+                    return false;
+                }
+
+                // 2. Fetch bank and branch names from codes
                 string bankName = dbGt.getBankName(bankCode);
                 string branchName = dbGt.getBankBranchName(branchCode, bankCode);
 
+                // 3. Build update query with parameters
                 string updateSql = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
                              SET BANK_NAME = :bankName,
                                  BANK_CODE = :bankCode,
@@ -484,8 +499,11 @@ namespace MAS_Claim_Payments.App_Code
                              WHERE CLAIM_NO = :claimNo";
 
                 dm.begintransaction();
+
                 using (OracleCommand cmd = new OracleCommand(updateSql, dm.oraConn))
                 {
+                    cmd.Transaction = dm.oraTrans;   // 🔥 critical – enlist the command in the transaction
+
                     cmd.Parameters.AddWithValue(":bankName", bankName);
                     cmd.Parameters.AddWithValue(":bankCode", bankCode);
                     cmd.Parameters.AddWithValue(":branchName", branchName);
@@ -497,15 +515,27 @@ namespace MAS_Claim_Payments.App_Code
                     cmd.Parameters.AddWithValue(":claimNo", claimNo);
 
                     int rowsAffected = cmd.ExecuteNonQuery();
+
                     if (rowsAffected > 0)
+                    {
                         success = true;
+                        message = "Updated successfully.";
+                    }
+                    else
+                    {
+                        // Claim exists but no rows updated → all values were already the same
+                        success = true;
+                        message = "No changes detected; claim data is already up-to-date.";
+                    }
                 }
+
                 dm.commit();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 dm.rollback();
                 success = false;
+                message = "Database error: " + ex.Message;
             }
             finally
             {

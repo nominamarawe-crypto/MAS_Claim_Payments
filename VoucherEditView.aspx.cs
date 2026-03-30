@@ -13,8 +13,8 @@ namespace MAS_Claim_Payments
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (dbGtObj == null) dbGtObj = new GetDBData();
-            if (frmtDtObj == null) frmtDtObj = new FormatData();
+            dbGtObj = new GetDBData();
+            frmtDtObj = new FormatData();
 
             if (!IsPostBack)
             {
@@ -128,25 +128,27 @@ namespace MAS_Claim_Payments
                     string email = txtEmail.Text.Trim();
 
                     UpdateDB updateDB = new UpdateDB();
-                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, payeeName, contactNo, email);
+                    string message;
+                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, payeeName, contactNo, email, out message);
 
                     if (updated)
                     {
-                        lblSuccessMsg.Text = "Claim details updated successfully.";
-                        lblMessage.Text = "";
+                        if (message.Contains("No changes"))
+                            lblMessage.Text = message;       // inform user but keep save button visible
+                        else
+                            lblSuccessMsg.Text = message;
+
                         btnPrint.Visible = true;
-                        btnSave.Visible = false;
+                        btnSave.Visible = false;            // disable further edits
                     }
                     else
                     {
-                        lblMessage.Text = "Update failed. No records were updated.";
-                        lblSuccessMsg.Text = "";
+                        lblMessage.Text = "Update failed: " + message;
                     }
                 }
                 catch (Exception ex)
                 {
                     lblMessage.Text = "Update failed: " + ex.Message;
-                    lblSuccessMsg.Text = "";
                 }
             }
         }
