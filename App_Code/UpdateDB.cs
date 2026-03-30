@@ -470,7 +470,7 @@ namespace MAS_Claim_Payments.App_Code
 
             try
             {
-                // 1. Verify the claim exists
+           
                 string checkSql = "SELECT COUNT(*) FROM SLIC_CHP.VOU_DETAILS_MAS WHERE CLAIM_NO = :claimNo";
                 dm.readSql(checkSql);
                 dm.oraComm.Parameters.Clear();
@@ -482,11 +482,10 @@ namespace MAS_Claim_Payments.App_Code
                     return false;
                 }
 
-                // 2. Fetch bank and branch names from codes
+          
                 string bankName = dbGt.getBankName(bankCode);
                 string branchName = dbGt.getBankBranchName(branchCode, bankCode);
 
-                // 3. Build update query with parameters
                 string updateSql = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
                              SET BANK_NAME = :bankName,
                                  BANK_CODE = :bankCode,
@@ -502,7 +501,7 @@ namespace MAS_Claim_Payments.App_Code
 
                 using (OracleCommand cmd = new OracleCommand(updateSql, dm.oraConn))
                 {
-                    cmd.Transaction = dm.oraTrans;   // 🔥 critical – enlist the command in the transaction
+                    cmd.Transaction = dm.oraTrans;   
 
                     cmd.Parameters.AddWithValue(":bankName", bankName);
                     cmd.Parameters.AddWithValue(":bankCode", bankCode);
@@ -523,7 +522,7 @@ namespace MAS_Claim_Payments.App_Code
                     }
                     else
                     {
-                        // Claim exists but no rows updated → all values were already the same
+                      
                         success = true;
                         message = "No changes detected; claim data is already up-to-date.";
                     }
