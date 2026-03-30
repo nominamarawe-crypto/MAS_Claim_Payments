@@ -461,7 +461,7 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string payeeName, string contactNo, string email, out string message)
+        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string contactNo, string email, out string message)
         {
             bool success = false;
             message = "";
@@ -470,7 +470,7 @@ namespace MAS_Claim_Payments.App_Code
 
             try
             {
-           
+                // 1. Verify the claim exists
                 string checkSql = "SELECT COUNT(*) FROM SLIC_CHP.VOU_DETAILS_MAS WHERE CLAIM_NO = :claimNo";
                 dm.readSql(checkSql);
                 dm.oraComm.Parameters.Clear();
@@ -482,17 +482,17 @@ namespace MAS_Claim_Payments.App_Code
                     return false;
                 }
 
-          
+                // 2. Fetch bank and branch names
                 string bankName = dbGt.getBankName(bankCode);
                 string branchName = dbGt.getBankBranchName(branchCode, bankCode);
 
+                // 3. Build update query – note: PAYEE_NAME is NOT updated
                 string updateSql = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
                              SET BANK_NAME = :bankName,
                                  BANK_CODE = :bankCode,
                                  BANK_BRANCH_NAME = :branchName,
                                  BANK_BRANCH_CODE = :branchCode,
                                  ACC_NO = :accountNo,
-                                 PAYEE_NAME = :payeeName,
                                  CONTACT_NO = :contactNo,
                                  EMAIL_ADD = :email
                              WHERE CLAIM_NO = :claimNo";
@@ -501,14 +501,13 @@ namespace MAS_Claim_Payments.App_Code
 
                 using (OracleCommand cmd = new OracleCommand(updateSql, dm.oraConn))
                 {
-                    cmd.Transaction = dm.oraTrans;   
+                    cmd.Transaction = dm.oraTrans;
 
                     cmd.Parameters.AddWithValue(":bankName", bankName);
                     cmd.Parameters.AddWithValue(":bankCode", bankCode);
                     cmd.Parameters.AddWithValue(":branchName", branchName);
                     cmd.Parameters.AddWithValue(":branchCode", branchCode);
                     cmd.Parameters.AddWithValue(":accountNo", accountNo);
-                    cmd.Parameters.AddWithValue(":payeeName", payeeName);
                     cmd.Parameters.AddWithValue(":contactNo", contactNo);
                     cmd.Parameters.AddWithValue(":email", email);
                     cmd.Parameters.AddWithValue(":claimNo", claimNo);
@@ -522,7 +521,7 @@ namespace MAS_Claim_Payments.App_Code
                     }
                     else
                     {
-                      
+                        // Claim exists but no rows updated → all values were already the same
                         success = true;
                         message = "No changes detected; claim data is already up-to-date.";
                     }

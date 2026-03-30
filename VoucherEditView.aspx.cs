@@ -54,7 +54,7 @@ namespace MAS_Claim_Payments
 
                 // Editable fields
                 txtAccountNo.Text = row["ACC_NO"].ToString();
-                txtPayeeName.Text = row["PAYEE_NAME"].ToString();
+                lblPayeeNameDisplay.Text = row["PAYEE_NAME"].ToString();   // display only
                 txtContactNo.Text = row["CONTACT_NO"].ToString();
                 txtEmail.Text = row["EMAIL_ADD"].ToString();
 
@@ -123,23 +123,23 @@ namespace MAS_Claim_Payments
                     int bankCode = int.Parse(ddlBank.SelectedValue);
                     int branchCode = int.Parse(ddlBranch.SelectedValue);
                     string accountNo = txtAccountNo.Text.Trim();
-                    string payeeName = txtPayeeName.Text.Trim();
                     string contactNo = txtContactNo.Text.Trim();
                     string email = txtEmail.Text.Trim();
 
                     UpdateDB updateDB = new UpdateDB();
                     string message;
-                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, payeeName, contactNo, email, out message);
+                    // Payee name is NOT passed – it will remain unchanged in the database
+                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, contactNo, email, out message);
 
                     if (updated)
                     {
                         if (message.Contains("No changes"))
-                            lblMessage.Text = message;       // inform user but keep save button visible
+                            lblMessage.Text = message;
                         else
                             lblSuccessMsg.Text = message;
 
                         btnPrint.Visible = true;
-                        btnSave.Visible = false;            // disable further edits
+                        btnSave.Visible = false;   // disable further edits
                     }
                     else
                     {
