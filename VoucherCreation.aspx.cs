@@ -96,5 +96,16 @@ namespace MAS_Claim_Payments
                 Response.Redirect("VoucherView.aspx?ClaimNo=" + clmNum);
             }
         }
+
+        protected void gvClaims_EditedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.gvClaims.SelectedIndex > -1)
+            {
+                int index = this.gvClaims.SelectedIndex;
+                string clmNum = this.gvClaims.Rows[index].Cells[1].Text;
+                // Redirect to VoucherEdit instead of VoucherView
+                Response.Redirect("VoucherEdit.aspx?ClaimNo=" + clmNum);
+            }
+        }
     }
 }

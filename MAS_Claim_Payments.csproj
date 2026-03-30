@@ -97,6 +97,7 @@
     <Content Include="VoucherAuthorization2.aspx" />
     <Content Include="VoucherCreation.aspx" />
     <Content Include="VoucherEdit.aspx" />
+    <Content Include="VoucherEditView.aspx" />
     <Content Include="VoucherPrint.aspx" />
     <Content Include="VoucherReprint.aspx" />
     <Content Include="VoucherReprint2.aspx" />
@@ -225,6 +226,13 @@
     </Compile>
     <Compile Include="VoucherEdit.aspx.designer.cs">
       <DependentUpon>VoucherEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VoucherEditView.aspx.cs">
+      <DependentUpon>VoucherEditView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VoucherEditView.aspx.designer.cs">
+      <DependentUpon>VoucherEditView.aspx</DependentUpon>
     </Compile>
     <Compile Include="VoucherPrint.aspx.cs">
       <DependentUpon>VoucherPrint.aspx</DependentUpon>

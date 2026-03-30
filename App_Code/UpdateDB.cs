@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Web;
 using System.Data.OracleClient;
 using System.Data;
 
 namespace MAS_Claim_Payments.App_Code
-{    
+{
     public class UpdateDB
     {
         private DataManager dMngrr;
         private GetDBData getDBDtObj;
-        public string InsertEntryRec(string nic, string polNo, string clmDt, string clmTyp, int bnkCod, 
-            int brnchCod, string accNum, double amt, string payeeNm, string payType, string insuredName, 
+        public string InsertEntryRec(string nic, string polNo, string clmDt, string clmTyp, int bnkCod,
+            int brnchCod, string accNum, double amt, string payeeNm, string payType, string insuredName,
             string epf, string acccCod, string userId, string clmntName, string relashionship, string mobile, string email)
         {
             dMngrr = new DataManager();
@@ -27,7 +27,7 @@ namespace MAS_Claim_Payments.App_Code
 
             try
             {
-                dMngrr.begintransaction();                
+                dMngrr.begintransaction();
 
                 if (currentSeqNo == 0)
                 {
@@ -54,7 +54,7 @@ namespace MAS_Claim_Payments.App_Code
                 ok = true;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 dMngrr.rollback();
                 dMngrr.connClose();
@@ -87,14 +87,14 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dMngrr.begintransaction();
 
-                if(curntVouSeqNo == 0)
+                if (curntVouSeqNo == 0)
                 {
                     string insertSeqNo = "insert into LCLM.VOUNO (VUBRNO, VUYEAR, VUTYPE, VOUNO1) values (" + branchCod + ", " + DateTime.Today.Year.ToString() + ", 'W', 1)";
                     dMngrr.insertRecords(insertSeqNo);
                 }
                 else
                 {
-                    string updateSeqNo = "update LCLM.VOUNO set VOUNO1 = " + (curntVouSeqNo + 1).ToString() + " where VUBRNO = " + branchCod + 
+                    string updateSeqNo = "update LCLM.VOUNO set VOUNO1 = " + (curntVouSeqNo + 1).ToString() + " where VUBRNO = " + branchCod +
                                         " and VUYEAR = " + DateTime.Today.Year.ToString() + " and VUTYPE = 'W' ";
                     dMngrr.insertRecords(updateSeqNo);
                 }
@@ -107,14 +107,14 @@ namespace MAS_Claim_Payments.App_Code
                 dMngrr.commit();
                 ok = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 dMngrr.rollback();
                 dMngrr.connClose();
                 throw ex;
             }
 
-            if (ok) { retVal = vouNo; }            
+            if (ok) { retVal = vouNo; }
 
             dMngrr.connClose();
             return retVal;
@@ -159,7 +159,7 @@ namespace MAS_Claim_Payments.App_Code
         public int AuthorizeVoucher(string vouNo, string epf, string machineIp)
         {
             int retVal = 0;
-            
+
             string insertToCashBook = "", getAcNo = "", updateVouDetails = "", insertToVouBankDet = "", insertToTempDetl = "", insertToLifeVouDetl = "";
             string vPayMode = "", bankName = "", branchName = "";
             string acNo = "", payMode = "", hName = "", nic_ppt = "", hName1 = "", totAmountStr = "", accode = "", vouAddEPF = "", billDate = "";
@@ -196,23 +196,23 @@ namespace MAS_Claim_Payments.App_Code
                         odr.Close();
                     }
 
-                    bankName = dtVouDetals.Rows[0][3].ToString(); 
-                    branchName = dtVouDetals.Rows[0][4].ToString();                     
+                    bankName = dtVouDetals.Rows[0][3].ToString();
+                    branchName = dtVouDetals.Rows[0][4].ToString();
 
-                    
-                        hName = bankName + " " + branchName + " A/C-NO " + dtVouDetals.Rows[0][5].ToString(); 
-                        if (hName.Length > 71)
-                        {
-                            hName = frmtDt.format_hname(hName);
-                        }
 
-                        hName1 = dtVouDetals.Rows[0][7].ToString(); 
-                        if (hName1.Length > 65)
-                        {
-                            hName1 = hName1.Substring(0, 65);
-                        }
-                    
-                    hName = hName.ToUpper();                    
+                    hName = bankName + " " + branchName + " A/C-NO " + dtVouDetals.Rows[0][5].ToString();
+                    if (hName.Length > 71)
+                    {
+                        hName = frmtDt.format_hname(hName);
+                    }
+
+                    hName1 = dtVouDetals.Rows[0][7].ToString();
+                    if (hName1.Length > 65)
+                    {
+                        hName1 = hName1.Substring(0, 65);
+                    }
+
+                    hName = hName.ToUpper();
 
                     nic = dtVouDetals.Rows[0][9].ToString();
 
@@ -221,7 +221,7 @@ namespace MAS_Claim_Payments.App_Code
                     //totAmountStr = dsVouDetails.Tables[0].Rows[0]["VOU_AMOUNT"].ToString().PadLeft(21, '*');
                     totAmountStr = (double.Parse(dtVouDetals.Rows[0][6].ToString()).ToString("F")).PadLeft(21, '*');
                     accode = dtVouDetals.Rows[0][26].ToString();
-                    vouDate =  (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd"); 
+                    vouDate = (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd");
                     vouAddEPF = dtVouDetals.Rows[0][16].ToString();
                     vouType = "MAS";
                     status = "Vou Authorized";
@@ -230,7 +230,7 @@ namespace MAS_Claim_Payments.App_Code
                     grossAmount = totAmount;
                     paymntMode = "D";
                     vouPrintDate = (Convert.ToDateTime(dtVouDetals.Rows[0][22].ToString())).ToString("yyyyMMdd");
-                    vouPrintEPF = dtVouDetals.Rows[0][21].ToString();                    
+                    vouPrintEPF = dtVouDetals.Rows[0][21].ToString();
                     billDate = dtVouDetals.Rows[0][1].ToString();
 
                     insertToCashBook = "insert into CASHBOOK.TEMP_CB (CLASS,BUSYCODE,DIVCODE,BCODE,CLAIMNO,POLNO,HNAME,HNAME1," +
@@ -263,32 +263,32 @@ namespace MAS_Claim_Payments.App_Code
                     #endregion
 
                     #region LPHS.VOUBANKDET
-                    
+
                     phoneNo = dtVouDetals.Rows[0][10].ToString();
-                    
-                        if (!phoneNo.Equals(""))
-                        {
-                            insertToVouBankDet = "insert into LPHS.VOUBANKDET (POLICYNO,VOUCHERNO,PAYEENAME,BNKNAME,BNKBRNNAME,SLIACCTNO," +
-                                                  "CUSTACCTNO,PHONE_NO,BANK_CODE,BANK_BRANCH_CODE,NIC_NO, PASSPORT_NO) VALUES ('" +
-                                                  dtVouDetals.Rows[0][0].ToString().Substring(5) + "','" + vouNo + "','" +
-                                                  dtVouDetals.Rows[0][7].ToString() + "','" + frmtDt.replaceQuote(frmtDt.PrepareApostrophe(bankName)) + "','" +
-                                                  frmtDt.replaceQuote(frmtDt.PrepareApostrophe(branchName)) + "','" + acNo + "','" + dtVouDetals.Rows[0][5].ToString() +
-                                                  "','" + phoneNo + "','" + dtVouDetals.Rows[0][24].ToString() +
-                                                  "','" + dtVouDetals.Rows[0][25].ToString() + 
-                                                  "','" + nic + "','" + passportNo + "')";
-                        }
-                        else
-                        {
-                            insertToVouBankDet = "insert into LPHS.VOUBANKDET (POLICYNO,VOUCHERNO,PAYEENAME,BNKNAME,BNKBRNNAME,SLIACCTNO," +
-                                                  "CUSTACCTNO,BANK_CODE,BANK_BRANCH_CODE,NIC_NO, PASSPORT_NO) VALUES ('" +
-                                                  dtVouDetals.Rows[0][0].ToString().Substring(5) + "','" + vouNo + "','" +
-                                                  dtVouDetals.Rows[0][7].ToString() + "','" + frmtDt.replaceQuote(frmtDt.PrepareApostrophe(bankName)) + "','" +
-                                                  frmtDt.replaceQuote(frmtDt.PrepareApostrophe(branchName)) + "','" + acNo + "','" + dtVouDetals.Rows[0][5].ToString() +
-                                                  "','" + dtVouDetals.Rows[0][24].ToString() +
-                                                  "','" + dtVouDetals.Rows[0][25].ToString() +
-                                                  "','" + nic + "','" + passportNo + "')";
-                        }
-                    
+
+                    if (!phoneNo.Equals(""))
+                    {
+                        insertToVouBankDet = "insert into LPHS.VOUBANKDET (POLICYNO,VOUCHERNO,PAYEENAME,BNKNAME,BNKBRNNAME,SLIACCTNO," +
+                                              "CUSTACCTNO,PHONE_NO,BANK_CODE,BANK_BRANCH_CODE,NIC_NO, PASSPORT_NO) VALUES ('" +
+                                              dtVouDetals.Rows[0][0].ToString().Substring(5) + "','" + vouNo + "','" +
+                                              dtVouDetals.Rows[0][7].ToString() + "','" + frmtDt.replaceQuote(frmtDt.PrepareApostrophe(bankName)) + "','" +
+                                              frmtDt.replaceQuote(frmtDt.PrepareApostrophe(branchName)) + "','" + acNo + "','" + dtVouDetals.Rows[0][5].ToString() +
+                                              "','" + phoneNo + "','" + dtVouDetals.Rows[0][24].ToString() +
+                                              "','" + dtVouDetals.Rows[0][25].ToString() +
+                                              "','" + nic + "','" + passportNo + "')";
+                    }
+                    else
+                    {
+                        insertToVouBankDet = "insert into LPHS.VOUBANKDET (POLICYNO,VOUCHERNO,PAYEENAME,BNKNAME,BNKBRNNAME,SLIACCTNO," +
+                                              "CUSTACCTNO,BANK_CODE,BANK_BRANCH_CODE,NIC_NO, PASSPORT_NO) VALUES ('" +
+                                              dtVouDetals.Rows[0][0].ToString().Substring(5) + "','" + vouNo + "','" +
+                                              dtVouDetals.Rows[0][7].ToString() + "','" + frmtDt.replaceQuote(frmtDt.PrepareApostrophe(bankName)) + "','" +
+                                              frmtDt.replaceQuote(frmtDt.PrepareApostrophe(branchName)) + "','" + acNo + "','" + dtVouDetals.Rows[0][5].ToString() +
+                                              "','" + dtVouDetals.Rows[0][24].ToString() +
+                                              "','" + dtVouDetals.Rows[0][25].ToString() +
+                                              "','" + nic + "','" + passportNo + "')";
+                    }
+
                     dManager.insertRecords(insertToVouBankDet);
 
                     #endregion
@@ -317,7 +317,7 @@ namespace MAS_Claim_Payments.App_Code
                                 vouAddEPF + "','" + hName1 + "','" + dtVouDetals.Rows[0][10].ToString() +
                                 "','" + nic + "'," + int.Parse(annNum) + "," + totAmount + ",'" + dtVouDetals.Rows[0][5].ToString() + "')";
                         dManager.insertRecords(insertToSlipDetails);
-                    }                    
+                    }
 
                     retVal = 1;
                     dManager.commit();
@@ -359,7 +359,7 @@ namespace MAS_Claim_Payments.App_Code
             {
                 if (dt.Rows.Count > 0)
                 {
-                    dmngr.begintransaction();                    
+                    dmngr.begintransaction();
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
@@ -434,10 +434,10 @@ namespace MAS_Claim_Payments.App_Code
                         }
                         else
                         {
-                            string insertRecord = "insert into slic_chp.group_master (SBU, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" + 
-                                                    dt.Rows[i].ItemArray[0].ToString().ToString() + "','" + dt.Rows[i].ItemArray[1].ToString() + "','" + 
-                                                    dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" + 
-                                                    dt.Rows[i].ItemArray[4].ToString() + "','" + dateToSave + "','" + 
+                            string insertRecord = "insert into slic_chp.group_master (SBU, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" +
+                                                    dt.Rows[i].ItemArray[0].ToString().ToString() + "','" + dt.Rows[i].ItemArray[1].ToString() + "','" +
+                                                    dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" +
+                                                    dt.Rows[i].ItemArray[4].ToString() + "','" + dateToSave + "','" +
                                                     dt.Rows[i].ItemArray[6].ToString() + "','" + dt.Rows[i].ItemArray[7].ToString() + "')";
                             dmngr.insertRecords(insertRecord);
 
@@ -448,7 +448,7 @@ namespace MAS_Claim_Payments.App_Code
                     retVal = 1;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 dmngr.rollback();
                 dmngr.connClose();
@@ -457,10 +457,61 @@ namespace MAS_Claim_Payments.App_Code
 
             dmngr.connClose();
 
-            dtExistingRecords = dtExRecords;            
+            dtExistingRecords = dtExRecords;
             return retVal;
         }
 
+        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string payeeName, string contactNo, string email)
+        {
+            bool success = false;
+            DataManager dm = new DataManager();
+            GetDBData dbGt = new GetDBData();
 
+            try
+            {
+                string bankName = dbGt.getBankName(bankCode);
+                string branchName = dbGt.getBankBranchName(branchCode, bankCode);
+
+                string updateSql = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
+                             SET BANK_NAME = :bankName,
+                                 BANK_CODE = :bankCode,
+                                 BANK_BRANCH_NAME = :branchName,
+                                 BANK_BRANCH_CODE = :branchCode,
+                                 ACC_NO = :accountNo,
+                                 PAYEE_NAME = :payeeName,
+                                 CONTACT_NO = :contactNo,
+                                 EMAIL_ADD = :email
+                             WHERE CLAIM_NO = :claimNo";
+
+                dm.begintransaction();
+                using (OracleCommand cmd = new OracleCommand(updateSql, dm.oraConn))
+                {
+                    cmd.Parameters.AddWithValue(":bankName", bankName);
+                    cmd.Parameters.AddWithValue(":bankCode", bankCode);
+                    cmd.Parameters.AddWithValue(":branchName", branchName);
+                    cmd.Parameters.AddWithValue(":branchCode", branchCode);
+                    cmd.Parameters.AddWithValue(":accountNo", accountNo);
+                    cmd.Parameters.AddWithValue(":payeeName", payeeName);
+                    cmd.Parameters.AddWithValue(":contactNo", contactNo);
+                    cmd.Parameters.AddWithValue(":email", email);
+                    cmd.Parameters.AddWithValue(":claimNo", claimNo);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                        success = true;
+                }
+                dm.commit();
+            }
+            catch (Exception)
+            {
+                dm.rollback();
+                success = false;
+            }
+            finally
+            {
+                dm.connclose();
+            }
+            return success;
+        }
     }
 }
