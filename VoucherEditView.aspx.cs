@@ -126,10 +126,13 @@ namespace MAS_Claim_Payments
                     string contactNo = txtContactNo.Text.Trim();
                     string email = txtEmail.Text.Trim();
 
+                    // Get current user and IP
+                    string editedBy = Session["EPFNum"]?.ToString() ?? "Unknown";
+                    string editedIP = Context.Request.ServerVariables["REMOTE_ADDR"];
+
                     UpdateDB updateDB = new UpdateDB();
                     string message;
-                    // Payee name is NOT passed – it will remain unchanged in the database
-                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, contactNo, email, out message);
+                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, contactNo, email, editedBy, editedIP, out message);
 
                     if (updated)
                     {
@@ -139,7 +142,7 @@ namespace MAS_Claim_Payments
                             lblSuccessMsg.Text = message;
 
                         btnPrint.Visible = true;
-                        btnSave.Visible = false;   // disable further edits
+                        btnSave.Visible = false;
                     }
                     else
                     {

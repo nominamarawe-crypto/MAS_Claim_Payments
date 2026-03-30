@@ -22,7 +22,8 @@ namespace MAS_Claim_Payments
             }
         }
 
-        protected void btnSearch_Click(object sender, EventArgs e)
+        // This method handles the "Edit" button click (renamed from btnSearch_Click to match markup)
+        protected void btnSubmit_Click(object sender, EventArgs e)
         {
             lblMessage.Text = "";
             pnlGrid.Visible = false;

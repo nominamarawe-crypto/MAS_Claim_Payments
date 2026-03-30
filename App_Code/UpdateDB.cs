@@ -461,7 +461,7 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string contactNo, string email, out string message)
+        public bool UpdateClaimDetails(string claimNo, int bankCode, int branchCode, string accountNo, string contactNo, string email, string editedBy, string editedIP, out string message)
         {
             bool success = false;
             message = "";
@@ -482,11 +482,112 @@ namespace MAS_Claim_Payments.App_Code
                     return false;
                 }
 
-                // 2. Fetch bank and branch names
+                // 2. Fetch current record for archiving
+                string selectSql = @"SELECT VOU_NO, POL_NO, CLAIM_NO, DATE_OF_CLAIM, CLAIM_TYPE, BANK_NAME, BANK_CODE,
+                             BANK_BRANCH_NAME, BANK_BRANCH_CODE, ACC_NO, AMOUNT, PAYEE_NAME, PAYMENT_TYPE, NIC,
+                             CONTACT_NO, EMAIL_ADD, VOU_CREATED_BY, VOU_CREATED_DATE, VOU_CREATED_IP,
+                             VOU_PRINTED_BY, VOU_PRINTED_DATE, VOU_PRINTED_IP, VOU_AUTHORIZED_BY, VOU_AUTHORIZED_DATE,
+                             VOU_AUTHORIZED_IP, INSURED_NAME, VOU_REVERSED_BY, VOU_REVERSED_DATE, VOU_REVERSED_IP,
+                             EPF, ACC_CODE, VOU_STATUS, DATA_ENTERED_BY, DATA_ENTERED_DATE, VOU_AUTH_REVS_BY,
+                             VOU_AUTH_REVS_DATE, CLAIMANT_NAME, RELASHIONSHIP
+                      FROM SLIC_CHP.VOU_DETAILS_MAS
+                      WHERE CLAIM_NO = :claimNo";
+
+                dm.readSql(selectSql);
+                dm.oraComm.Parameters.Clear();
+                dm.oraComm.Parameters.Add("claimNo", OracleType.VarChar).Value = claimNo;
+                OracleDataReader reader = dm.oraComm.ExecuteReader();
+                if (!reader.Read())
+                {
+                    reader.Close();
+                    message = "Could not retrieve current record.";
+                    return false;
+                }
+
+                // 3. Build insert into history table
+                string insertHistSql = @"
+            INSERT INTO SLIC_CHP.VOU_DETAILS_MAS_HIST
+            (VOU_NO, POL_NO, CLAIM_NO, DATE_OF_CLAIM, CLAIM_TYPE, BANK_NAME, BANK_CODE,
+             BANK_BRANCH_NAME, BANK_BRANCH_CODE, ACC_NO, AMOUNT, PAYEE_NAME, PAYMENT_TYPE, NIC,
+             CONTACT_NO, EMAIL_ADD, VOU_CREATED_BY, VOU_CREATED_DATE, VOU_CREATED_IP,
+             VOU_PRINTED_BY, VOU_PRINTED_DATE, VOU_PRINTED_IP, VOU_AUTHORIZED_BY, VOU_AUTHORIZED_DATE,
+             VOU_AUTHORIZED_IP, INSURED_NAME, VOU_REVERSED_BY, VOU_REVERSED_DATE, VOU_REVERSED_IP,
+             EPF, ACC_CODE, VOU_STATUS, DATA_ENTERED_BY, DATA_ENTERED_DATE, VOU_AUTH_REVS_BY,
+             VOU_AUTH_REVS_DATE, CLAIMANT_NAME, RELASHIONSHIP,
+             VOU_EDITED_BY, VOU_EDITED_DATE, VOU_EDITED_IP)
+            VALUES
+            (:VOU_NO, :POL_NO, :CLAIM_NO, :DATE_OF_CLAIM, :CLAIM_TYPE, :BANK_NAME, :BANK_CODE,
+             :BANK_BRANCH_NAME, :BANK_BRANCH_CODE, :ACC_NO, :AMOUNT, :PAYEE_NAME, :PAYMENT_TYPE, :NIC,
+             :CONTACT_NO, :EMAIL_ADD, :VOU_CREATED_BY, :VOU_CREATED_DATE, :VOU_CREATED_IP,
+             :VOU_PRINTED_BY, :VOU_PRINTED_DATE, :VOU_PRINTED_IP, :VOU_AUTHORIZED_BY, :VOU_AUTHORIZED_DATE,
+             :VOU_AUTHORIZED_IP, :INSURED_NAME, :VOU_REVERSED_BY, :VOU_REVERSED_DATE, :VOU_REVERSED_IP,
+             :EPF, :ACC_CODE, :VOU_STATUS, :DATA_ENTERED_BY, :DATA_ENTERED_DATE, :VOU_AUTH_REVS_BY,
+             :VOU_AUTH_REVS_DATE, :CLAIMANT_NAME, :RELASHIONSHIP,
+             :VOU_EDITED_BY, :VOU_EDITED_DATE, :VOU_EDITED_IP)";
+
+                // Get bank and branch names for update (will also be used for the updated record)
                 string bankName = dbGt.getBankName(bankCode);
                 string branchName = dbGt.getBankBranchName(branchCode, bankCode);
 
-                // 3. Build update query – note: PAYEE_NAME is NOT updated
+                // Start transaction
+                dm.begintransaction();
+
+                // Insert into history
+                using (OracleCommand cmdHist = new OracleCommand(insertHistSql, dm.oraConn))
+                {
+                    cmdHist.Transaction = dm.oraTrans;
+
+                    // Map current values from reader
+                    cmdHist.Parameters.Add("VOU_NO", OracleType.VarChar).Value = reader["VOU_NO"];
+                    cmdHist.Parameters.Add("POL_NO", OracleType.VarChar).Value = reader["POL_NO"];
+                    cmdHist.Parameters.Add("CLAIM_NO", OracleType.VarChar).Value = reader["CLAIM_NO"];
+                    cmdHist.Parameters.Add("DATE_OF_CLAIM", OracleType.DateTime).Value = reader["DATE_OF_CLAIM"];
+                    cmdHist.Parameters.Add("CLAIM_TYPE", OracleType.VarChar).Value = reader["CLAIM_TYPE"];
+                    cmdHist.Parameters.Add("BANK_NAME", OracleType.VarChar).Value = reader["BANK_NAME"];
+                    cmdHist.Parameters.Add("BANK_CODE", OracleType.Number).Value = reader["BANK_CODE"];
+                    cmdHist.Parameters.Add("BANK_BRANCH_NAME", OracleType.VarChar).Value = reader["BANK_BRANCH_NAME"];
+                    cmdHist.Parameters.Add("BANK_BRANCH_CODE", OracleType.Number).Value = reader["BANK_BRANCH_CODE"];
+                    cmdHist.Parameters.Add("ACC_NO", OracleType.VarChar).Value = reader["ACC_NO"];
+                    cmdHist.Parameters.Add("AMOUNT", OracleType.VarChar).Value = reader["AMOUNT"];  // keep as string from DB
+                    cmdHist.Parameters.Add("PAYEE_NAME", OracleType.VarChar).Value = reader["PAYEE_NAME"];
+                    cmdHist.Parameters.Add("PAYMENT_TYPE", OracleType.VarChar).Value = reader["PAYMENT_TYPE"];
+                    cmdHist.Parameters.Add("NIC", OracleType.VarChar).Value = reader["NIC"];
+                    cmdHist.Parameters.Add("CONTACT_NO", OracleType.VarChar).Value = reader["CONTACT_NO"];
+                    cmdHist.Parameters.Add("EMAIL_ADD", OracleType.VarChar).Value = reader["EMAIL_ADD"];
+                    cmdHist.Parameters.Add("VOU_CREATED_BY", OracleType.VarChar).Value = reader["VOU_CREATED_BY"];
+                    cmdHist.Parameters.Add("VOU_CREATED_DATE", OracleType.DateTime).Value = reader["VOU_CREATED_DATE"];
+                    cmdHist.Parameters.Add("VOU_CREATED_IP", OracleType.VarChar).Value = reader["VOU_CREATED_IP"];
+                    cmdHist.Parameters.Add("VOU_PRINTED_BY", OracleType.VarChar).Value = reader["VOU_PRINTED_BY"];
+                    cmdHist.Parameters.Add("VOU_PRINTED_DATE", OracleType.DateTime).Value = reader["VOU_PRINTED_DATE"];
+                    cmdHist.Parameters.Add("VOU_PRINTED_IP", OracleType.VarChar).Value = reader["VOU_PRINTED_IP"];
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_BY", OracleType.VarChar).Value = reader["VOU_AUTHORIZED_BY"];
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_DATE", OracleType.DateTime).Value = reader["VOU_AUTHORIZED_DATE"];
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_IP", OracleType.VarChar).Value = reader["VOU_AUTHORIZED_IP"];
+                    cmdHist.Parameters.Add("INSURED_NAME", OracleType.VarChar).Value = reader["INSURED_NAME"];
+                    cmdHist.Parameters.Add("VOU_REVERSED_BY", OracleType.VarChar).Value = reader["VOU_REVERSED_BY"];
+                    cmdHist.Parameters.Add("VOU_REVERSED_DATE", OracleType.DateTime).Value = reader["VOU_REVERSED_DATE"];
+                    cmdHist.Parameters.Add("VOU_REVERSED_IP", OracleType.VarChar).Value = reader["VOU_REVERSED_IP"];
+                    cmdHist.Parameters.Add("EPF", OracleType.VarChar).Value = reader["EPF"];
+                    cmdHist.Parameters.Add("ACC_CODE", OracleType.VarChar).Value = reader["ACC_CODE"];
+                    cmdHist.Parameters.Add("VOU_STATUS", OracleType.VarChar).Value = reader["VOU_STATUS"];
+                    cmdHist.Parameters.Add("DATA_ENTERED_BY", OracleType.VarChar).Value = reader["DATA_ENTERED_BY"];
+                    cmdHist.Parameters.Add("DATA_ENTERED_DATE", OracleType.DateTime).Value = reader["DATA_ENTERED_DATE"];
+                    cmdHist.Parameters.Add("VOU_AUTH_REVS_BY", OracleType.VarChar).Value = reader["VOU_AUTH_REVS_BY"];
+                    cmdHist.Parameters.Add("VOU_AUTH_REVS_DATE", OracleType.DateTime).Value = reader["VOU_AUTH_REVS_DATE"];
+                    cmdHist.Parameters.Add("CLAIMANT_NAME", OracleType.VarChar).Value = reader["CLAIMANT_NAME"];
+                    cmdHist.Parameters.Add("RELASHIONSHIP", OracleType.VarChar).Value = reader["RELASHIONSHIP"];
+
+                    // Audit fields for edit
+                    cmdHist.Parameters.Add("VOU_EDITED_BY", OracleType.VarChar).Value = editedBy;
+                    cmdHist.Parameters.Add("VOU_EDITED_DATE", OracleType.DateTime).Value = DateTime.Now;
+                    cmdHist.Parameters.Add("VOU_EDITED_IP", OracleType.VarChar).Value = editedIP;
+
+                    cmdHist.ExecuteNonQuery();
+                }
+
+                reader.Close();
+
+                // 4. Update the main table with new values
                 string updateSql = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
                              SET BANK_NAME = :bankName,
                                  BANK_CODE = :bankCode,
@@ -497,22 +598,19 @@ namespace MAS_Claim_Payments.App_Code
                                  EMAIL_ADD = :email
                              WHERE CLAIM_NO = :claimNo";
 
-                dm.begintransaction();
-
-                using (OracleCommand cmd = new OracleCommand(updateSql, dm.oraConn))
+                using (OracleCommand cmdUpdate = new OracleCommand(updateSql, dm.oraConn))
                 {
-                    cmd.Transaction = dm.oraTrans;
+                    cmdUpdate.Transaction = dm.oraTrans;
+                    cmdUpdate.Parameters.AddWithValue(":bankName", bankName);
+                    cmdUpdate.Parameters.AddWithValue(":bankCode", bankCode);
+                    cmdUpdate.Parameters.AddWithValue(":branchName", branchName);
+                    cmdUpdate.Parameters.AddWithValue(":branchCode", branchCode);
+                    cmdUpdate.Parameters.AddWithValue(":accountNo", accountNo);
+                    cmdUpdate.Parameters.AddWithValue(":contactNo", contactNo);
+                    cmdUpdate.Parameters.AddWithValue(":email", email);
+                    cmdUpdate.Parameters.AddWithValue(":claimNo", claimNo);
 
-                    cmd.Parameters.AddWithValue(":bankName", bankName);
-                    cmd.Parameters.AddWithValue(":bankCode", bankCode);
-                    cmd.Parameters.AddWithValue(":branchName", branchName);
-                    cmd.Parameters.AddWithValue(":branchCode", branchCode);
-                    cmd.Parameters.AddWithValue(":accountNo", accountNo);
-                    cmd.Parameters.AddWithValue(":contactNo", contactNo);
-                    cmd.Parameters.AddWithValue(":email", email);
-                    cmd.Parameters.AddWithValue(":claimNo", claimNo);
-
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                    int rowsAffected = cmdUpdate.ExecuteNonQuery();
 
                     if (rowsAffected > 0)
                     {
@@ -521,7 +619,7 @@ namespace MAS_Claim_Payments.App_Code
                     }
                     else
                     {
-                        // Claim exists but no rows updated → all values were already the same
+                        // Claim exists but no rows updated – all values were already the same
                         success = true;
                         message = "No changes detected; claim data is already up-to-date.";
                     }

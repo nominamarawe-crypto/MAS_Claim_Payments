@@ -2,24 +2,92 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
-        .style1 { width: 65%; }
-        .style23 { height: 22px; font-size: medium; width: 19px; }
-        .style3 { height: 22px; font-size: medium; }
-        .style27 { width: 19px; }
-        .style26 { width: 19px; text-align: left; height: 17px; }
-        .style13 { width: 133px; text-align: left; height: 17px; }
-        .style30 { color: #0000FF; }
-        .style25 { text-align: left; width: 19px; }
-        .style6 { text-align: center; }
-        .auto-style1 { text-align: left; width: 19px; height: 229px; }
-        .auto-style2 { text-align: center; height: 229px; }
-        .auto-style3 { width: 19px; height: 49px; }
-        .auto-style4 { height: 49px; }
-        .button { background-color: #008CBA; color: white; padding: 5px 10px; border: none; cursor: pointer; }
-        .grid { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        .grid th, .grid td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .grid th { background-color: #4A3C8C; color: white; }
-    </style>
+
+    .style1
+    {
+        width: 65%;
+    }
+        .style23
+        {
+            height: 22px;
+            font-size: medium;
+            width: 19px;
+        }
+        .style3
+    {
+        height: 22px;
+        font-size: medium;
+    }
+        .style27
+        {
+            width: 19px;
+        }
+        .style25
+        {
+            text-align: left;
+            width: 19px;
+        }
+        .style6
+        {
+            text-align: left;
+        }
+        .style16
+        {
+            width: 214px;
+        }
+        .style10
+        {
+            width: 240px;
+        }
+        .style30
+        {
+            color: #0000FF;
+        }
+        .style5
+        {
+            color: #0000FF;
+        }
+        .style33
+        {
+            width: 133px;
+            text-align: left;
+        }
+        .style26
+        {
+            width: 19px;
+            text-align: left;
+            height: 17px;
+        }
+        .style13
+        {
+            width: 133px;
+            text-align: left;
+            height: 17px;
+        }
+        .style29
+        {
+            height: 2px;
+        }
+        .auto-style1 {
+        font-size: small;
+    }
+    .auto-style2 {
+        width: 19px;
+        height: 49px;
+    }
+    .auto-style3 {
+        height: 49px;
+    }
+        .auto-style4 {
+            text-align: left;
+            width: 19px;
+            height: 25px;
+        }
+        .auto-style5 {
+            text-align: left;
+            height: 25px;
+        }
+        </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -53,10 +121,11 @@
             <td colspan="3" style="text-align: center">&nbsp;</td>
         </tr>
         <tr>
-            <td class="auto-style3" style="text-align: center"></td>
-            <td colspan="2" style="text-align: center" class="auto-style4">
-                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="button" OnClick="btnSearch_Click" />
-                <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="button" OnClick="btnReset_Click" CausesValidation="False" />
+            <td class="auto-style2" style="text-align: center"></td>
+            <td colspan="3" style="text-align: center" class="auto-style3">
+                 <asp:Button ID="btnBack" runat="server" Text="Back to Voucher Creation" CausesValidation="False" class="button button1" OnClick="btnBack_Click" />
+                <asp:Button ID="btnSubmit" runat="server" class="button button1" onclick="btnSubmit_Click" Text="Edit" />
+                <asp:Button ID="btnReset" runat="server" CausesValidation="False" class="button button1" onclick="btnReset_Click" Text="Reset" />
             </td>
         </tr>
         <tr>
@@ -84,12 +153,5 @@
                 </td>
             </tr>
         </asp:Panel>
-
-        <tr>
-            <td class="style25">&nbsp;</td>
-            <td class="style6" colspan="2">
-                <asp:Button ID="btnBack" runat="server" Text="Back to Voucher Creation" CausesValidation="False" OnClick="btnBack_Click" />
-            </td>
-        </tr>
-    </table>
+ </table>
 </asp:Content>
