@@ -37,6 +37,13 @@ namespace MAS_Claim_Payments
                 return;
             }
 
+            // Validate NIC format
+            if (!System.Text.RegularExpressions.Regex.IsMatch(nic, "^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
+            {
+                lblMessage.Text = "Invalid NIC format.";
+                return;
+            }
+
             // Get editable claims (voucher created but not printed/authorized)
             DataTable dtClaims = dbObj.GetEditableClaimsByNIC(nic);
             if (dtClaims.Rows.Count == 0)

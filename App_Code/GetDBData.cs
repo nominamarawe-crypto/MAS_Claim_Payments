@@ -437,9 +437,9 @@ namespace MAS_Claim_Payments.App_Code
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Log error if needed
+                // Log if needed
             }
             finally
             {

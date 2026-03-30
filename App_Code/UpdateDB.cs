@@ -483,15 +483,16 @@ namespace MAS_Claim_Payments.App_Code
                 }
 
                 // 2. Fetch current record for archiving
-                string selectSql = @"SELECT VOU_NO, POL_NO, CLAIM_NO, DATE_OF_CLAIM, CLAIM_TYPE, BANK_NAME, BANK_CODE,
-                             BANK_BRANCH_NAME, BANK_BRANCH_CODE, ACC_NO, AMOUNT, PAYEE_NAME, PAYMENT_TYPE, NIC,
-                             CONTACT_NO, EMAIL_ADD, VOU_CREATED_BY, VOU_CREATED_DATE, VOU_CREATED_IP,
-                             VOU_PRINTED_BY, VOU_PRINTED_DATE, VOU_PRINTED_IP, VOU_AUTHORIZED_BY, VOU_AUTHORIZED_DATE,
-                             VOU_AUTHORIZED_IP, INSURED_NAME, VOU_REVERSED_BY, VOU_REVERSED_DATE, VOU_REVERSED_IP,
-                             EPF, ACC_CODE, VOU_STATUS, DATA_ENTERED_BY, DATA_ENTERED_DATE, VOU_AUTH_REVS_BY,
-                             VOU_AUTH_REVS_DATE, CLAIMANT_NAME, RELASHIONSHIP
-                      FROM SLIC_CHP.VOU_DETAILS_MAS
-                      WHERE CLAIM_NO = :claimNo";
+                string selectSql = @"
+            SELECT VOU_NO, POL_NO, CLAIM_NO, DATE_OF_CLAIM, CLAIM_TYPE, BANK_NAME, BANK_CODE,
+                   BANK_BRANCH_NAME, BANK_BRANCH_CODE, ACC_NO, AMOUNT, PAYEE_NAME, PAYMENT_TYPE, NIC,
+                   CONTACT_NO, EMAIL_ADD, VOU_CREATED_BY, VOU_CREATED_DATE, VOU_CREATED_IP,
+                   VOU_PRINTED_BY, VOU_PRINTED_DATE, VOU_PRINTED_IP, VOU_AUTHORIZED_BY, VOU_AUTHORIZED_DATE,
+                   VOU_AUTHORIZED_IP, INSURED_NAME, VOU_REVERSED_BY, VOU_REVERSED_DATE, VOU_REVERSED_IP,
+                   EPF, ACC_CODE, VOU_STATUS, DATA_ENTERED_BY, DATA_ENTERED_DATE, VOU_AUTH_REVS_BY,
+                   VOU_AUTH_REVS_DATE, CLAIMANT_NAME, RELASHIONSHIP
+            FROM SLIC_CHP.VOU_DETAILS_MAS
+            WHERE CLAIM_NO = :claimNo";
 
                 dm.readSql(selectSql);
                 dm.oraComm.Parameters.Clear();
@@ -525,7 +526,7 @@ namespace MAS_Claim_Payments.App_Code
              :VOU_AUTH_REVS_DATE, :CLAIMANT_NAME, :RELASHIONSHIP,
              :VOU_EDITED_BY, :VOU_EDITED_DATE, :VOU_EDITED_IP)";
 
-                // Get bank and branch names for update (will also be used for the updated record)
+                // Get bank and branch names for update
                 string bankName = dbGt.getBankName(bankCode);
                 string branchName = dbGt.getBankBranchName(branchCode, bankCode);
 
@@ -537,45 +538,48 @@ namespace MAS_Claim_Payments.App_Code
                 {
                     cmdHist.Transaction = dm.oraTrans;
 
-                    // Map current values from reader
-                    cmdHist.Parameters.Add("VOU_NO", OracleType.VarChar).Value = reader["VOU_NO"];
-                    cmdHist.Parameters.Add("POL_NO", OracleType.VarChar).Value = reader["POL_NO"];
-                    cmdHist.Parameters.Add("CLAIM_NO", OracleType.VarChar).Value = reader["CLAIM_NO"];
-                    cmdHist.Parameters.Add("DATE_OF_CLAIM", OracleType.DateTime).Value = reader["DATE_OF_CLAIM"];
-                    cmdHist.Parameters.Add("CLAIM_TYPE", OracleType.VarChar).Value = reader["CLAIM_TYPE"];
-                    cmdHist.Parameters.Add("BANK_NAME", OracleType.VarChar).Value = reader["BANK_NAME"];
-                    cmdHist.Parameters.Add("BANK_CODE", OracleType.Number).Value = reader["BANK_CODE"];
-                    cmdHist.Parameters.Add("BANK_BRANCH_NAME", OracleType.VarChar).Value = reader["BANK_BRANCH_NAME"];
-                    cmdHist.Parameters.Add("BANK_BRANCH_CODE", OracleType.Number).Value = reader["BANK_BRANCH_CODE"];
-                    cmdHist.Parameters.Add("ACC_NO", OracleType.VarChar).Value = reader["ACC_NO"];
-                    cmdHist.Parameters.Add("AMOUNT", OracleType.VarChar).Value = reader["AMOUNT"];  // keep as string from DB
-                    cmdHist.Parameters.Add("PAYEE_NAME", OracleType.VarChar).Value = reader["PAYEE_NAME"];
-                    cmdHist.Parameters.Add("PAYMENT_TYPE", OracleType.VarChar).Value = reader["PAYMENT_TYPE"];
-                    cmdHist.Parameters.Add("NIC", OracleType.VarChar).Value = reader["NIC"];
-                    cmdHist.Parameters.Add("CONTACT_NO", OracleType.VarChar).Value = reader["CONTACT_NO"];
-                    cmdHist.Parameters.Add("EMAIL_ADD", OracleType.VarChar).Value = reader["EMAIL_ADD"];
-                    cmdHist.Parameters.Add("VOU_CREATED_BY", OracleType.VarChar).Value = reader["VOU_CREATED_BY"];
-                    cmdHist.Parameters.Add("VOU_CREATED_DATE", OracleType.DateTime).Value = reader["VOU_CREATED_DATE"];
-                    cmdHist.Parameters.Add("VOU_CREATED_IP", OracleType.VarChar).Value = reader["VOU_CREATED_IP"];
-                    cmdHist.Parameters.Add("VOU_PRINTED_BY", OracleType.VarChar).Value = reader["VOU_PRINTED_BY"];
-                    cmdHist.Parameters.Add("VOU_PRINTED_DATE", OracleType.DateTime).Value = reader["VOU_PRINTED_DATE"];
-                    cmdHist.Parameters.Add("VOU_PRINTED_IP", OracleType.VarChar).Value = reader["VOU_PRINTED_IP"];
-                    cmdHist.Parameters.Add("VOU_AUTHORIZED_BY", OracleType.VarChar).Value = reader["VOU_AUTHORIZED_BY"];
-                    cmdHist.Parameters.Add("VOU_AUTHORIZED_DATE", OracleType.DateTime).Value = reader["VOU_AUTHORIZED_DATE"];
-                    cmdHist.Parameters.Add("VOU_AUTHORIZED_IP", OracleType.VarChar).Value = reader["VOU_AUTHORIZED_IP"];
-                    cmdHist.Parameters.Add("INSURED_NAME", OracleType.VarChar).Value = reader["INSURED_NAME"];
-                    cmdHist.Parameters.Add("VOU_REVERSED_BY", OracleType.VarChar).Value = reader["VOU_REVERSED_BY"];
-                    cmdHist.Parameters.Add("VOU_REVERSED_DATE", OracleType.DateTime).Value = reader["VOU_REVERSED_DATE"];
-                    cmdHist.Parameters.Add("VOU_REVERSED_IP", OracleType.VarChar).Value = reader["VOU_REVERSED_IP"];
-                    cmdHist.Parameters.Add("EPF", OracleType.VarChar).Value = reader["EPF"];
-                    cmdHist.Parameters.Add("ACC_CODE", OracleType.VarChar).Value = reader["ACC_CODE"];
-                    cmdHist.Parameters.Add("VOU_STATUS", OracleType.VarChar).Value = reader["VOU_STATUS"];
-                    cmdHist.Parameters.Add("DATA_ENTERED_BY", OracleType.VarChar).Value = reader["DATA_ENTERED_BY"];
-                    cmdHist.Parameters.Add("DATA_ENTERED_DATE", OracleType.DateTime).Value = reader["DATA_ENTERED_DATE"];
-                    cmdHist.Parameters.Add("VOU_AUTH_REVS_BY", OracleType.VarChar).Value = reader["VOU_AUTH_REVS_BY"];
-                    cmdHist.Parameters.Add("VOU_AUTH_REVS_DATE", OracleType.DateTime).Value = reader["VOU_AUTH_REVS_DATE"];
-                    cmdHist.Parameters.Add("CLAIMANT_NAME", OracleType.VarChar).Value = reader["CLAIMANT_NAME"];
-                    cmdHist.Parameters.Add("RELASHIONSHIP", OracleType.VarChar).Value = reader["RELASHIONSHIP"];
+                    // Helper function to get value or DBNull
+                    Func<object, object> getVal = v => (v == DBNull.Value) ? DBNull.Value : v;
+
+                    // Map current values from reader (handle DBNull)
+                    cmdHist.Parameters.Add("VOU_NO", OracleType.VarChar).Value = getVal(reader["VOU_NO"]);
+                    cmdHist.Parameters.Add("POL_NO", OracleType.VarChar).Value = getVal(reader["POL_NO"]);
+                    cmdHist.Parameters.Add("CLAIM_NO", OracleType.VarChar).Value = getVal(reader["CLAIM_NO"]);
+                    cmdHist.Parameters.Add("DATE_OF_CLAIM", OracleType.DateTime).Value = getVal(reader["DATE_OF_CLAIM"]);
+                    cmdHist.Parameters.Add("CLAIM_TYPE", OracleType.VarChar).Value = getVal(reader["CLAIM_TYPE"]);
+                    cmdHist.Parameters.Add("BANK_NAME", OracleType.VarChar).Value = getVal(reader["BANK_NAME"]);
+                    cmdHist.Parameters.Add("BANK_CODE", OracleType.Number).Value = getVal(reader["BANK_CODE"]);
+                    cmdHist.Parameters.Add("BANK_BRANCH_NAME", OracleType.VarChar).Value = getVal(reader["BANK_BRANCH_NAME"]);
+                    cmdHist.Parameters.Add("BANK_BRANCH_CODE", OracleType.Number).Value = getVal(reader["BANK_BRANCH_CODE"]);
+                    cmdHist.Parameters.Add("ACC_NO", OracleType.VarChar).Value = getVal(reader["ACC_NO"]);
+                    cmdHist.Parameters.Add("AMOUNT", OracleType.VarChar).Value = getVal(reader["AMOUNT"]);
+                    cmdHist.Parameters.Add("PAYEE_NAME", OracleType.VarChar).Value = getVal(reader["PAYEE_NAME"]);
+                    cmdHist.Parameters.Add("PAYMENT_TYPE", OracleType.VarChar).Value = getVal(reader["PAYMENT_TYPE"]);
+                    cmdHist.Parameters.Add("NIC", OracleType.VarChar).Value = getVal(reader["NIC"]);
+                    cmdHist.Parameters.Add("CONTACT_NO", OracleType.VarChar).Value = getVal(reader["CONTACT_NO"]);
+                    cmdHist.Parameters.Add("EMAIL_ADD", OracleType.VarChar).Value = getVal(reader["EMAIL_ADD"]);
+                    cmdHist.Parameters.Add("VOU_CREATED_BY", OracleType.VarChar).Value = getVal(reader["VOU_CREATED_BY"]);
+                    cmdHist.Parameters.Add("VOU_CREATED_DATE", OracleType.DateTime).Value = getVal(reader["VOU_CREATED_DATE"]);
+                    cmdHist.Parameters.Add("VOU_CREATED_IP", OracleType.VarChar).Value = getVal(reader["VOU_CREATED_IP"]);
+                    cmdHist.Parameters.Add("VOU_PRINTED_BY", OracleType.VarChar).Value = getVal(reader["VOU_PRINTED_BY"]);
+                    cmdHist.Parameters.Add("VOU_PRINTED_DATE", OracleType.DateTime).Value = getVal(reader["VOU_PRINTED_DATE"]);
+                    cmdHist.Parameters.Add("VOU_PRINTED_IP", OracleType.VarChar).Value = getVal(reader["VOU_PRINTED_IP"]);
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_BY", OracleType.VarChar).Value = getVal(reader["VOU_AUTHORIZED_BY"]);
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_DATE", OracleType.DateTime).Value = getVal(reader["VOU_AUTHORIZED_DATE"]);
+                    cmdHist.Parameters.Add("VOU_AUTHORIZED_IP", OracleType.VarChar).Value = getVal(reader["VOU_AUTHORIZED_IP"]);
+                    cmdHist.Parameters.Add("INSURED_NAME", OracleType.VarChar).Value = getVal(reader["INSURED_NAME"]);
+                    cmdHist.Parameters.Add("VOU_REVERSED_BY", OracleType.VarChar).Value = getVal(reader["VOU_REVERSED_BY"]);
+                    cmdHist.Parameters.Add("VOU_REVERSED_DATE", OracleType.DateTime).Value = getVal(reader["VOU_REVERSED_DATE"]);
+                    cmdHist.Parameters.Add("VOU_REVERSED_IP", OracleType.VarChar).Value = getVal(reader["VOU_REVERSED_IP"]);
+                    cmdHist.Parameters.Add("EPF", OracleType.VarChar).Value = getVal(reader["EPF"]);
+                    cmdHist.Parameters.Add("ACC_CODE", OracleType.VarChar).Value = getVal(reader["ACC_CODE"]);
+                    cmdHist.Parameters.Add("VOU_STATUS", OracleType.VarChar).Value = getVal(reader["VOU_STATUS"]);
+                    cmdHist.Parameters.Add("DATA_ENTERED_BY", OracleType.VarChar).Value = getVal(reader["DATA_ENTERED_BY"]);
+                    cmdHist.Parameters.Add("DATA_ENTERED_DATE", OracleType.DateTime).Value = getVal(reader["DATA_ENTERED_DATE"]);
+                    cmdHist.Parameters.Add("VOU_AUTH_REVS_BY", OracleType.VarChar).Value = getVal(reader["VOU_AUTH_REVS_BY"]);
+                    cmdHist.Parameters.Add("VOU_AUTH_REVS_DATE", OracleType.DateTime).Value = getVal(reader["VOU_AUTH_REVS_DATE"]);
+                    cmdHist.Parameters.Add("CLAIMANT_NAME", OracleType.VarChar).Value = getVal(reader["CLAIMANT_NAME"]);
+                    cmdHist.Parameters.Add("RELASHIONSHIP", OracleType.VarChar).Value = getVal(reader["RELASHIONSHIP"]);
 
                     // Audit fields for edit
                     cmdHist.Parameters.Add("VOU_EDITED_BY", OracleType.VarChar).Value = editedBy;
@@ -631,7 +635,7 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dm.rollback();
                 success = false;
-                message = "Database error: " + ex.Message;
+                message = "Database error: " + ex.Message + " | StackTrace: " + ex.StackTrace;
             }
             finally
             {
