@@ -13,7 +13,7 @@ namespace MAS_Claim_Payments
         {
             if (!IsPostBack)
             {
-                // Session check
+           
                 if (Session["EPFNum"] == null)
                 {
                     string msg = "Your Session Variable Expired. @ Please Log to the system again.";
@@ -22,7 +22,6 @@ namespace MAS_Claim_Payments
             }
         }
 
-        // This method handles the "Edit" button click (renamed from btnSearch_Click to match markup)
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             lblMessage.Text = "";
@@ -37,14 +36,13 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // Validate NIC format
-            if (!System.Text.RegularExpressions.Regex.IsMatch(nic, "^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(nic, @"^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
             {
                 lblMessage.Text = "Invalid NIC format.";
                 return;
             }
 
-            // Get editable claims (voucher created but not printed/authorized)
+            
             DataTable dtClaims = dbObj.GetEditableClaimsByNIC(nic);
             if (dtClaims.Rows.Count == 0)
             {
@@ -52,13 +50,13 @@ namespace MAS_Claim_Payments
             }
             else if (dtClaims.Rows.Count == 1)
             {
-                // Only one claim – redirect directly
+
                 string claimNo = dtClaims.Rows[0]["CLAIM_NO"].ToString();
                 Response.Redirect("VoucherEditView.aspx?ClaimNo=" + claimNo);
             }
             else
             {
-                // Multiple claims – show grid
+               
                 gvClaims.DataSource = dtClaims;
                 gvClaims.DataBind();
                 pnlGrid.Visible = true;

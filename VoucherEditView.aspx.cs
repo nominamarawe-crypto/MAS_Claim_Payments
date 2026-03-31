@@ -18,7 +18,7 @@ namespace MAS_Claim_Payments
 
             if (!IsPostBack)
             {
-                // Session check
+               
                 if (Session["EPFNum"] == null)
                 {
                     string msg = "Your Session Variable Expired. @ Please Log to the system again.";
@@ -32,7 +32,7 @@ namespace MAS_Claim_Payments
                     return;
                 }
 
-                // Load claim details
+               
                 DataTable dtClmDetails = dbGtObj.getClaimDetails(claimNo);
                 if (dtClmDetails.Rows.Count == 0)
                 {
@@ -42,7 +42,6 @@ namespace MAS_Claim_Payments
 
                 DataRow row = dtClmDetails.Rows[0];
 
-                // Read‑only fields
                 lblPolicyNo2.Text = row["POL_NO"].ToString();
                 lblInsuredName2.Text = row["INSURED_NAME"].ToString();
                 lblClaimNo2.Text = claimNo;
@@ -52,16 +51,16 @@ namespace MAS_Claim_Payments
                 lblClaimTypeValue.Text = frmtDtObj.getClmType(row["CLAIM_TYPE"].ToString());
                 lblPaymentTypeValue.Text = frmtDtObj.getPaymntType(row["PAYMENT_TYPE"].ToString());
 
-                // Editable fields
+              
                 txtAccountNo.Text = row["ACC_NO"].ToString();
-                lblPayeeNameDisplay.Text = row["PAYEE_NAME"].ToString();   // display only
+                lblPayeeNameDisplay.Text = row["PAYEE_NAME"].ToString();   
                 txtContactNo.Text = row["CONTACT_NO"].ToString();
                 txtEmail.Text = row["EMAIL_ADD"].ToString();
 
-                // Load banks
+             
                 LoadBanks();
 
-                // Select existing bank and branch
+               
                 int bankCode = 0, branchCode = 0;
                 int.TryParse(row["BANK_CODE"].ToString(), out bankCode);
                 int.TryParse(row["BANK_BRANCH_CODE"].ToString(), out branchCode);
@@ -126,13 +125,15 @@ namespace MAS_Claim_Payments
                     string contactNo = txtContactNo.Text.Trim();
                     string email = txtEmail.Text.Trim();
 
-                    // Get current user and IP
+             
                     string editedBy = Session["EPFNum"]?.ToString() ?? "Unknown";
                     string editedIP = Context.Request.ServerVariables["REMOTE_ADDR"];
 
                     UpdateDB updateDB = new UpdateDB();
                     string message;
-                    bool updated = updateDB.UpdateClaimDetails(claimNo, bankCode, branchCode, accountNo, contactNo, email, editedBy, editedIP, out message);
+                    bool updated = updateDB.UpdateClaimDetails(
+                        claimNo, bankCode, branchCode, accountNo,
+                        contactNo, email, editedBy, editedIP, out message);
 
                     if (updated)
                     {

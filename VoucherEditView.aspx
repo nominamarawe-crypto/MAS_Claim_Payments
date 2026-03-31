@@ -49,13 +49,12 @@
             <td class="label">Payment Type:</td>
             <td><asp:Label ID="lblPaymentTypeValue" runat="server"></asp:Label></td>
         </tr>
-       
-         <tr>
+        <tr>
             <td class="label">Payee Name:</td>
             <td colspan="3">
                 <asp:Label ID="lblPayeeNameDisplay" runat="server" Font-Bold="false"></asp:Label>
             </td>
-         </tr>
+        </tr>
         <tr>
             <td class="label">Bank:</td>
             <td colspan="3">
@@ -78,27 +77,26 @@
                 <asp:RegularExpressionValidator ID="revAccount" runat="server" ControlToValidate="txtAccountNo" ErrorMessage="Only numbers allowed" ForeColor="Red" ValidationExpression="[0-9]*" />
             </td>
         </tr>
-        
-         <tr>
+        <tr>
             <td class="label">Contact No:</td>
             <td colspan="3">
                 <asp:TextBox ID="txtContactNo" runat="server" Width="200px" />
                 <asp:RegularExpressionValidator ID="revContact" runat="server" ControlToValidate="txtContactNo" ErrorMessage="Invalid phone number" ForeColor="Red" ValidationExpression="[0-9]{10}" />
             </td>
-         </tr>
-         <tr>
+        </tr>
+        <tr>
             <td class="label">Email:</td>
             <td colspan="3">
                 <asp:TextBox ID="txtEmail" runat="server" Width="300px" />
                 <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" ErrorMessage="Invalid email" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" />
             </td>
-         </tr>
-         <tr>
+        </tr>
+        <tr>
             <td colspan="4" style="text-align: center">
                 <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button" OnClick="btnSave_Click" />
                 <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="button" OnClick="btnCancel_Click" CausesValidation="False" />
                 <asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button" OnClick="btnPrint_Click" Visible="false" />
             </td>
-         </tr>
+        </tr>
     </table>
 </asp:Content>

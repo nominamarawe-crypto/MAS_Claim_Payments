@@ -103,6 +103,15 @@ namespace MAS_Claim_Payments {
         protected global::System.Web.UI.WebControls.Label lblPaymentTypeValue;
         
         /// <summary>
+        /// lblPayeeNameDisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPayeeNameDisplay;
+        
+        /// <summary>
         /// ddlBank control.
         /// </summary>
         /// <remarks>
@@ -164,15 +173,6 @@ namespace MAS_Claim_Payments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revAccount;
-        
-        /// <summary>
-        /// lblPayeeNameDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPayeeNameDisplay;
         
         /// <summary>
         /// txtContactNo control.
