@@ -181,6 +181,6 @@ public class Oracle_Transaction
 
         return HasRow_;
     }
+    
 
-   
 }

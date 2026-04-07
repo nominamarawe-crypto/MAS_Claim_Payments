@@ -13,10 +13,9 @@ namespace MAS_Claim_Payments
         {
             if (!IsPostBack)
             {
-           
                 if (Session["EPFNum"] == null)
                 {
-                    string msg = "Your Session Variable Expired. @ Please Log to the system again.";
+                    string msg = "Your Session Variable Expired. Please Log to the system again.";
                     Response.Redirect("~/EPage.aspx?msg=" + msg);
                 }
             }
@@ -36,27 +35,22 @@ namespace MAS_Claim_Payments
                 return;
             }
 
+            // Validate NIC format (matches regex in aspx)
             if (!System.Text.RegularExpressions.Regex.IsMatch(nic, @"^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
             {
-                lblMessage.Text = "Invalid NIC format.";
+                lblMessage.Text = "Invalid NIC format. Use 9 digits + V/X or 12 digits.";
                 return;
             }
 
-            
             DataTable dtClaims = dbObj.GetEditableClaimsByNIC(nic);
             if (dtClaims.Rows.Count == 0)
             {
                 lblMessage.Text = "No editable claims found for this NIC.";
-            }
-            else if (dtClaims.Rows.Count == 1)
-            {
-
-                string claimNo = dtClaims.Rows[0]["CLAIM_NO"].ToString();
-                Response.Redirect("VoucherEditView.aspx?ClaimNo=" + claimNo);
+                pnlGrid.Visible = false;
             }
             else
             {
-               
+                // Display the grid with all matching claims
                 gvClaims.DataSource = dtClaims;
                 gvClaims.DataBind();
                 pnlGrid.Visible = true;
@@ -74,8 +68,9 @@ namespace MAS_Claim_Payments
 
         protected void gvClaims_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string claimNo = gvClaims.SelectedDataKey.Value.ToString();
-            Response.Redirect("VoucherEditView.aspx?ClaimNo=" + claimNo);
+            // Redirect to the edit view page with selected voucher number
+            string VOUNo = gvClaims.SelectedDataKey.Value.ToString();
+            Response.Redirect("VoucherEditView.aspx?VOU_NO=" + VOUNo);
         }
 
         protected void btnBack_Click(object sender, EventArgs e)

@@ -112,6 +112,15 @@ namespace MAS_Claim_Payments {
         protected global::System.Web.UI.WebControls.Label lblPayeeNameDisplay;
         
         /// <summary>
+        /// lblVouNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblVouNo;
+        
+        /// <summary>
         /// ddlBank control.
         /// </summary>
         /// <remarks>
@@ -227,14 +236,5 @@ namespace MAS_Claim_Payments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
-        
-        /// <summary>
-        /// btnPrint control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrint;
     }
 }

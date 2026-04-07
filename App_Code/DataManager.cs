@@ -19,8 +19,8 @@ public class DataManager
     public OracleTransaction oraTrans;
 
 
-	public DataManager()
-	{
+    public DataManager()
+    {
         try
         {
             oraConn.ConnectionString = ConfigurationManager.AppSettings["DBConString"];
@@ -31,8 +31,8 @@ public class DataManager
         {
             throw ee;
         }
-		
-	}
+
+    }
 
     public int addRecored(string sSql)
     {
@@ -93,7 +93,7 @@ public class DataManager
         {
             int rows = 0;
             readSql(sSql);
-            //OracleDataReader oraDtReader = oraComm.ExecuteReader(CommandBehavior.CloseConnection);
+       
             OracleDataReader oraDtReader = oraComm.ExecuteReader();
             while (oraDtReader.Read())
             {
@@ -147,7 +147,7 @@ public class DataManager
     {
         oraConn.Close();
         oraConn.Dispose();
-    }    
+    } 
     public DataSet getrow(string sql)
     {
         try
@@ -211,7 +211,7 @@ public class DataManager
         {
             throw exp;
         }
-    }    
+    }
 
     public int DeleteRecords(string DelQuery)
     {
@@ -223,4 +223,5 @@ public class DataManager
 
         return numRows;
     }
+ 
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using System.Web;
 using System.Data.OracleClient;
 using System.Data;
@@ -16,7 +16,7 @@ namespace MAS_Claim_Payments.App_Code
             bool exists = false;
             dMngr = new DataManager();
 
-            string sql = "select * from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
+            string sql = "select * from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -32,7 +32,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string name = "";
 
-            string sql = "select MEMBER_NAME from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
+            string sql = "select MEMBER_NAME from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -54,7 +54,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string contactNo = "";
 
-            string sql = "select CONTACT_NO from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
+            string sql = "select CONTACT_NO from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -77,7 +77,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string email = "";
 
-            string sql = "select EMAIL from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
+            string sql = "select EMAIL from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -99,7 +99,7 @@ namespace MAS_Claim_Payments.App_Code
             dMngr = new DataManager();
             string epf = "";
 
-            string sql = "select EPF from SLIC_CHP.GROUP_MASTER where TRIM(NIC) = '" + nic + "'";
+            string sql = "select EPF from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
 
             if (dMngr.existRecored(sql) != 0)
             {
@@ -165,17 +165,19 @@ namespace MAS_Claim_Payments.App_Code
         {
             DataManager dm = new DataManager();
             string bankName = "";
-
-            string getBankName = "select '.' as bbnam,0000 as bcode from dual union select bbnam, bcode from genpay.bnkbrn where bcode = " + bankCode + "";
+            string getBankName = "select '.' as bbnam,0000 as bcode from dual union select bbnam, bcode from genpay.bnkbrn where bcode = " + bankCode;
             dm.readSql(getBankName);
             odrr = dm.oraComm.ExecuteReader();
             while (odrr.Read())
             {
-                if (!odrr.IsDBNull(0)) { bankName = odrr.GetString(0); } else { bankName = ""; }
+                if (!odrr.IsDBNull(0))
+                    bankName = odrr.GetString(0);
+                else
+                    bankName = "";
             }
             odrr.Close();
             dm.connclose();
-            return bankName;
+            return bankName;  // never null
         }
 
         public string getBankBranchName(int branchCode, int bankCode)
@@ -369,16 +371,17 @@ namespace MAS_Claim_Payments.App_Code
             return dt;
         }
 
-       public DataTable getClaimDetails(string claimNo)
-{
-    DataTable dtClmDetails = new DataTable();
-    DataManager dm = new DataManager();
-
-    string claimDetails = @"select POL_NO, 
-                                   to_char(DATE_OF_CLAIM, 'YYYY-MM-DD') as DATE_OF_CLAIM, 
+        public DataTable getClaimDetails(string claimNo)
+        {
+            DataTable dtClmDetails = new DataTable();
+            DataManager dm = new DataManager();
+            string claimDetails = @"SELECT POL_NO, 
+                                   TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
                                    CLAIM_TYPE, 
-                                   BANK_NAME, 
-                                   BANK_BRANCH_NAME, 
+                                   BANK_NAME,
+                                   BANK_CODE,
+                                   BANK_BRANCH_NAME,
+                                   BANK_BRANCH_CODE,
                                    ACC_NO, 
                                    AMOUNT,
                                    PAYEE_NAME, 
@@ -389,63 +392,50 @@ namespace MAS_Claim_Payments.App_Code
                                    INSURED_NAME, 
                                    EPF, 
                                    ACC_CODE,
-                                   BANK_CODE,
-                                   BANK_BRANCH_CODE
-                            from slic_chp.vou_details_mas 
-                            where CLAIM_NO = '" + claimNo.Replace("'", "''") + "'";
-
-    dm.readSql(claimDetails);
-    DataSet ds = dm.getrow(claimDetails);
-    dtClmDetails = ds.Tables[0];
-    dm.connclose();
-    return dtClmDetails;
-}
-        public DataTable GetEditableClaimsByNIC(string nic)
+                                   VOU_NO,
+                                   VOU_STATUS
+                            FROM SLIC_CHP.VOU_DETAILS_MAS 
+                            WHERE CLAIM_NO = '" + claimNo.Replace("'", "''") + "'";
+            dm.readSql(claimDetails);
+            DataSet ds = dm.getrow(claimDetails);
+            if (ds.Tables.Count > 0)
+                dtClmDetails = ds.Tables[0];
+            dm.connclose();
+            return dtClmDetails;
+        }
+        public DataTable EditClaimDetail(string vouNo)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("CLAIM_NO", typeof(string));
-            dt.Columns.Add("POL_NO", typeof(string));
-            dt.Columns.Add("INSURED_NAME", typeof(string));
-            dt.Columns.Add("AMOUNT", typeof(double));
-
-            string sql = @"
-        SELECT CLAIM_NO, POL_NO, INSURED_NAME, AMOUNT
-        FROM SLIC_CHP.VOU_DETAILS_MAS
-        WHERE NIC = :nic
-          AND VOU_NO IS NOT NULL
-          AND VOU_PRINTED_BY IS NULL
-          AND VOU_AUTHORIZED_BY IS NULL
-        ORDER BY CLAIM_NO";
-
+            DataTable dtEditDetails = new DataTable();
             DataManager dm = new DataManager();
-            try
-            {
-                dm.readSql(sql);
-                dm.oraComm.Parameters.Clear();
-                dm.oraComm.Parameters.Add("nic", OracleType.VarChar).Value = nic;
 
-                using (OracleDataReader reader = dm.oraComm.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        DataRow row = dt.NewRow();
-                        row["CLAIM_NO"] = reader["CLAIM_NO"].ToString();
-                        row["POL_NO"] = reader["POL_NO"].ToString();
-                        row["INSURED_NAME"] = reader["INSURED_NAME"].ToString();
-                        row["AMOUNT"] = Convert.ToDouble(reader["AMOUNT"]);
-                        dt.Rows.Add(row);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Log if needed
-            }
-            finally
-            {
-                dm.connclose();
-            }
-            return dt;
+            string editDetails = @"SELECT POL_NO, 
+                                   TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
+                                   CLAIM_TYPE, 
+                                   BANK_NAME,
+                                   BANK_CODE,
+                                   BANK_BRANCH_NAME,
+                                   BANK_BRANCH_CODE,
+                                   ACC_NO, 
+                                   AMOUNT,
+                                   PAYEE_NAME, 
+                                   PAYMENT_TYPE, 
+                                   NIC, 
+                                   CONTACT_NO, 
+                                   EMAIL_ADD, 
+                                   INSURED_NAME, 
+                                   EPF, 
+                                   ACC_CODE,
+                                   VOU_NO,
+                                   VOU_STATUS
+                            FROM SLIC_CHP.VOU_DETAILS_MAS 
+        WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+
+            dm.readSql(editDetails);
+            DataSet ds = dm.getrow(editDetails);
+            if (ds.Tables.Count > 0)
+                dtEditDetails = ds.Tables[0];
+            dm.connclose();
+            return dtEditDetails;
         }
         public string getVouNo(string claimNo)
         {
@@ -469,15 +459,39 @@ namespace MAS_Claim_Payments.App_Code
             DataTable dtClmDetails = new DataTable();
             DataManager dm = new DataManager();
 
-            string claimDetails = "select POL_NO, to_char(DATE_OF_CLAIM, 'YYYY-MM-DD'), CLAIM_TYPE, BANK_NAME, BANK_BRANCH_NAME, ACC_NO, AMOUNT," +  // 6
-                                    " PAYEE_NAME, PAYMENT_TYPE, NIC, CONTACT_NO, EMAIL_ADD, INSURED_NAME, EPF, ACC_CODE, CLAIM_NO, " + // 15
-                                    " VOU_CREATED_BY, VOU_CREATED_DATE, VOU_CREATED_IP, CLAIM_NO, INSURED_NAME, VOU_PRINTED_BY, VOU_PRINTED_DATE, VOU_PRINTED_IP, " + //23
-                                    " BANK_CODE, BANK_BRANCH_CODE, ACC_CODE " +
-                                    " from slic_chp.vou_details_mas where VOU_NO = '" + vouNo + "'";
-            dm.readSql(claimDetails);
+            string claimDetails = @"SELECT POL_NO, 
+                                   TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
+                                   CLAIM_TYPE, 
+                                   BANK_NAME, 
+                                   BANK_BRANCH_NAME, 
+                                   ACC_NO, 
+                                   AMOUNT,
+                                   PAYEE_NAME, 
+                                   PAYMENT_TYPE, 
+                                   NIC, 
+                                   CONTACT_NO, 
+                                   EMAIL_ADD, 
+                                   INSURED_NAME, 
+                                   EPF, 
+                                   ACC_CODE, 
+                                   CLAIM_NO,
+                                   VOU_CREATED_BY, 
+                                   VOU_CREATED_DATE, 
+                                   VOU_CREATED_IP, 
+                                   INSURED_NAME, 
+                                   VOU_PRINTED_BY, 
+                                   VOU_PRINTED_DATE, 
+                                   VOU_PRINTED_IP,
+                                   BANK_CODE, 
+                                   BANK_BRANCH_CODE, 
+                                   ACC_CODE 
+                            FROM SLIC_CHP.VOU_DETAILS_MAS 
+                            WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
+            dm.readSql(claimDetails);
             DataSet ds = dm.getrow(claimDetails);
-            dtClmDetails = ds.Tables[0];
+            if (ds.Tables.Count > 0)
+                dtClmDetails = ds.Tables[0];
             dm.connclose();
             return dtClmDetails;
         }
@@ -500,78 +514,90 @@ namespace MAS_Claim_Payments.App_Code
             dm.connclose();
             return branchName;
         }
-
-
-        public DataTable GetBanks()
+        /// <summary>
+        /// Retrieves all claims for a given NIC that are still editable (voucher not created, or created but not printed/authorized).
+        /// </summary>
+        public DataTable GetEditableClaimsByNIC(string nic)
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("BANK_CODE", typeof(int));
-            dt.Columns.Add("BANK_NAME", typeof(string));
-
             DataManager dm = new DataManager();
-            string sql = "SELECT DISTINCT BCODE, BBNAM FROM GENPAY.BNKBRN ORDER BY BBNAM";
-            dm.readSql(sql);
-            OracleDataReader odr = dm.oraComm.ExecuteReader();
-            while (odr.Read())
-            {
-                int code = odr.IsDBNull(0) ? 0 : odr.GetInt32(0);
-                string name = odr.IsDBNull(1) ? "" : odr.GetString(1);
-                dt.Rows.Add(code, name);
-            }
-            odr.Close();
-            dm.connclose();
-            return dt;
-        }
 
-        public DataTable GetBranches(int bankCode)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("BRANCH_CODE", typeof(int));
-            dt.Columns.Add("BRANCH_NAME", typeof(string));
+            string sql = @"
+        SELECT VOU_NO, CLAIM_NO, POL_NO, INSURED_NAME, AMOUNT,PAYEE_NAME,DATE_OF_CLAIM
+        FROM SLIC_CHP.VOU_DETAILS_MAS
+        WHERE NIC = '" + nic.Replace("'", "''") + @"'
+          AND (VOU_STATUS NOT IN ('Vou.Authorized')                   
+                   AND VOU_AUTHORIZED_BY IS NULL)
+        ORDER BY DATE_OF_CLAIM DESC";
 
-            DataManager dm = new DataManager();
-            string sql = "SELECT BRCODE, BBRNCH FROM GENPAY.BNKBRN WHERE BCODE = " + bankCode + " ORDER BY BBRNCH";
-            dm.readSql(sql);
-            OracleDataReader odr = dm.oraComm.ExecuteReader();
-            while (odr.Read())
-            {
-                int code = odr.IsDBNull(0) ? 0 : odr.GetInt32(0);
-                string name = odr.IsDBNull(1) ? "" : odr.GetString(1);
-                dt.Rows.Add(code, name);
-            }
-            odr.Close();
-            dm.connclose();
-            return dt;
-        }
-
-        public DataTable GetClaimsForEdit(string nic)
-        {
-            DataTable dt = new DataTable();
-            dMngr = new DataManager();
-            string sql = "SELECT CLAIM_NO, VOU_NO, AMOUNT, INSURED_NAME " +
-                         "FROM SLIC_CHP.VOU_DETAILS_MAS " +
-                         "WHERE NIC = '" + nic.Replace("'", "''") + "' " +
-                         "AND VOU_NO IS NOT NULL " +
-                         "AND VOU_AUTHORIZED_BY IS NULL " +
-                         "ORDER BY CLAIM_NO";
             try
             {
-                dMngr.readSql(sql);
-                OracleDataReader reader = dMngr.oraComm.ExecuteReader();
-                dt.Load(reader);
-                reader.Close();
+                dm.readSql(sql);
+                DataSet ds = dm.getrow(sql);
+                if (ds.Tables.Count > 0)
+                    dt = ds.Tables[0];
             }
             catch (Exception ex)
             {
-                // Log or handle error
-                throw ex;
+                dt = null;
             }
             finally
             {
-                dMngr.connclose();
+                dm.connclose();
             }
             return dt;
         }
 
+        /// <summary>
+        /// Gets distinct bank list from GENPAY.BNKBRN.
+        /// </summary>
+        public DataTable GetBanks()
+        {
+            DataTable dt = new DataTable();
+            DataManager dm = new DataManager();
+            string sql = "SELECT DISTINCT BCODE AS BANK_CODE, BBNAM AS BANK_NAME FROM GENPAY.BNKBRN ORDER BY BBNAM";
+            try
+            {
+                dm.readSql(sql);
+                DataSet ds = dm.getrow(sql);
+                if (ds.Tables.Count > 0)
+                    dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            finally
+            {
+                dm.connclose();
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// Gets branches for a given bank code.
+        /// </summary>
+        public DataTable GetBranches(int bankCode)
+        {
+            DataTable dt = new DataTable();
+            DataManager dm = new DataManager();
+            string sql = "SELECT BRCODE AS BRANCH_CODE, BBRNCH AS BRANCH_NAME FROM GENPAY.BNKBRN WHERE BCODE = " + bankCode + " ORDER BY BBRNCH";
+            try
+            {
+                dm.readSql(sql);
+                DataSet ds = dm.getrow(sql);
+                if (ds.Tables.Count > 0)
+                    dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                dt = null;
+            }
+            finally
+            {
+                dm.connclose();
+            }
+            return dt;
+        }
     }
 }

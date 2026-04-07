@@ -2,6 +2,25 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
+        .style1 { width: 65%; }
+        .style23 { height: 22px; font-size: medium; width: 19px; }
+        .style3 { height: 22px; font-size: medium; }
+        .style27 { width: 19px; }
+        .style25 { text-align: left; width: 19px; }
+        .style6 { text-align: left; }
+        .style16 { width: 214px; }
+        .style10 { width: 240px; }
+        .style30 { color: #0000FF; }
+        .style5 { color: #0000FF; }
+        .style33 { width: 133px; text-align: left; }
+        .style26 { width: 19px; text-align: left; height: 17px; }
+        .style13 { width: 133px; text-align: left; height: 17px; }
+        .style29 { height: 2px; }
+        .auto-style1 { font-size: small; }
+        .auto-style2 { width: 19px; height: 49px; }
+        .auto-style3 { height: 49px; }
+        .auto-style4 { text-align: left; width: 19px; height: 25px; }
+        .auto-style5 { text-align: left; height: 25px; }
         .auto-style1 { width: 100%; }
         .auto-style2 { text-align: center; font-weight: 700; color: SteelBlue; }
         .edit-table { width: 80%; margin: 0 auto; border-collapse: collapse; }
@@ -50,10 +69,10 @@
             <td><asp:Label ID="lblPaymentTypeValue" runat="server"></asp:Label></td>
         </tr>
         <tr>
-            <td class="label">Payee Name:</td>
-            <td colspan="3">
-                <asp:Label ID="lblPayeeNameDisplay" runat="server" Font-Bold="false"></asp:Label>
-            </td>
+           <td class="label">Payee Name:</td>
+            <td><asp:Label ID="lblPayeeNameDisplay" runat="server"></asp:Label></td>
+           <td class="label">Vou No:</td>
+<td><asp:Label ID="lblVouNo" runat="server"></asp:Label></td>
         </tr>
         <tr>
             <td class="label">Bank:</td>
@@ -92,10 +111,11 @@
             </td>
         </tr>
         <tr>
+
             <td colspan="4" style="text-align: center">
-                <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button" OnClick="btnSave_Click" />
-                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="button" OnClick="btnCancel_Click" CausesValidation="False" />
-                <asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button" OnClick="btnPrint_Click" Visible="false" />
+                <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button button1" OnClick="btnSave_Click" />
+                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="button button1" OnClick="btnCancel_Click" CausesValidation="False" />
+               <%-- <asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />--%>
             </td>
         </tr>
     </table>

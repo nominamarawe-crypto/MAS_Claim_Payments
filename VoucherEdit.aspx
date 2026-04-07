@@ -48,7 +48,9 @@
             <td class="style25">&nbsp;</td>
             <td class="style6">&nbsp;</td>
             <td class="style16">
-                <asp:RegularExpressionValidator ID="regExpValNIC" runat="server" ControlToValidate="txtNIC" ErrorMessage="Invalid NIC No Format" ForeColor="Red" ValidationExpression="[0-9]{9}[V|v|X|x]|[A-Z][0-9]*|[1-2][0-9]{11}|0"></asp:RegularExpressionValidator>
+                <asp:RegularExpressionValidator ID="regExpValNIC" runat="server" ControlToValidate="txtNIC" 
+                    ErrorMessage="Invalid NIC Format (e.g., 123456789V or 200012345678)" ForeColor="Red" 
+                    ValidationExpression="^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -58,7 +60,7 @@
             <td class="auto-style2" style="text-align: center"></td>
             <td colspan="3" style="text-align: center" class="auto-style3">
                 <asp:Button ID="btnBack" runat="server" Text="Back to Voucher Creation" CausesValidation="False" CssClass="button button1" OnClick="btnBack_Click" />
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button button1" OnClick="btnSubmit_Click" Text="Edit" />
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button button1" OnClick="btnSubmit_Click" Text="Submit" />
                 <asp:Button ID="btnReset" runat="server" CausesValidation="False" CssClass="button button1" OnClick="btnReset_Click" Text="Reset" />
             </td>
         </tr>
@@ -68,24 +70,27 @@
                 <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
             </td>
         </tr>
+    </table>
 
-   
-        <asp:Panel ID="pnlGrid" runat="server" Visible="false">
+    <asp:Panel ID="pnlGrid" runat="server" Visible="false">
+        <table align="center" class="style1">
             <tr>
                 <td class="auto-style1">&nbsp;</td>
                 <td colspan="2">
                     <asp:GridView ID="gvClaims" runat="server" CssClass="grid" AutoGenerateColumns="False"
-                        OnSelectedIndexChanged="gvClaims_SelectedIndexChanged" DataKeyNames="CLAIM_NO">
+                        OnSelectedIndexChanged="gvClaims_SelectedIndexChanged" DataKeyNames="VOU_NO">
                         <Columns>
+                            <asp:BoundField DataField="VOU_NO" HeaderText="Voucher No" />
                             <asp:BoundField DataField="CLAIM_NO" HeaderText="Claim No" />
                             <asp:BoundField DataField="POL_NO" HeaderText="Policy No" />
-                            <asp:BoundField DataField="INSURED_NAME" HeaderText="Insured Name" />
+                              <asp:BoundField DataField="PAYEE_NAME" HeaderText="Payee Name" />
                             <asp:BoundField DataField="AMOUNT" HeaderText="Amount" DataFormatString="{0:N2}" />
-                            <asp:CommandField ShowSelectButton="True" SelectText="Edit" />
+                             <asp:BoundField DataField="DATE_OF_CLAIM" HeaderText="Date Of Claim" />
+                            <asp:CommandField ShowSelectButton="True" SelectText="Select" />
                         </Columns>
                     </asp:GridView>
                 </td>
             </tr>
-        </asp:Panel>
-    </table>
+        </table>
+    </asp:Panel>
 </asp:Content>

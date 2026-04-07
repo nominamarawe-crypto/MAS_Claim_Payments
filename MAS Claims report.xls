@@ -1,0 +1,11 @@
+<div>
+	<table class="auto-style8" cellspacing="0" rules="all" border="1" id="MainContent_GridView2" style="font-size:Small;height:78px;width:16px;border-collapse:collapse;">
+		<tr style="font-size:10pt;">
+			<th scope="col">&nbsp;</th><th scope="col">Policy No</th><th scope="col">Claim No</th><th scope="col">Company Name</th><th scope="col">EPF</th><th scope="col">Lifeassured Name</th><th scope="col">Claiment Name</th><th scope="col">NIC No</th><th scope="col">Relationship to life assured</th><th scope="col">Claim Amount</th><th scope="col">Payee Name</th><th scope="col">Account NO</th><th scope="col">Bank</th><th scope="col">Branch </th><th scope="col">Claim Status</th><th scope="col">Claim Date</th><th scope="col">Paid Date</th><th scope="col">Claim Type</th><th scope="col">Payment Type</th><th scope="col">Slip Reference No</th><th scope="col">Reference No as printed on the bank statement</th>
+		</tr><tr>
+			<td>1</td><td>GTLA/0444</td><td>0444/24/3/000001</td><td>ABC PVT LTD</td><td>11111</td><td>SLIC</td><td>SAMAN AMARASINGHE</td><td>701766554V</td><td>Child</td><td>100</td><td>SLIC</td><td>1484444444</td><td>COMMERCIAL BANK PLC</td><td>UNION PLACE</td><td>Paid</td><td>2024-04-10</td><td>2024-05-10</td><td>Disability</td><td>Normal</td><td>S904287</td><td>EPF11111SL0444WS904287</td>
+		</tr><tr>
+			<td>2</td><td>GTLA/0444</td><td>0444/26/3/000001</td><td>Siyapatha Finance</td><td>1271</td><td>Ramanayaka Appuhamilage Aravinda Chathuranga Ramanayaka</td><td>asdasd</td><td>960212266V</td><td>asdasd</td><td>2000</td><td>Aravinda Chathuranga Ramanayaka</td><td>123456</td><td>SAMPATH BANK PLC</td><td>ANURADHAPURA SUPER </td><td>Vou Authorized</td><td>2025-06-29</td><td>&nbsp;</td><td>Death</td><td>Normal</td><td>&nbsp;</td><td></td>
+		</tr>
+	</table>
+</div>
