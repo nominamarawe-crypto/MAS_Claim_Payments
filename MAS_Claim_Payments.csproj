@@ -103,6 +103,7 @@
     <Content Include="VoucherPrint.aspx" />
     <Content Include="VoucherReprint.aspx" />
     <Content Include="VoucherReprint2.aspx" />
+    <Content Include="VoucherReverse.aspx" />
     <Content Include="VoucherView.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -256,6 +257,13 @@
     </Compile>
     <Compile Include="VoucherReprint2.aspx.designer.cs">
       <DependentUpon>VoucherReprint2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VoucherReverse.aspx.cs">
+      <DependentUpon>VoucherReverse.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VoucherReverse.aspx.designer.cs">
+      <DependentUpon>VoucherReverse.aspx</DependentUpon>
     </Compile>
     <Compile Include="VoucherView.aspx.cs">
       <DependentUpon>VoucherView.aspx</DependentUpon>

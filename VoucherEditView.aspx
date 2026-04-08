@@ -114,7 +114,7 @@
 
             <td colspan="4" style="text-align: center">
                 <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button button1" OnClick="btnSave_Click" />
-                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="button button1" OnClick="btnCancel_Click" CausesValidation="False" />
+                <asp:Button ID="btnCancel" runat="server" Text="Back" CssClass="button button1" OnClick="btnCancel_Click" CausesValidation="False" />
                <%-- <asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />--%>
             </td>
         </tr>

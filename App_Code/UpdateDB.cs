@@ -120,6 +120,54 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
+        public string ReverseVou(string claimNo, int branchCod, string policyNo, string epf, string machineIp)
+        {
+            string retVal = "";
+            bool ok = false;
+            getDBDtObj = new GetDBData();
+            int curntVouSeqNo = getDBDtObj.getMaxVouSeq(branchCod);
+
+            string vouNo = branchCod.ToString().PadLeft(3, '0') + "/" + policyNo.Substring(5) + "/" + DateTime.Today.ToString("yyyyMMdd") + (curntVouSeqNo + 1).ToString().PadLeft(5, '0');
+
+            dMngrr = new DataManager();
+
+            try
+            {
+                dMngrr.begintransaction();
+
+                if (curntVouSeqNo == 0)
+                {
+                    string insertSeqNo = "insert into LCLM.VOUNO (VUBRNO, VUYEAR, VUTYPE, VOUNO1) values (" + branchCod + ", " + DateTime.Today.Year.ToString() + ", 'W', 1)";
+                    dMngrr.insertRecords(insertSeqNo);
+                }
+                else
+                {
+                    string updateSeqNo = "update LCLM.VOUNO set VOUNO1 = " + (curntVouSeqNo + 1).ToString() + " where VUBRNO = " + branchCod +
+                                        " and VUYEAR = " + DateTime.Today.Year.ToString() + " and VUTYPE = 'W' ";
+                    dMngrr.insertRecords(updateSeqNo);
+                }
+
+
+                string updateVouDetails = "update SLIC_CHP.VOU_DETAILS_MAS set VOU_NO = '" + vouNo + "', VOU_CREATED_BY = '" + epf + "', VOU_CREATED_DATE = sysdate, " +
+                                        " VOU_CREATED_IP = '" + machineIp + "', VOU_STATUS = 'Vou.Created' where CLAIM_NO = '" + claimNo + "'";
+                dMngrr.insertRecords(updateVouDetails);
+
+                dMngrr.commit();
+                ok = true;
+            }
+            catch (Exception ex)
+            {
+                dMngrr.rollback();
+                dMngrr.connClose();
+                throw ex;
+            }
+
+            if (ok) { retVal = vouNo; }
+
+            dMngrr.connClose();
+            return retVal;
+        }
+
         public int update_voucherPrint(string vouNo, string epf, string ip)
         {
             int retVal = 0;
@@ -218,7 +266,6 @@ namespace MAS_Claim_Payments.App_Code
 
                     brCode = int.Parse(vouNo.Substring(0, 3)).ToString();
                     totAmount = double.Parse(dtVouDetals.Rows[0][6].ToString());
-                    //totAmountStr = dsVouDetails.Tables[0].Rows[0]["VOU_AMOUNT"].ToString().PadLeft(21, '*');
                     totAmountStr = (double.Parse(dtVouDetals.Rows[0][6].ToString()).ToString("F")).PadLeft(21, '*');
                     accode = dtVouDetals.Rows[0][26].ToString();
                     vouDate = (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd");
@@ -493,7 +540,7 @@ namespace MAS_Claim_Payments.App_Code
                 }
 
                 string updateSql = string.Format(@"
-    UPDATE SLIC_CHP.VOU_DETAILS_MAS_HIST  
+    UPDATE SLIC_CHP.VOU_DETAILS_MAS  
     SET BANK_CODE = " + bankCode + @",
         BANK_NAME = '" + bankName.Replace("'", "''") + @"',
         BANK_BRANCH_CODE = " + branchCode + @",

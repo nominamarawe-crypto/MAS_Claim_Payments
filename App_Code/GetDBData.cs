@@ -548,6 +548,8 @@ namespace MAS_Claim_Payments.App_Code
             return dt;
         }
 
+
+
         /// <summary>
         /// Gets distinct bank list from GENPAY.BNKBRN.
         /// </summary>
