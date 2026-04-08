@@ -120,14 +120,18 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-        public string ReverseVou(string claimNo, int branchCod, string policyNo, string epf, string machineIp)
+        public string ReverseVou(string vouNo, int branchCod, string policyNo, string epf, string machineIp)
         {
             string retVal = "";
             bool ok = false;
             getDBDtObj = new GetDBData();
+
             int curntVouSeqNo = getDBDtObj.getMaxVouSeq(branchCod);
 
-            string vouNo = branchCod.ToString().PadLeft(3, '0') + "/" + policyNo.Substring(5) + "/" + DateTime.Today.ToString("yyyyMMdd") + (curntVouSeqNo + 1).ToString().PadLeft(5, '0');
+            string reverseVouNo = branchCod.ToString().PadLeft(3, '0') + "/" +
+                                  policyNo.Substring(5) + "/" +
+                                  DateTime.Today.ToString("yyyyMMdd") +
+                                  (curntVouSeqNo + 1).ToString().PadLeft(5, '0');
 
             dMngrr = new DataManager();
 
@@ -137,37 +141,49 @@ namespace MAS_Claim_Payments.App_Code
 
                 if (curntVouSeqNo == 0)
                 {
-                    string insertSeqNo = "insert into LCLM.VOUNO (VUBRNO, VUYEAR, VUTYPE, VOUNO1) values (" + branchCod + ", " + DateTime.Today.Year.ToString() + ", 'W', 1)";
+                    string insertSeqNo = "INSERT INTO LCLM.VOUNO (VUBRNO, VUYEAR, VUTYPE, VOUNO1) " +
+                                         "VALUES (" + branchCod + ", " + DateTime.Today.Year + ", 'R', 1)";
                     dMngrr.insertRecords(insertSeqNo);
                 }
                 else
                 {
-                    string updateSeqNo = "update LCLM.VOUNO set VOUNO1 = " + (curntVouSeqNo + 1).ToString() + " where VUBRNO = " + branchCod +
-                                        " and VUYEAR = " + DateTime.Today.Year.ToString() + " and VUTYPE = 'W' ";
+                    string updateSeqNo = "UPDATE LCLM.VOUNO SET VOUNO1 = " + (curntVouSeqNo + 1) +
+                                         " WHERE VUBRNO = " + branchCod +
+                                         " AND VUYEAR = " + DateTime.Today.Year +
+                                         " AND VUTYPE = 'R'";
                     dMngrr.insertRecords(updateSeqNo);
                 }
 
+                string updateVouDetails = @"
+            UPDATE SLIC_CHP.VOU_DETAILS_MAS 
+            SET 
+                VOU_NO = NULL,
+                VOU_CREATED_BY = NULL,
+                VOU_CREATED_DATE = NULL,
+                VOU_CREATED_IP = NULL,
+                VOU_STATUS = 'Vou.Reversed'
+            WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
-                string updateVouDetails = "update SLIC_CHP.VOU_DETAILS_MAS set VOU_NO = '" + vouNo + "', VOU_CREATED_BY = '" + epf + "', VOU_CREATED_DATE = sysdate, " +
-                                        " VOU_CREATED_IP = '" + machineIp + "', VOU_STATUS = 'Vou.Created' where CLAIM_NO = '" + claimNo + "'";
                 dMngrr.insertRecords(updateVouDetails);
 
                 dMngrr.commit();
                 ok = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 dMngrr.rollback();
                 dMngrr.connClose();
-                throw ex;
+                throw;
             }
 
-            if (ok) { retVal = vouNo; }
+            if (ok)
+            {
+                retVal = reverseVouNo;
+            }
 
             dMngrr.connClose();
             return retVal;
         }
-
         public int update_voucherPrint(string vouNo, string epf, string ip)
         {
             int retVal = 0;

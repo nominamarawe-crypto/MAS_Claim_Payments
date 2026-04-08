@@ -484,7 +484,8 @@ namespace MAS_Claim_Payments.App_Code
                                    VOU_PRINTED_IP,
                                    BANK_CODE, 
                                    BANK_BRANCH_CODE, 
-                                   ACC_CODE 
+                                   ACC_CODE ,
+                                   VOU_STATUS   
                             FROM SLIC_CHP.VOU_DETAILS_MAS 
                             WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
@@ -513,6 +514,51 @@ namespace MAS_Claim_Payments.App_Code
             }
             dm.connclose();
             return branchName;
+        }
+
+
+        /// <summary>
+        /// Gets all vouchers for a given NIC that are eligible for reversal (Authorized or Printed, not yet reversed).
+        /// </summary>
+        /// <summary>
+        /// Gets all vouchers for a given NIC that are eligible for reversal (Authorized or Printed, not yet reversed).
+        /// </summary>
+        public DataTable GetVouchersByNIC(string nic)
+        {
+            DataTable dt = new DataTable();
+            DataManager dm = new DataManager();
+            string sql = @"
+        SELECT 
+            VOU_NO, 
+            CLAIM_NO, 
+            POL_NO, 
+            AMOUNT, 
+            VOU_STATUS, 
+            PAYEE_NAME
+        FROM SLIC_CHP.VOU_DETAILS_MAS
+        WHERE NIC = '" + nic.Replace("'", "''") + @"'
+          AND VOU_STATUS IN ('Vou.Created', 'Vou.Printed','Vou.Edited')
+          AND VOU_NO IS NOT NULL
+        ORDER BY VOU_CREATED_DATE DESC";
+            try
+            {
+                dm.readSql(sql);
+                DataSet ds = dm.getrow(sql);
+                if (ds.Tables.Count > 0)
+                    dt = ds.Tables[0];
+                else
+                    dt = null;
+            }
+            catch (Exception ex)
+            {
+                
+                dt = null;
+            }
+            finally
+            {
+                dm.connclose();
+            }
+            return dt;
         }
         /// <summary>
         /// Retrieves all claims for a given NIC that are still editable (voucher not created, or created but not printed/authorized).
