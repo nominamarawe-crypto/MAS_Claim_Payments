@@ -66,7 +66,9 @@
             background-color: #008CBA;
         }
         .message-label {
-            color: red;
+            color: 
+                
+                ;
         }
         .details-panel {
             margin-top: 20px;

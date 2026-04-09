@@ -151,7 +151,7 @@ namespace MAS_Claim_Payments
             lblMessage.Text = "";
             lblSuccessMsg.Text = "";
 
-            // ✅ Session validation
+          
             string vouNo = Session["VOU_NO"]?.ToString();
             string editedBy = Session["EPFNum"]?.ToString();
 
@@ -161,7 +161,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // ✅ Dropdown validation
+         
             int bankCode, branchCode;
 
             if (!int.TryParse(ddlBank.SelectedValue, out bankCode) || bankCode <= 0)
@@ -176,12 +176,12 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // ✅ Input validation
+            
             string accountNo = txtAccountNo.Text.Trim();
             string contactNo = txtContactNo.Text.Trim();
             string email = txtEmail.Text.Trim();
 
-            // Account No validation
+
             if (string.IsNullOrEmpty(accountNo))
             {
                 lblMessage.Text = "Account number is required.";
@@ -194,7 +194,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // Contact No validation (optional but strict if entered)
+      
             if (!string.IsNullOrEmpty(contactNo) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(contactNo, @"^[0-9]{10}$"))
             {
@@ -202,7 +202,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // Email validation (optional)
+        
             if (!string.IsNullOrEmpty(email) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(email,
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
@@ -211,7 +211,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // ✅ Business validation (IMPORTANT)
+          
             FormatData fmt = new FormatData();
 
             if (!fmt.validateAccountNo(accountNo, bankCode, branchCode))
@@ -220,10 +220,10 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // ✅ IP Address
+         
             string editedIP = Request.ServerVariables["REMOTE_ADDR"];
 
-            // ✅ Update DB
+        
             UpdateDB updateDB = new UpdateDB();
             string message;
             bool updated = false;

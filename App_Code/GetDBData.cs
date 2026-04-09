@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.OracleClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace MAS_Claim_Payments.App_Code
 {
@@ -15,15 +16,24 @@ namespace MAS_Claim_Payments.App_Code
         {
             bool exists = false;
             dMngr = new DataManager();
-
-            string sql = "select * from SLIC_CHP.GROUP_MASTER where NIC = '" + nic + "'";
-
-            if (dMngr.existRecored(sql) != 0)
+            string normalisedNic = Regex.Replace(nic.Trim(), @"\D", "");
+            string sql = "SELECT COUNT(*) FROM SLIC_CHP.GROUP_MASTER WHERE REGEXP_REPLACE(NIC, '[^0-9]', '') = :NormalisedNIC";
+            try
             {
-                exists = true;
+                dMngr.readSql(sql);
+                dMngr.oraComm.Parameters.Clear();
+                dMngr.oraComm.Parameters.Add("NormalisedNIC", OracleType.VarChar).Value = normalisedNic;
+                object result = dMngr.oraComm.ExecuteScalar();
+                exists = Convert.ToInt32(result) > 0;
             }
-
-            dMngr.connClose();
+            catch (Exception)
+            {
+                exists = false;
+            }
+            finally
+            {
+                dMngr.connClose();
+            }
             return exists;
         }
 

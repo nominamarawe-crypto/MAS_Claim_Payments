@@ -8,7 +8,6 @@ namespace MAS_Claim_Payments
     {
         private GetDBData dbGet;
 
-       
         private string SelectedVouNo
         {
             get { return ViewState["SelectedVouNo"] as string; }
@@ -54,7 +53,7 @@ namespace MAS_Claim_Payments
 
             if (dt == null || dt.Rows.Count == 0)
             {
-                lblMessage.Text = "No eligible vouchers found for this NIC (only Authorized/Printed vouchers not yet reversed).";
+                lblMessage.Text = "No eligible vouchers found for this NIC (only Created/Printed/Edited vouchers not yet reversed).";
                 pnlVoucherGrid.Visible = false;
                 pnlVoucherDetails.Visible = false;
                 return;
@@ -73,7 +72,7 @@ namespace MAS_Claim_Payments
             pnlVoucherGrid.Visible = true;
             pnlVoucherDetails.Visible = false;
             lblMessage.Text = "";
-            SelectedVouNo = null; 
+            SelectedVouNo = null;
         }
 
         protected void gvVouchers_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,9 +118,9 @@ namespace MAS_Claim_Payments
                     lblMessage.Text = "This voucher has already been reversed.";
                     btnReverse.Enabled = false;
                 }
-                else if (status != "Vou.Created" && status != "Vou.Printed" && status != "Vou.Edited" )
+                else if (status != "Vou.Created" && status != "Vou.Printed" && status != "Vou.Edited")
                 {
-                    lblMessage.Text = "vouchers can be reversed.";
+                    lblMessage.Text = "Only vouchers with status 'Created', 'Printed', or 'Edited' can be reversed.";
                     btnReverse.Enabled = false;
                 }
                 else
@@ -163,22 +162,22 @@ namespace MAS_Claim_Payments
                 string machineIp = Request.ServerVariables["REMOTE_ADDR"];
 
                 UpdateDB updater = new UpdateDB();
-                string reverseVouNo = updater.ReverseVou(vouNo, branchCode, policyNo, epf, machineIp);
+                string reverseRef = updater.ReverseVou(vouNo, branchCode, policyNo, epf, machineIp);
 
-                if (!string.IsNullOrEmpty(reverseVouNo))
+                if (!string.IsNullOrEmpty(reverseRef))
                 {
-                    lblMessage.Text = $"Voucher reversed successfully. Reverse Voucher No: {reverseVouNo}";
+                    lblMessage.Text = $"Voucher reversed successfully. Reverse Reference: {reverseRef}";
                     lblStatus.Text = "Vou.Reversed";
                     btnReverse.Enabled = false;
-                 
+
+              
                     btnSearch_Click(sender, e);
-                   
                     SelectedVouNo = null;
                     pnlVoucherDetails.Visible = false;
                 }
                 else
                 {
-                    lblMessage.Text = "Reversal failed – no reverse voucher number generated.";
+                    lblMessage.Text = "Reversal failed – voucher may not be in a reversible state or already reversed.";
                 }
             }
             catch (Exception ex)

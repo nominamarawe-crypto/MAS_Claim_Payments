@@ -122,16 +122,33 @@ namespace MAS_Claim_Payments.App_Code
 
         public string ReverseVou(string vouNo, int branchCod, string policyNo, string epf, string machineIp)
         {
-            string retVal = "";
+            string reverseRef = "";
             bool ok = false;
             getDBDtObj = new GetDBData();
 
-            int curntVouSeqNo = getDBDtObj.getMaxVouSeq(branchCod);
+            string checkStatusSql = "SELECT VOU_STATUS FROM SLIC_CHP.VOU_DETAILS_MAS WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+            DataManager checkManager = new DataManager();
+            string currentStatus = "";
+            try
+            {
+                checkManager.readSql(checkStatusSql);
+                OracleDataReader reader = checkManager.oraComm.ExecuteReader();
+                if (reader.Read() && !reader.IsDBNull(0))
+                    currentStatus = reader.GetString(0);
+                reader.Close();
+                checkManager.connClose();
+            }
+            catch
+            {
+                checkManager.connClose();
+                return "";
+            }
 
-            string reverseVouNo = branchCod.ToString().PadLeft(3, '0') + "/" +
-                                  policyNo.Substring(5) + "/" +
-                                  DateTime.Today.ToString("yyyyMMdd") +
-                                  (curntVouSeqNo + 1).ToString().PadLeft(5, '0');
+            if (currentStatus != "Vou.Created" && currentStatus != "Vou.Printed" && currentStatus != "Vou.Edited")
+            {
+                
+                return "";
+            }
 
             dMngrr = new DataManager();
 
@@ -139,35 +156,40 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dMngrr.begintransaction();
 
-                if (curntVouSeqNo == 0)
+               
+                string insertHistorySql = @"
+                    INSERT INTO SLIC_CHP.VOU_DETAILS_MAS_HIST 
+                    SELECT * FROM SLIC_CHP.VOU_DETAILS_MAS 
+                    WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+                int histRows = dMngrr.insertRecords(insertHistorySql);
+                if (histRows == 0)
                 {
-                    string insertSeqNo = "INSERT INTO LCLM.VOUNO (VUBRNO, VUYEAR, VUTYPE, VOUNO1) " +
-                                         "VALUES (" + branchCod + ", " + DateTime.Today.Year + ", 'R', 1)";
-                    dMngrr.insertRecords(insertSeqNo);
-                }
-                else
-                {
-                    string updateSeqNo = "UPDATE LCLM.VOUNO SET VOUNO1 = " + (curntVouSeqNo + 1) +
-                                         " WHERE VUBRNO = " + branchCod +
-                                         " AND VUYEAR = " + DateTime.Today.Year +
-                                         " AND VUTYPE = 'R'";
-                    dMngrr.insertRecords(updateSeqNo);
+                    dMngrr.rollback();
+                    dMngrr.connClose();
+                    return "";
                 }
 
+           
                 string updateVouDetails = @"
-            UPDATE SLIC_CHP.VOU_DETAILS_MAS 
-            SET 
-                VOU_NO = NULL,
-                VOU_CREATED_BY = NULL,
-                VOU_CREATED_DATE = NULL,
-                VOU_CREATED_IP = NULL,
-                VOU_STATUS = 'Vou.Reversed'
-            WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+                    UPDATE SLIC_CHP.VOU_DETAILS_MAS 
+                    SET 
+                        VOU_NO = NULL,
+                        VOU_CREATED_BY = NULL,
+                        VOU_CREATED_DATE = NULL,
+                        VOU_CREATED_IP = NULL,
+                        VOU_STATUS = NULL,
+                        VOU_REVERSED_BY = '" + epf.Replace("'", "''") + @"',
+                        VOU_REVERSED_DATE = SYSDATE,
+                        VOU_REVERSED_IP = '" + machineIp.Replace("'", "''") + @"'
+                    WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
                 dMngrr.insertRecords(updateVouDetails);
 
                 dMngrr.commit();
                 ok = true;
+
+              
+                reverseRef = "REV-" + vouNo + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             }
             catch (Exception)
             {
@@ -176,13 +198,8 @@ namespace MAS_Claim_Payments.App_Code
                 throw;
             }
 
-            if (ok)
-            {
-                retVal = reverseVouNo;
-            }
-
             dMngrr.connClose();
-            return retVal;
+            return ok ? reverseRef : "";
         }
         public int update_voucherPrint(string vouNo, string epf, string ip)
         {
