@@ -418,7 +418,7 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-        public int uploadData(DataTable dt, string userId, out int sucsCount, out DataTable dtExistingRecords)
+     public int uploadData(DataTable dt, string userId, out int sucsCount, out DataTable dtExistingRecords)
         {
             int retVal = 0;
             sucsCount = 0;

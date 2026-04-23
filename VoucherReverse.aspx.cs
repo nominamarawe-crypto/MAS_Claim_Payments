@@ -118,9 +118,9 @@ namespace MAS_Claim_Payments
                     lblMessage.Text = "This voucher has already been reversed.";
                     btnReverse.Enabled = false;
                 }
-                else if (status != "Vou.Created" && status != "Vou.Printed" && status != "Vou.Edited")
+                else if (status != "Vou.Created" || status != "Vou.Printed" || status != "Vou.Edited")
                 {
-                    lblMessage.Text = "Only vouchers with status 'Created', 'Printed', or 'Edited' can be reversed.";
+                    lblMessage.Text = "Only vouchers with status 'Created' or 'Printed', or 'Edited' can be reversed.";
                     btnReverse.Enabled = false;
                 }
                 else
@@ -171,6 +171,17 @@ namespace MAS_Claim_Payments
                     btnReverse.Enabled = false;
 
               
+
+
+
+
+
+
+
+
+
+
+
                     btnSearch_Click(sender, e);
                     SelectedVouNo = null;
                     pnlVoucherDetails.Visible = false;
@@ -190,5 +201,7 @@ namespace MAS_Claim_Payments
         {
             Response.Redirect("VoucherReverse.aspx");
         }
+
+
     }
 }

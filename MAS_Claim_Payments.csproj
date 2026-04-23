@@ -70,6 +70,8 @@
     <Content Include="Images\icon.GIF" />
     <Content Include="NoAuthority.aspx" />
     <Content Include="ReportDetails.aspx" />
+    <Content Include="ReverseAuthorization.aspx" />
+    <Content Include="ReverseVoucherAuthorization.aspx" />
     <Content Include="SessionTrans.aspx" />
     <Content Include="Site1.Master" />
     <None Include="packages.config" />
@@ -180,6 +182,20 @@
     </Compile>
     <Compile Include="ReportDetails.aspx.designer.cs">
       <DependentUpon>ReportDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ReverseAuthorization.aspx.cs">
+      <DependentUpon>ReverseAuthorization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReverseAuthorization.aspx.designer.cs">
+      <DependentUpon>ReverseAuthorization.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ReverseVoucherAuthorization.aspx.cs">
+      <DependentUpon>ReverseVoucherAuthorization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReverseVoucherAuthorization.aspx.designer.cs">
+      <DependentUpon>ReverseVoucherAuthorization.aspx</DependentUpon>
     </Compile>
     <Compile Include="SessionTrans.aspx.cs">
       <DependentUpon>SessionTrans.aspx</DependentUpon>
