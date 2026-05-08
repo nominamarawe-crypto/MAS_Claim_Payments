@@ -32,7 +32,7 @@ namespace MAS_Claim_Payments.App_Code
         public bool IsUserAuthenticated(string pUserId, string pSystemCode, string pFunctionCode)
         {
             bool isUser = false;
-           OdbcConnection con = new OdbcConnection("DSN=BEELIFE;UID=INTERNET;PWD=INTERNET");
+            OdbcConnection con = new OdbcConnection("DSN=BEELIFE;UID=INTERNET;PWD=INTERNET");
             //OdbcConnection con = new OdbcConnection("DSN=BEEGEN;UID=INTERNET;PWD=INTERNET");
             //OdbcConnection con = new OdbcConnection("DSN=BEEGEN;UID=LPAY;PWD=LPAY");
 

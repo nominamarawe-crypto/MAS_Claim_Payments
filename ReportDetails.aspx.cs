@@ -217,7 +217,8 @@ namespace MAS_Claim_Payments
                     "null CHQNO,null CHQDATE ,DECODE(Payment_type, 'N', 'Normal', 'E', 'Ex-gratia') Payment_type," +
                     " Relashionship,claimant_name,Amount From SLIC_CHP.VOU_DETAILS_MAS A  Join slic_chp.group_Master C on A. NIC = C.NIC " +
                     "and(VOU_STATUS = 'Vou.Created' or VOU_STATUS = 'Vou.Printed' or vou_status is null) and to_char(DATE_OF_CLAIM,'YYYY-MM-DD')  BETWEEN '" + hdfFrm.Value + "'  AND  '" + hdfTo.Value + "' AND A.EPF = C.EPF) order by CLAIM_NO";
-                OracleCommand cmd = new OracleCommand(sql, con);
+                OracleCommand cmd = new 
+                    OracleCommand(sql, con);
                 {
                     OracleDataReader reader = cmd.ExecuteReader();
                     {

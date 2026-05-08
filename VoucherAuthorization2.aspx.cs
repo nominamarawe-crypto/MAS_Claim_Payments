@@ -25,7 +25,7 @@ namespace MAS_Claim_Payments
 
                     dbGtObj = new GetDBData();
                     frmtDtObj = new FormatData();
-                    
+
                     dtVouDetals = dbGtObj.getVouDetails(vouNo);
 
                     this.lblPolicyNo2.Text = dtVouDetals.Rows[0][0].ToString();
@@ -38,9 +38,9 @@ namespace MAS_Claim_Payments
                     this.lblBranch2.Text = dtVouDetals.Rows[0][4].ToString();
                     this.lblNICPassport2.Text = dtVouDetals.Rows[0][9].ToString();
                     this.lblPayeeName2.Text = dtVouDetals.Rows[0][7].ToString();
-                    this.lblMobileNo2.Text = dtVouDetals.Rows[0][10].ToString();                   
+                    this.lblMobileNo2.Text = dtVouDetals.Rows[0][10].ToString();
                     this.lblClmDate.Text = dtVouDetals.Rows[0][1].ToString();
-                    this.lblNetAmtPay2.Text = (double.Parse(dtVouDetals.Rows[0][6].ToString())).ToString("N2");             
+                    this.lblNetAmtPay2.Text = (double.Parse(dtVouDetals.Rows[0][6].ToString())).ToString("N2");
                     this.lblAccountNo2.Text = dtVouDetals.Rows[0][5].ToString();
                 }
                 else
@@ -59,6 +59,9 @@ namespace MAS_Claim_Payments
 
             retVal = updtDBObj.AuthorizeVoucher(this.lblVoucherNo2.Text, Session["EPFNum"].ToString().ToString(), Context.Request.ServerVariables["REMOTE_ADDR"]);
 
+
+
+
             if (retVal == 1)
             {
                 this.lblMessage2.Text = "Voucher authorized successfully.";
@@ -73,6 +76,7 @@ namespace MAS_Claim_Payments
         protected void btnBack_Click(object sender, EventArgs e)
         {
             Response.Redirect("VoucherAuthorization.aspx")
-;        }
+;
+        }
     }
 }

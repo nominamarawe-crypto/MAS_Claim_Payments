@@ -118,7 +118,7 @@ namespace MAS_Claim_Payments
                     lblMessage.Text = "This voucher has already been reversed.";
                     btnReverse.Enabled = false;
                 }
-                else if (status != "Vou.Created" || status != "Vou.Printed" || status != "Vou.Edited")
+                else if (status != "Vou.Created" && status != "Vou.Printed" && status != "Vou.Edited")
                 {
                     lblMessage.Text = "Only vouchers with status 'Created' or 'Printed', or 'Edited' can be reversed.";
                     btnReverse.Enabled = false;
@@ -169,18 +169,6 @@ namespace MAS_Claim_Payments
                     lblMessage.Text = $"Voucher reversed successfully. Reverse Reference: {reverseRef}";
                     lblStatus.Text = "Vou.Reversed";
                     btnReverse.Enabled = false;
-
-              
-
-
-
-
-
-
-
-
-
-
 
                     btnSearch_Click(sender, e);
                     SelectedVouNo = null;

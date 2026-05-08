@@ -1,9 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.OracleClient;
 using System.Data;
+using System.Globalization;
 
 namespace MAS_Claim_Payments.App_Code
 {
@@ -146,7 +148,7 @@ namespace MAS_Claim_Payments.App_Code
 
             if (currentStatus != "Vou.Created" && currentStatus != "Vou.Printed" && currentStatus != "Vou.Edited")
             {
-                
+
                 return "";
             }
 
@@ -156,7 +158,7 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dMngrr.begintransaction();
 
-               
+
                 string insertHistorySql = @"
                     INSERT INTO SLIC_CHP.VOU_DETAILS_MAS_HIST 
                     SELECT * FROM SLIC_CHP.VOU_DETAILS_MAS 
@@ -169,7 +171,7 @@ namespace MAS_Claim_Payments.App_Code
                     return "";
                 }
 
-           
+
                 string updateVouDetails = @"
                     UPDATE SLIC_CHP.VOU_DETAILS_MAS 
                     SET 
@@ -188,7 +190,7 @@ namespace MAS_Claim_Payments.App_Code
                 dMngrr.commit();
                 ok = true;
 
-              
+
                 reverseRef = "REV-" + vouNo + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             }
             catch (Exception)
@@ -299,6 +301,7 @@ namespace MAS_Claim_Payments.App_Code
 
                     brCode = int.Parse(vouNo.Substring(0, 3)).ToString();
                     totAmount = double.Parse(dtVouDetals.Rows[0][6].ToString());
+                    //totAmountStr = dsVouDetails.Tables[0].Rows[0]["VOU_AMOUNT"].ToString().PadLeft(21, '*');
                     totAmountStr = (double.Parse(dtVouDetals.Rows[0][6].ToString()).ToString("F")).PadLeft(21, '*');
                     accode = dtVouDetals.Rows[0][26].ToString();
                     vouDate = (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd");
@@ -309,7 +312,10 @@ namespace MAS_Claim_Payments.App_Code
                     recipient = dtVouDetals.Rows[0][7].ToString();
                     grossAmount = totAmount;
                     paymntMode = "D";
-                    vouPrintDate = (Convert.ToDateTime(dtVouDetals.Rows[0][22].ToString())).ToString("yyyyMMdd");
+                    vouPrintDate =  (Convert.ToDateTime(dtVouDetals.Rows[0][22].ToString())).ToString("yyyyMMdd"); 
+                    
+
+
                     vouPrintEPF = dtVouDetals.Rows[0][21].ToString();
                     billDate = dtVouDetals.Rows[0][1].ToString();
 
@@ -418,7 +424,110 @@ namespace MAS_Claim_Payments.App_Code
             return retVal;
         }
 
-     public int uploadData(DataTable dt, string userId, out int sucsCount, out DataTable dtExistingRecords)
+
+        public int ReverseAuthorizeVoucher(string vouNo, string epf, string machineIp, string reversedBy)
+        {
+            int retVal = 0;
+
+            GetDBData dbGtObj = new GetDBData();
+            DataManager dManager = new DataManager();
+
+            DataTable dtVouDetails = dbGtObj.getVoucherForReverse(vouNo);
+
+            if (dtVouDetails.Rows.Count > 0)
+            {
+                string currentStatus = dtVouDetails.Rows[0]["VOU_STATUS"].ToString();
+
+            
+                if (currentStatus == "Vou Authorized")
+                {
+                    try
+                    {
+                        dManager.begintransaction();
+
+                        #region Update VOU_DETAILS_MAS - Reverse Authorization
+
+                        string updateVouDetails = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
+                                            SET VOU_AUTHORIZED_BY = NULL, 
+                                                VOU_AUTHORIZED_DATE = NULL, 
+                                                VOU_AUTHORIZED_IP = NULL, 
+                                                VOU_STATUS = 'Vou.Printed',
+                                                VOU_AUTH_REVS_BY = '" + reversedBy + @"',
+                                                VOU_AUTH_REVS_DATE = sysdate,
+                                                VOU_AUTH_REVS_IP = '" + machineIp + @"'
+                                            WHERE VOU_NO = '" + vouNo + @"'
+                                              AND VOU_AUTHORIZED_BY IS NOT NULL
+                                              AND VOU_AUTH_REVS_BY IS NULL";
+
+                        dManager.insertRecords(updateVouDetails);
+
+                        #endregion
+
+                        #region Delete/Update from CASHBOOK.TEMP_CB
+
+                        string deleteFromCashBook = @"DELETE FROM CASHBOOK.TEMP_CB 
+                                              WHERE VOUNO = '" + vouNo + @"'
+                                              AND STATUS = 'Vou Authorized'";
+                        dManager.insertRecords(deleteFromCashBook);
+
+                        #endregion
+
+                        #region Delete from CASHBOOK.TEMP_DETL
+
+                        string deleteFromTempDetl = @"DELETE FROM CASHBOOK.TEMP_DETL 
+                                              WHERE VOUNO = '" + vouNo + @"'";
+                        dManager.insertRecords(deleteFromTempDetl);
+
+                        #endregion
+
+                        #region Update LPHS.VOUBANKDET - Mark as reversed
+
+                        string updateVouBankDet = @"UPDATE LPHS.VOUBANKDET 
+                                            SET REVERSED_BY = '" + epf + @"',
+                                                REVERSED_DATE = sysdate,
+                                                REVERSED_IP = '" + machineIp + @"'
+                                            WHERE VOUCHERNO = '" + vouNo + @"'";
+                        dManager.insertRecords(updateVouBankDet);
+
+                        #endregion
+
+                        #region Update LCLM.CLAIM_SLIP_DETAILS - Mark as reversed
+
+                        string updateSlipDetails = @"UPDATE LCLM.CLAIM_SLIP_DETAILS 
+                                             SET REVERSED_BY = '" + epf + @"',
+                                                 REVERSED_DATE = sysdate,
+                                                 REVERSED_IP = '" + machineIp + @"',
+                                                 STATUS = 'REVERSED'
+                                             WHERE VOUCHER_NO = '" + vouNo + @"'";
+                        dManager.insertRecords(updateSlipDetails);
+
+                        #endregion
+
+                        retVal = 1;
+                        dManager.commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        dManager.rollback();
+                        dManager.connclose();
+                        retVal = 0;
+                       
+                    }
+                }
+                else
+                {
+                    retVal = 0;
+                }
+            }
+            else
+            {
+                retVal = 0;
+            }
+
+            dManager.connclose();
+            return retVal;
+        }
+        public int uploadData(DataTable dt, string userId, out int sucsCount, out DataTable dtExistingRecords)
         {
             int retVal = 0;
             sucsCount = 0;
@@ -431,6 +540,10 @@ namespace MAS_Claim_Payments.App_Code
             dtExRecords.Columns.Add("GENDER", typeof(string));
             dtExRecords.Columns.Add("DATE_OF_BIRTH", typeof(string));
             dtExRecords.Columns.Add("CONTACT_NO", typeof(string));
+
+
+
+
             dtExRecords.Columns.Add("EMAIL", typeof(string));
 
             DataManager dmngr = new DataManager();

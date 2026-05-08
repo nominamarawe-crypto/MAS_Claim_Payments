@@ -188,7 +188,7 @@
                         <asp:MenuItem NavigateUrl="~/VoucherReverse.aspx" Text="Voucher Reverse" 
                             Value="Voucher Reverse">                            
                         </asp:MenuItem>
-                        <asp:MenuItem NavigateUrl="~/ReverseAuthorization.aspx" Text="Reverse Authorization" 
+                        <asp:MenuItem NavigateUrl="~/ReverseVoucherAuthorization.aspx" Text="Reverse Authorization" 
                             Value="Reverse Authorization">                            
                         </asp:MenuItem>
                         

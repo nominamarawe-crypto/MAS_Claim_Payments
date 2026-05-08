@@ -380,6 +380,8 @@ namespace MAS_Claim_Payments.App_Code
             dm.connclose();
             return dt;
         }
+        
+       
 
         public DataTable getClaimDetails(string claimNo)
         {
@@ -488,9 +490,10 @@ namespace MAS_Claim_Payments.App_Code
                                    VOU_CREATED_BY, 
                                    VOU_CREATED_DATE, 
                                    VOU_CREATED_IP, 
+                                   CLAIM_NO,
                                    INSURED_NAME, 
                                    VOU_PRINTED_BY, 
-                                   VOU_PRINTED_DATE, 
+                                   VOU_PRINTED_DATE,
                                    VOU_PRINTED_IP,
                                    BANK_CODE, 
                                    BANK_BRANCH_CODE, 
@@ -507,6 +510,52 @@ namespace MAS_Claim_Payments.App_Code
             return dtClmDetails;
         }
 
+
+        public DataTable getVoucherForReverse(string vouNo)
+        {
+            DataTable dtVouDetails = new DataTable();
+            DataManager dm = new DataManager();
+
+            string query = @"SELECT POL_NO, 
+                            TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
+                            CLAIM_TYPE, 
+                            BANK_NAME, 
+                            BANK_BRANCH_NAME, 
+                            ACC_NO, 
+                            AMOUNT,
+                            PAYEE_NAME, 
+                            PAYMENT_TYPE, 
+                            NIC, 
+                            CONTACT_NO, 
+                            EMAIL_ADD, 
+                            INSURED_NAME, 
+                            EPF, 
+                            ACC_CODE, 
+                            CLAIM_NO,
+                            VOU_CREATED_BY, 
+                            VOU_CREATED_DATE, 
+                            VOU_CREATED_IP, 
+                            CLAIM_NO,
+                            INSURED_NAME, 
+                            VOU_PRINTED_BY, 
+                            VOU_PRINTED_DATE,
+                            VOU_PRINTED_IP,
+                            BANK_CODE, 
+                            BANK_BRANCH_CODE, 
+                            ACC_CODE,
+                            VOU_STATUS,
+                            VOU_AUTHORIZED_BY,
+                            VOU_AUTHORIZED_DATE
+                     FROM SLIC_CHP.VOU_DETAILS_MAS 
+                     WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+
+            dm.readSql(query);
+            DataSet ds = dm.getrow(query);
+            if (ds.Tables.Count > 0)
+                dtVouDetails = ds.Tables[0];
+            dm.connclose();
+            return dtVouDetails;
+        }
         public string get_branchName(int branchCode)
         {
             DataManager dm = new DataManager();
@@ -570,9 +619,7 @@ namespace MAS_Claim_Payments.App_Code
             }
             return dt;
         }
-        /// <summary>
-        /// Retrieves all claims for a given NIC that are still editable (voucher not created, or created but not printed/authorized).
-        /// </summary>
+      
         public DataTable GetEditableClaimsByNIC(string nic)
         {
             DataTable dt = new DataTable();
