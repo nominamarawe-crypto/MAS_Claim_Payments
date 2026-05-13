@@ -429,19 +429,18 @@ namespace MAS_Claim_Payments.App_Code
         {
             int retVal = 0;
 
-            string deleteFromCashBook = "";
-            string updateVouDetails = "";
-            string deleteFromVouBankDet = "";
-            string deleteFromTempDetl = "";
-            string deleteFromSlipDetails = "";
-
-            string status = "Vou.Printed";
+            string deleteFromCashBook = "", getAcNo = "", updateVouDetails = "", deleteFromVouBankDet = "", deleteFromTempDetl = "", deleteFromSlipDetails = "";
+            string vPayMode = "", bankName = "", branchName = "";
+            string acNo = "", payMode = "", hName = "", nic_ppt = "", hName1 = "", totAmountStr = "", accode = "", vouAddEPF = "", billDate = "";
+            string vouType = "", status = "", insuredName = "", adrs1 = "", adrs2 = "", adrs3 = "", adrs4 = "", recipient = "", paymntMode = "", brCode = "";
+            double totAmount = 0, grossAmount = 0;
+            string nic = "", passportNo = "", phoneNo = "", vouDate = "", vouPrintDate = "", vouPrintEPF = "";
 
             GetDBData dbGtObj = new GetDBData();
             FormatData frmtDt = new FormatData();
 
             DataManager dManager = new DataManager();
-            DataTable dtVouDetals = dbGtObj.getVouDetails(vouNo);
+            DataTable dtVouDetals = dbGtObj.getVoucherForReverse(vouNo);
 
             if (dtVouDetals.Rows.Count > 0)
             {
@@ -449,21 +448,62 @@ namespace MAS_Claim_Payments.App_Code
                 {
                     dManager.begintransaction();
 
-                    #region UPDATE SLIC_CHP.VOU_DETAILS_MAS
+                    #region CASHBOOK.TEMP_CB 
 
-                    updateVouDetails =
-                        "UPDATE SLIC_CHP.VOU_DETAILS_MAS " +
-                        "SET VOU_AUTHORIZED_BY = NULL, " +
-                        "    VOU_AUTHORIZED_DATE = NULL, " +
-                        "    VOU_AUTHORIZED_IP = NULL, " +
-                        "    VOU_STATUS = '" + status + "', " +
-                        "    VOU_AUTH_REVS_BY = '" + epf + "', " +
-                        "    VOU_AUTH_REVS_DATE = SYSDATE, " +
-                        "    VOU_AUTH_REVS_IP = '" + machineIp + "' " +
-                        "WHERE VOU_NO = '" + vouNo + "' " +
-                        "AND VOU_AUTHORIZED_BY IS NOT NULL";
+                    payMode = "D";
+                    vPayMode = "SLIP";
 
-                    dManager.insertRecords(updateVouDetails);
+                    getAcNo = "select ACC_NO from SLIFCLM.LIFE_ACC_DETAILS where PAY_MODE = '" + vPayMode + "'";
+                    if (dManager.existRecored(getAcNo) > 0)
+                    {
+                        dManager.readSql(getAcNo);
+                        OracleDataReader odr = dManager.oraComm.ExecuteReader();
+                        while (odr.Read())
+                        {
+                            if (!odr.IsDBNull(0)) { acNo = odr.GetString(0); }
+                        }
+                        odr.Close();
+                    }
+
+                    bankName = dtVouDetals.Rows[0][3].ToString();
+                    branchName = dtVouDetals.Rows[0][4].ToString();
+
+
+                    hName = bankName + " " + branchName + " A/C-NO " + dtVouDetals.Rows[0][5].ToString();
+                    if (hName.Length > 71)
+                    {
+                        hName = frmtDt.format_hname(hName);
+                    }
+
+                    hName1 = dtVouDetals.Rows[0][7].ToString();
+                    if (hName1.Length > 65)
+                    {
+                        hName1 = hName1.Substring(0, 65);
+                    }
+
+                    hName = hName.ToUpper();
+
+                    nic = dtVouDetals.Rows[0][9].ToString();
+
+                    brCode = int.Parse(vouNo.Substring(0, 3)).ToString();
+                    totAmount = double.Parse(dtVouDetals.Rows[0][6].ToString());
+                    //totAmountStr = dsVouDetails.Tables[0].Rows[0]["VOU_AMOUNT"].ToString().PadLeft(21, '*');
+                    totAmountStr = (double.Parse(dtVouDetals.Rows[0][6].ToString()).ToString("F")).PadLeft(21, '*');
+                    accode = dtVouDetals.Rows[0][26].ToString();
+                    vouDate = (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd");
+                    vouAddEPF = dtVouDetals.Rows[0][16].ToString();
+                    vouType = "MAS";
+                    status = "Vou Printed";
+                    insuredName = dtVouDetals.Rows[0][20].ToString();
+                    recipient = dtVouDetals.Rows[0][7].ToString();
+                    grossAmount = totAmount;
+                    paymntMode = "D";
+                    vouPrintDate = (Convert.ToDateTime(dtVouDetals.Rows[0][22].ToString())).ToString("yyyyMMdd");
+
+
+
+                    vouPrintEPF = dtVouDetals.Rows[0][21].ToString();
+                    billDate = dtVouDetals.Rows[0][1].ToString();
 
                     #endregion
 
@@ -473,8 +513,24 @@ namespace MAS_Claim_Payments.App_Code
                         "DELETE FROM CASHBOOK.TEMP_CB " +
                         "WHERE VOUNO = '" + vouNo + "'";
 
-                    dManager.insertRecords(deleteFromCashBook);
+                    dManager.DeleteRecords(deleteFromCashBook);
 
+                    #endregion
+                    #region UPDATE SLIC_CHP.VOU_DETAILS_MAS
+
+                    updateVouDetails =
+                        "UPDATE SLIC_CHP.VOU_DETAILS_MAS " +
+                        "SET VOU_AUTHORIZED_BY = NULL, " +
+                        "    VOU_AUTHORIZED_DATE = NULL, " +
+                        "    VOU_AUTHORIZED_IP = NULL, " +
+                        "    VOU_STATUS = '" + status + "', " +
+                        "    VOU_AUTH_REVS_BY = '" + epf + "', " +
+                        "    VOU_AUTH_REVS_DATE = SYSDATE " +
+                        //"    VOU_AUTH_REVS_IP = '" + machineIp + "' " +
+                        "WHERE VOU_NO = '" + vouNo + "' " +
+                        "AND VOU_AUTHORIZED_BY IS NOT NULL";
+
+                    dManager.DeleteRecords(updateVouDetails);
                     #endregion
 
                     #region DELETE FROM CASHBOOK.TEMP_DETL
@@ -483,7 +539,7 @@ namespace MAS_Claim_Payments.App_Code
                         "DELETE FROM CASHBOOK.TEMP_DETL " +
                         "WHERE VOUNO = '" + vouNo + "'";
 
-                    dManager.insertRecords(deleteFromTempDetl);
+                    dManager.DeleteRecords(deleteFromTempDetl);
 
                     #endregion
 
@@ -493,7 +549,7 @@ namespace MAS_Claim_Payments.App_Code
                         "DELETE FROM LPHS.VOUBANKDET " +
                         "WHERE VOUCHERNO = '" + vouNo + "'";
 
-                    dManager.insertRecords(deleteFromVouBankDet);
+                    dManager.DeleteRecords(deleteFromVouBankDet);
 
                     #endregion
 
@@ -503,7 +559,7 @@ namespace MAS_Claim_Payments.App_Code
                         "DELETE FROM LCLM.CLAIM_SLIP_DETAILS " +
                         "WHERE VOUCHER_NO = '" + vouNo + "'";
 
-                    dManager.insertRecords(deleteFromSlipDetails);
+                    dManager.DeleteRecords(deleteFromSlipDetails);
 
                     #endregion
 

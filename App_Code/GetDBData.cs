@@ -544,7 +544,9 @@ namespace MAS_Claim_Payments.App_Code
                             BANK_BRANCH_CODE, 
                             ACC_CODE,
                             VOU_STATUS,
-                           FROM SLIC_CHP.VOU_DETAILS_MAS 
+                            VOU_AUTHORIZED_BY,
+                            VOU_AUTHORIZED_DATE
+                     FROM SLIC_CHP.VOU_DETAILS_MAS 
                      WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
             dm.readSql(query);
