@@ -41,6 +41,14 @@
             margin-bottom: 15px;
             border-radius: 4px;
         }
+        .auto-style7 {
+            width: 237px;
+            height: 22px;
+        }
+        .auto-style8 {
+            width: 557px;
+            height: 22px;
+        }
     </style>
 </asp:Content>
 
@@ -56,9 +64,7 @@
         <tr>
             <td style="text-align: center" class="style16">&nbsp;</td>
             <td style="text-align: center">
-                <div class="warning-box">
-                    <strong>Warning:</strong> This action will reverse an authorized voucher. This operation cannot be undone easily.
-                </div>
+                
                 <table class="auto-style3">
                     <tr>
                         <td class="auto-style6">
@@ -180,7 +186,7 @@
                                         <strong>VOUCHER STATUS</strong>
                                     </td>
                                     <td class="auto-style2" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C0C0C0">
-                                        <asp:Label ID="lblVouStatus" runat="server" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                        <asp:Label ID="lblVouStatus" runat="server" Font-Bold="True"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="background-color: #FFCCCC">
@@ -192,10 +198,10 @@
                                     </td>
                                 </tr>
                                 <tr style="background-color: #FFCCCC">
-                                    <td class="auto-style4" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">
+                                    <td class="auto-style7" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">
                                         <strong>AUTHORIZED DATE</strong>
                                     </td>
-                                    <td class="auto-style2" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C0C0C0">
+                                    <td class="auto-style8" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #C0C0C0">
                                         <asp:Label ID="lblAuthorizedDate" runat="server" Font-Bold="True"></asp:Label>
                                     </td>
                                 </tr>
@@ -212,7 +218,7 @@
         <tr>
             <td style="text-align: center" class="style16">&nbsp;</td>
             <td style="text-align: center">
-                <asp:Button ID="btnReverse" class="button1" runat="server" OnClick="btnReverse_Click" Text="Reverse Authorization" ForeColor="White" BackColor="#CC0000" OnClientClick="return confirm('Are you sure you want to REVERSE this voucher authorization? This action cannot be undone.');" />
+                <asp:Button ID="btnReverse" class="button1" runat="server" OnClick="btnReverse_Click" Text="Reverse Authorization" OnClientClick="return confirm('Are you sure you want to REVERSE this voucher authorization? This action cannot be undone.');" />
                 <asp:Button ID="btnBack" class="button1" runat="server" CausesValidation="False" OnClick="btnBack_Click" Text="Back" />
             </td>
             <td style="text-align: center" class="auto-style1">&nbsp;</td>

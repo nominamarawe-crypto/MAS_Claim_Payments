@@ -425,97 +425,100 @@ namespace MAS_Claim_Payments.App_Code
         }
 
 
-        public int ReverseAuthorizeVoucher(string vouNo, string epf, string machineIp, string reversedBy)
+        public int ReverseVoucherAuthorization(string vouNo, string epf, string machineIp)
         {
             int retVal = 0;
 
+            string deleteFromCashBook = "";
+            string updateVouDetails = "";
+            string deleteFromVouBankDet = "";
+            string deleteFromTempDetl = "";
+            string deleteFromSlipDetails = "";
+
+            string status = "Vou.Printed";
+
             GetDBData dbGtObj = new GetDBData();
+            FormatData frmtDt = new FormatData();
+
             DataManager dManager = new DataManager();
+            DataTable dtVouDetals = dbGtObj.getVouDetails(vouNo);
 
-            DataTable dtVouDetails = dbGtObj.getVoucherForReverse(vouNo);
-
-            if (dtVouDetails.Rows.Count > 0)
+            if (dtVouDetals.Rows.Count > 0)
             {
-                string currentStatus = dtVouDetails.Rows[0]["VOU_STATUS"].ToString();
-
-            
-                if (currentStatus == "Vou Authorized")
+                try
                 {
-                    try
-                    {
-                        dManager.begintransaction();
+                    dManager.begintransaction();
 
-                        #region Update VOU_DETAILS_MAS - Reverse Authorization
+                    #region UPDATE SLIC_CHP.VOU_DETAILS_MAS
 
-                        string updateVouDetails = @"UPDATE SLIC_CHP.VOU_DETAILS_MAS 
-                                            SET VOU_AUTHORIZED_BY = NULL, 
-                                                VOU_AUTHORIZED_DATE = NULL, 
-                                                VOU_AUTHORIZED_IP = NULL, 
-                                                VOU_STATUS = 'Vou.Printed',
-                                                VOU_AUTH_REVS_BY = '" + reversedBy + @"',
-                                                VOU_AUTH_REVS_DATE = sysdate,
-                                                VOU_AUTH_REVS_IP = '" + machineIp + @"'
-                                            WHERE VOU_NO = '" + vouNo + @"'
-                                              AND VOU_AUTHORIZED_BY IS NOT NULL
-                                              AND VOU_AUTH_REVS_BY IS NULL";
+                    updateVouDetails =
+                        "UPDATE SLIC_CHP.VOU_DETAILS_MAS " +
+                        "SET VOU_AUTHORIZED_BY = NULL, " +
+                        "    VOU_AUTHORIZED_DATE = NULL, " +
+                        "    VOU_AUTHORIZED_IP = NULL, " +
+                        "    VOU_STATUS = '" + status + "', " +
+                        "    VOU_AUTH_REVS_BY = '" + epf + "', " +
+                        "    VOU_AUTH_REVS_DATE = SYSDATE, " +
+                        "    VOU_AUTH_REVS_IP = '" + machineIp + "' " +
+                        "WHERE VOU_NO = '" + vouNo + "' " +
+                        "AND VOU_AUTHORIZED_BY IS NOT NULL";
 
-                        dManager.insertRecords(updateVouDetails);
+                    dManager.insertRecords(updateVouDetails);
 
-                        #endregion
+                    #endregion
 
-                        #region Delete/Update from CASHBOOK.TEMP_CB
+                    #region DELETE FROM CASHBOOK.TEMP_CB
 
-                        string deleteFromCashBook = @"DELETE FROM CASHBOOK.TEMP_CB 
-                                              WHERE VOUNO = '" + vouNo + @"'
-                                              AND STATUS = 'Vou Authorized'";
-                        dManager.insertRecords(deleteFromCashBook);
+                    deleteFromCashBook =
+                        "DELETE FROM CASHBOOK.TEMP_CB " +
+                        "WHERE VOUNO = '" + vouNo + "'";
 
-                        #endregion
+                    dManager.insertRecords(deleteFromCashBook);
 
-                        #region Delete from CASHBOOK.TEMP_DETL
+                    #endregion
 
-                        string deleteFromTempDetl = @"DELETE FROM CASHBOOK.TEMP_DETL 
-                                              WHERE VOUNO = '" + vouNo + @"'";
-                        dManager.insertRecords(deleteFromTempDetl);
+                    #region DELETE FROM CASHBOOK.TEMP_DETL
 
-                        #endregion
+                    deleteFromTempDetl =
+                        "DELETE FROM CASHBOOK.TEMP_DETL " +
+                        "WHERE VOUNO = '" + vouNo + "'";
 
-                        #region Update LPHS.VOUBANKDET - Mark as reversed
+                    dManager.insertRecords(deleteFromTempDetl);
 
-                        string updateVouBankDet = @"UPDATE LPHS.VOUBANKDET 
-                                            SET REVERSED_BY = '" + epf + @"',
-                                                REVERSED_DATE = sysdate,
-                                                REVERSED_IP = '" + machineIp + @"'
-                                            WHERE VOUCHERNO = '" + vouNo + @"'";
-                        dManager.insertRecords(updateVouBankDet);
+                    #endregion
 
-                        #endregion
+                    #region DELETE FROM LPHS.VOUBANKDET
 
-                        #region Update LCLM.CLAIM_SLIP_DETAILS - Mark as reversed
+                    deleteFromVouBankDet =
+                        "DELETE FROM LPHS.VOUBANKDET " +
+                        "WHERE VOUCHERNO = '" + vouNo + "'";
 
-                        string updateSlipDetails = @"UPDATE LCLM.CLAIM_SLIP_DETAILS 
-                                             SET REVERSED_BY = '" + epf + @"',
-                                                 REVERSED_DATE = sysdate,
-                                                 REVERSED_IP = '" + machineIp + @"',
-                                                 STATUS = 'REVERSED'
-                                             WHERE VOUCHER_NO = '" + vouNo + @"'";
-                        dManager.insertRecords(updateSlipDetails);
+                    dManager.insertRecords(deleteFromVouBankDet);
 
-                        #endregion
+                    #endregion
 
-                        retVal = 1;
-                        dManager.commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        dManager.rollback();
-                        dManager.connclose();
-                        retVal = 0;
-                       
-                    }
+                    #region DELETE FROM LCLM.CLAIM_SLIP_DETAILS
+
+                    deleteFromSlipDetails =
+                        "DELETE FROM LCLM.CLAIM_SLIP_DETAILS " +
+                        "WHERE VOUCHER_NO = '" + vouNo + "'";
+
+                    dManager.insertRecords(deleteFromSlipDetails);
+
+                    #endregion
+
+                    retVal = 1;
+
+                    dManager.commit();
                 }
-                else
+                catch (Exception ex)
                 {
+                    dManager.rollback();
+                    dManager.connclose();
+
+                    // Optional: Log Error
+                    // Logger.Write(ex.Message);
+
                     retVal = 0;
                 }
             }
@@ -525,6 +528,7 @@ namespace MAS_Claim_Payments.App_Code
             }
 
             dManager.connclose();
+
             return retVal;
         }
         public int uploadData(DataTable dt, string userId, out int sucsCount, out DataTable dtExistingRecords)

@@ -81,11 +81,11 @@ namespace MAS_Claim_Payments
 
             UpdateDB updtDBObj = new UpdateDB();
 
-            retVal = updtDBObj.ReverseAuthorizeVoucher(
+            retVal = updtDBObj.ReverseVoucherAuthorization(
                 this.lblVoucherNo2.Text,
                 Session["EPFNum"].ToString(),
-                Context.Request.ServerVariables["REMOTE_ADDR"],
-                Session["UserId"] != null ? Session["UserId"].ToString() : Session["EPFNum"].ToString()
+                Context.Request.ServerVariables["REMOTE_ADDR"]
+                
             );
 
             if (retVal == 1)
