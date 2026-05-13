@@ -526,7 +526,6 @@ namespace MAS_Claim_Payments.App_Code
                         "    VOU_STATUS = '" + status + "', " +
                         "    VOU_AUTH_REVS_BY = '" + epf + "', " +
                         "    VOU_AUTH_REVS_DATE = SYSDATE " +
-                        //"    VOU_AUTH_REVS_IP = '" + machineIp + "' " +
                         "WHERE VOU_NO = '" + vouNo + "' " +
                         "AND VOU_AUTHORIZED_BY IS NOT NULL";
 
