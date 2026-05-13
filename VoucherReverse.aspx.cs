@@ -53,7 +53,6 @@ namespace MAS_Claim_Payments
 
             if (dt == null || dt.Rows.Count == 0)
             {
-                lblMessage.Text = "No eligible vouchers found for this NIC (only Created/Printed/Edited vouchers not yet reversed).";
                 pnlVoucherGrid.Visible = false;
                 pnlVoucherDetails.Visible = false;
                 return;
