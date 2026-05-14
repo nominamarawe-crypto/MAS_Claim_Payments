@@ -181,7 +181,7 @@
                                     </td>
                                 </tr>
                                 
-                                <tr style="background-color: #FFCCCC">
+                                <tr>
                                     <td class="auto-style4" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">
                                         <strong>VOUCHER STATUS</strong>
                                     </td>
@@ -189,7 +189,7 @@
                                         <asp:Label ID="lblVouStatus" runat="server" Font-Bold="True"></asp:Label>
                                     </td>
                                 </tr>
-                                <tr style="background-color: #FFCCCC">
+                                <tr>
                                     <td class="auto-style4" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">
                                         <strong>AUTHORIZED BY</strong>
                                     </td>
@@ -197,7 +197,7 @@
                                         <asp:Label ID="lblAuthorizedBy" runat="server" Font-Bold="True"></asp:Label>
                                     </td>
                                 </tr>
-                                <tr style="background-color: #FFCCCC">
+                                <tr>
                                     <td class="auto-style7" style="border-right-style: solid; border-bottom-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-right-color: #C0C0C0; border-bottom-color: #C0C0C0;">
                                         <strong>AUTHORIZED DATE</strong>
                                     </td>
