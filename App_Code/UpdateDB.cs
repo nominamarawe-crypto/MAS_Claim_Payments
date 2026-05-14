@@ -493,7 +493,7 @@ namespace MAS_Claim_Payments.App_Code
                     vouDate = (Convert.ToDateTime(dtVouDetals.Rows[0][17].ToString())).ToString("yyyyMMdd");
                     vouAddEPF = dtVouDetals.Rows[0][16].ToString();
                     vouType = "MAS";
-                    status = "Vou Printed";
+                    status = "Vou.Printed";
                     insuredName = dtVouDetals.Rows[0][20].ToString();
                     recipient = dtVouDetals.Rows[0][7].ToString();
                     grossAmount = totAmount;
