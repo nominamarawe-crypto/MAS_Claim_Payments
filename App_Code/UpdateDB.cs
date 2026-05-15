@@ -429,7 +429,7 @@ namespace MAS_Claim_Payments.App_Code
         {
             int retVal = 0;
 
-            string deleteFromCashBook = "", getAcNo = "", updateVouDetails = "", deleteFromVouBankDet = "", deleteFromTempDetl = "", deleteFromSlipDetails = "";
+            string deleteFromCashBook = "", getAcNo = "", updateVouDetails = "", deleteFromVouBankDet = "", deleteFromTempDetl = "", deleteFromSlipDetails = "", insertIntoHist = "";
             string vPayMode = "", bankName = "", branchName = "";
             string acNo = "", payMode = "", hName = "", nic_ppt = "", hName1 = "", totAmountStr = "", accode = "", vouAddEPF = "", billDate = "";
             string vouType = "", status = "", insuredName = "", adrs1 = "", adrs2 = "", adrs3 = "", adrs4 = "", recipient = "", paymntMode = "", brCode = "";
@@ -516,6 +516,7 @@ namespace MAS_Claim_Payments.App_Code
                     dManager.DeleteRecords(deleteFromCashBook);
 
                     #endregion
+                   
                     #region UPDATE SLIC_CHP.VOU_DETAILS_MAS
 
                     updateVouDetails =
@@ -530,6 +531,16 @@ namespace MAS_Claim_Payments.App_Code
                         "AND VOU_AUTHORIZED_BY IS NOT NULL";
 
                     dManager.DeleteRecords(updateVouDetails);
+                    #endregion
+
+                    #region UPDATE SLIC_CHP.VOU_DETAILS_MAS_HIST
+                    insertIntoHist = "INSERT INTO SLIC_CHP.VOU_DETAILS_MAS_HIST " +
+                         "SELECT * FROM SLIC_CHP.VOU_DETAILS_MAS " +
+                         "WHERE VOU_NO = '" + vouNo +
+                         "' AND VOU_AUTHORIZED_BY IS NULL " +
+                         "AND VOU_AUTHORIZED_DATE IS NULL";
+
+                    dManager.insertRecords(insertIntoHist);
                     #endregion
 
                     #region DELETE FROM CASHBOOK.TEMP_DETL

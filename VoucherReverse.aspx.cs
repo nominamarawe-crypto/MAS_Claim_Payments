@@ -34,14 +34,18 @@ namespace MAS_Claim_Payments
         private bool ValidateDataTableColumns(DataTable dt, string[] requiredColumns)
         {
             foreach (string col in requiredColumns)
+            {
                 if (!dt.Columns.Contains(col))
                     return false;
+            }
+
             return true;
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string nic = txtNIC.Text.Trim();
+
             if (string.IsNullOrEmpty(nic))
             {
                 lblMessage.Text = "Please enter an NIC number.";
@@ -53,30 +57,43 @@ namespace MAS_Claim_Payments
 
             if (dt == null || dt.Rows.Count == 0)
             {
+                lblMessage.Text = "No vouchers found.";
                 pnlVoucherGrid.Visible = false;
                 pnlVoucherDetails.Visible = false;
                 return;
             }
 
-            string[] required = { "VOU_NO", "CLAIM_NO", "POL_NO", "AMOUNT", "VOU_STATUS", "PAYEE_NAME" };
+            string[] required =
+            {
+                "VOU_NO",
+                "CLAIM_NO",
+                "POL_NO",
+                "AMOUNT",
+                "VOU_STATUS",
+                "PAYEE_NAME"
+            };
+
             if (!ValidateDataTableColumns(dt, required))
             {
-                lblMessage.Text = "Data error: missing columns. Please contact support.";
+                lblMessage.Text = "Data error: missing columns.";
                 pnlVoucherGrid.Visible = false;
                 return;
             }
 
             gvVouchers.DataSource = dt;
             gvVouchers.DataBind();
+
             pnlVoucherGrid.Visible = true;
             pnlVoucherDetails.Visible = false;
+
             lblMessage.Text = "";
             SelectedVouNo = null;
         }
 
         protected void gvVouchers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string vouNo = gvVouchers.SelectedDataKey?.Value?.ToString();
+            string vouNo = gvVouchers.SelectedDataKey.Value.ToString();
+
             if (string.IsNullOrEmpty(vouNo))
             {
                 lblMessage.Text = "Could not retrieve selected voucher number.";
@@ -84,7 +101,9 @@ namespace MAS_Claim_Payments
             }
 
             SelectedVouNo = vouNo;
+
             LoadVoucherDetails(vouNo);
+
             pnlVoucherDetails.Visible = true;
         }
 
@@ -93,8 +112,10 @@ namespace MAS_Claim_Payments
             try
             {
                 dbGet = new GetDBData();
+
                 DataTable dt = dbGet.getVouDetails(vouNo);
-                if (dt.Rows.Count == 0)
+
+                if (dt == null || dt.Rows.Count == 0)
                 {
                     lblMessage.Text = "Voucher details not found.";
                     btnReverse.Enabled = false;
@@ -102,24 +123,39 @@ namespace MAS_Claim_Payments
                 }
 
                 DataRow row = dt.Rows[0];
+
                 lblVouNum.Text = vouNo;
                 lblClaimNo.Text = row["CLAIM_NO"].ToString();
                 lblPolicyNo.Text = row["POL_NO"].ToString();
                 lblInsuredName.Text = row["INSURED_NAME"].ToString();
-                lblNetAmount.Text = Convert.ToDouble(row["AMOUNT"]).ToString("N2");
+
+                double amount = 0;
+
+                double.TryParse(row["AMOUNT"].ToString(), out amount);
+
+                lblNetAmount.Text = amount.ToString("N2");
+
                 lblPayeeName.Text = row["PAYEE_NAME"].ToString();
 
-                string status = dt.Columns.Contains("VOU_STATUS") ? row["VOU_STATUS"]?.ToString() : null;
-                lblStatus.Text = status ?? "Unknown";
+                string status = "";
+
+                if (dt.Columns.Contains("VOU_STATUS"))
+                {
+                    status = row["VOU_STATUS"].ToString();
+                }
+
+                lblStatus.Text = status;
 
                 if (status == "Vou.Reversed")
                 {
                     lblMessage.Text = "This voucher has already been reversed.";
                     btnReverse.Enabled = false;
                 }
-                else if (status != "Vou.Created" && status != "Vou.Printed" && status != "Vou.Edited")
+                else if (status != "Vou.Created" &&
+                         status != "Vou.Printed" &&
+                         status != "Vou.Edited")
                 {
-                    lblMessage.Text = "Only vouchers with status 'Created' or 'Printed', or 'Edited' can be reversed.";
+                    lblMessage.Text = "Only Created, Printed or Edited vouchers can be reversed.";
                     btnReverse.Enabled = false;
                 }
                 else
@@ -130,7 +166,7 @@ namespace MAS_Claim_Payments
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "Error loading details: " + ex.Message;
+                lblMessage.Text = "Error loading details : " + ex.Message;
                 btnReverse.Enabled = false;
             }
         }
@@ -138,49 +174,67 @@ namespace MAS_Claim_Payments
         protected void btnReverse_Click(object sender, EventArgs e)
         {
             string vouNo = SelectedVouNo;
+
             if (string.IsNullOrEmpty(vouNo))
             {
-                lblMessage.Text = "No voucher selected. Please select a voucher from the list.";
+                lblMessage.Text = "Please select a voucher.";
                 return;
             }
 
             try
             {
                 dbGet = new GetDBData();
+
                 DataTable dt = dbGet.getVouDetails(vouNo);
-                if (dt.Rows.Count == 0)
+
+                if (dt == null || dt.Rows.Count == 0)
                 {
-                    lblMessage.Text = "Cannot reverse – voucher details missing.";
+                    lblMessage.Text = "Voucher details not found.";
                     return;
                 }
 
                 DataRow row = dt.Rows[0];
+
                 string policyNo = row["POL_NO"].ToString();
+
                 int branchCode = Convert.ToInt32(Session["brcode"]);
+
                 string epf = Session["EPFNum"].ToString();
+
                 string machineIp = Request.ServerVariables["REMOTE_ADDR"];
 
                 UpdateDB updater = new UpdateDB();
-                string reverseRef = updater.ReverseVou(vouNo, branchCode, policyNo, epf, machineIp);
+
+                string reverseRef = updater.ReverseVou(
+                    vouNo,
+                    branchCode,
+                    policyNo,
+                    epf,
+                    machineIp
+                );
 
                 if (!string.IsNullOrEmpty(reverseRef))
                 {
-                    lblMessage.Text = $"Voucher reversed successfully. Reverse Reference: {reverseRef}";
+                    lblMessage.Text = "Voucher reversed successfully. Reference : " + reverseRef;
+
                     lblStatus.Text = "Vou.Reversed";
+
                     btnReverse.Enabled = false;
 
                     btnSearch_Click(sender, e);
+
                     SelectedVouNo = null;
+
                     pnlVoucherDetails.Visible = false;
                 }
                 else
                 {
-                    lblMessage.Text = "Reversal failed – voucher may not be in a reversible state or already reversed.";
+                    lblMessage.Text = "Voucher reversal failed.";
                 }
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "Error during reversal: " + ex.Message;
+                lblMessage.Text = "Error during reversal : " + ex.Message;
             }
         }
 
@@ -189,6 +243,22 @@ namespace MAS_Claim_Payments
             Response.Redirect("VoucherReverse.aspx");
         }
 
+        protected void btnBackMain_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("VoucherCreation.aspx");
+        }
 
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            txtNIC.Text = "";
+
+            lblMessage.Text = "";
+
+            pnlVoucherGrid.Visible = false;
+
+            pnlVoucherDetails.Visible = false;
+
+            SelectedVouNo = null;
+        }
     }
 }
