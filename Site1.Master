@@ -171,11 +171,6 @@
                         <asp:MenuItem NavigateUrl="~/VoucherAuthorization.aspx" Text="Voucher Authorization" 
                             Value="Voucher Authorization">                            
                         </asp:MenuItem>
-                         <asp:MenuItem Text="Reports" Value="Reports">
-                            <asp:MenuItem NavigateUrl="ClaimReport.aspx" 
-                                Text="Claims Report" Value="Claims Report" >
-                            </asp:MenuItem>
-                        </asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/UploadData.aspx" Text="Upload Data" 
                             Value="Upload Data">                            
                         </asp:MenuItem>
@@ -191,7 +186,11 @@
                         <asp:MenuItem NavigateUrl="~/ReverseVoucherAuthorization.aspx" Text="Reverse Authorization" 
                             Value="Reverse Authorization">                            
                         </asp:MenuItem>
-                        
+                         <asp:MenuItem Text="Reports" Value="Reports">
+                            <asp:MenuItem NavigateUrl="ClaimReport.aspx" 
+                                Text="Claims Report" Value="Claims Report" >
+                            </asp:MenuItem>
+                        </asp:MenuItem>
                     </Items>
                 </asp:Menu>
             </div>

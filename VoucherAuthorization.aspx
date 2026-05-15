@@ -90,7 +90,7 @@
         
         <tr>
             <td class="style26">&nbsp;</td>
-            <td class="style13">NIC Number</td>
+            <td class="style13">Enter NIC</td>
             <td class="style30" style="text-align: left">:<asp:TextBox ID="tbxNic" runat="server" MaxLength="12" Width="150px"></asp:TextBox>
                 <span class="style30">
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbxNic" ErrorMessage="*" ForeColor="Red"></asp:RequiredFieldValidator>

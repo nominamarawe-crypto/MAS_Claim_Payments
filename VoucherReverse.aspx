@@ -42,7 +42,7 @@
             <td class="style26">&nbsp;</td>
 
             <td class="style13">
-                NIC Number
+                Enter NIC 
             </td>
 
             <td class="style30" style="text-align: left">

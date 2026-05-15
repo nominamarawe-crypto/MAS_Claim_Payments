@@ -35,7 +35,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // Validate NIC format (matches regex in aspx)
+           
             if (!System.Text.RegularExpressions.Regex.IsMatch(nic, @"^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
             {
                 lblMessage.Text = "Invalid NIC format. Use 9 digits + V/X or 12 digits.";
@@ -50,7 +50,7 @@ namespace MAS_Claim_Payments
             }
             else
             {
-                // Display the grid with all matching claims
+              
                 gvClaims.DataSource = dtClaims;
                 gvClaims.DataBind();
                 pnlGrid.Visible = true;
@@ -68,7 +68,6 @@ namespace MAS_Claim_Payments
 
         protected void gvClaims_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Redirect to the edit view page with selected voucher number
             string VOUNo = gvClaims.SelectedDataKey.Value.ToString();
             Response.Redirect("VoucherEditView.aspx?VOU_NO=" + VOUNo);
         }

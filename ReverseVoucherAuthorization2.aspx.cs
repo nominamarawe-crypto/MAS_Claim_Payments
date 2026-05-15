@@ -25,9 +25,9 @@ namespace MAS_Claim_Payments
                     frmtDtObj = new FormatData();
 
                     dtVouDetals = dbGtObj.getVoucherForReverse(vouNo);
-                    this.lblPolicyNo2.Text = dtVouDetals.Rows[0][0].ToString();
+                this.lblPolicyNo2.Text = dtVouDetals.Rows[0][0].ToString();
                 this.lblInsuredName2.Text = dtVouDetals.Rows[0][12].ToString();
-                this.lblClaimNo2.Text = dtVouDetals.Rows[0][19].ToString();
+                this.lblClaimNo2.Text = dtVouDetals.Rows[0][19].ToString(); 
                 this.lblVoucherNo2.Text = vouNo;
 
                 this.lblNetAmtPay2.Text = (double.Parse(dtVouDetals.Rows[0][6].ToString())).ToString("N2");
