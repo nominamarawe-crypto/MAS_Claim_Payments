@@ -603,17 +603,14 @@ namespace MAS_Claim_Payments.App_Code
             sucsCount = 0;
 
             DataTable dtExRecords = new DataTable();
-            dtExRecords.Columns.Add("SBU", typeof(string));
+            dtExRecords.Columns.Add("SBU", typeof(string)); 
+            dtExRecords.Columns.Add("EMP_ID_NUM", typeof(string));
             dtExRecords.Columns.Add("EPF", typeof(string));
             dtExRecords.Columns.Add("MEMBER_NAME", typeof(string));
             dtExRecords.Columns.Add("NIC", typeof(string));
             dtExRecords.Columns.Add("GENDER", typeof(string));
             dtExRecords.Columns.Add("DATE_OF_BIRTH", typeof(string));
             dtExRecords.Columns.Add("CONTACT_NO", typeof(string));
-
-
-
-
             dtExRecords.Columns.Add("EMAIL", typeof(string));
 
             DataManager dmngr = new DataManager();
@@ -697,7 +694,7 @@ namespace MAS_Claim_Payments.App_Code
                         }
                         else
                         {
-                            string insertRecord = "insert into slic_chp.group_master (SBU, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" +
+                            string insertRecord = "insert into slic_chp.group_master (SBU, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL,EMP_ID_NUM) values ('" +
                                                     dt.Rows[i].ItemArray[0].ToString().ToString() + "','" + dt.Rows[i].ItemArray[1].ToString() + "','" +
                                                     dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" +
                                                     dt.Rows[i].ItemArray[4].ToString() + "','" + dateToSave + "','" +

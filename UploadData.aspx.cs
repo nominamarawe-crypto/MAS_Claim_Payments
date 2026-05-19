@@ -86,6 +86,7 @@ namespace MAS_Claim_Payments
                         DataTable dt = new DataTable();
                        
                         dt.Columns.Add("SBU", typeof(string));
+                        dt.Columns.Add("EMP_ID_NUM", typeof(string));
                         dt.Columns.Add("EPF", typeof(string));
                         dt.Columns.Add("MEMBER_NAME", typeof(string));
                         dt.Columns.Add("NIC", typeof(string));
@@ -98,13 +99,14 @@ namespace MAS_Claim_Payments
                         {
                             DataRow row = dt.NewRow();
                             row["SBU"] = dataTable.Rows[i].ItemArray[0].ToString();
-                            row["EPF"] = dataTable.Rows[i].ItemArray[1].ToString();
-                            row["MEMBER_NAME"] = dataTable.Rows[i].ItemArray[2].ToString();
-                            row["NIC"] = dataTable.Rows[i].ItemArray[3].ToString();
-                            row["GENDER"] = dataTable.Rows[i].ItemArray[4].ToString();
-                            row["DATE_OF_BIRTH"] = dataTable.Rows[i].ItemArray[5].ToString();
-                            row["CONTACT_NO"] = dataTable.Rows[i].ItemArray[6].ToString();
-                            row["EMAIL"] = dataTable.Rows[i].ItemArray[7].ToString();
+                            row["EMP_ID_NUM"] = dataTable.Rows[i].ItemArray[1].ToString();
+                            row["EPF"] = dataTable.Rows[i].ItemArray[2].ToString();
+                            row["MEMBER_NAME"] = dataTable.Rows[i].ItemArray[3].ToString();
+                            row["NIC"] = dataTable.Rows[i].ItemArray[4].ToString();
+                            row["GENDER"] = dataTable.Rows[i].ItemArray[5].ToString();
+                            row["DATE_OF_BIRTH"] = dataTable.Rows[i].ItemArray[6].ToString();
+                            row["CONTACT_NO"] = dataTable.Rows[i].ItemArray[7].ToString();
+                            row["EMAIL"] = dataTable.Rows[i].ItemArray[8].ToString();
 
                             dt.Rows.Add(row);
                         }
@@ -148,7 +150,8 @@ namespace MAS_Claim_Payments
 
                         DataTable dt = new DataTable();
 
-                        dt.Columns.Add("SBU", typeof(string));
+                        dt.Columns.Add("SBU", typeof(string)); 
+                        dt.Columns.Add("EMP_ID_NUM", typeof(string));
                         dt.Columns.Add("EPF", typeof(string));
                         dt.Columns.Add("MEMBER_NAME", typeof(string));
                         dt.Columns.Add("NIC", typeof(string));
@@ -160,14 +163,15 @@ namespace MAS_Claim_Payments
                         for (int i = 0; i < mydt.Rows.Count; i++)
                         {
                             DataRow row = dt.NewRow();
-                            row["SBU"] = mydt.Rows[i].ItemArray[0].ToString();
-                            row["EPF"] = mydt.Rows[i].ItemArray[1].ToString();
-                            row["MEMBER_NAME"] = mydt.Rows[i].ItemArray[2].ToString();
-                            row["NIC"] = mydt.Rows[i].ItemArray[3].ToString();
-                            row["GENDER"] = mydt.Rows[i].ItemArray[4].ToString();
-                            row["DATE_OF_BIRTH"] = mydt.Rows[i].ItemArray[5].ToString();
-                            row["CONTACT_NO"] = mydt.Rows[i].ItemArray[6].ToString();
-                            row["EMAIL"] = mydt.Rows[i].ItemArray[7].ToString();
+                            row["SBU"] = mydt.Rows[i].ItemArray[0].ToString(); 
+                            row["EMP_ID_NUM"] = mydt.Rows[i].ItemArray[1].ToString();
+                            row["EPF"] = mydt.Rows[i].ItemArray[2].ToString();
+                            row["MEMBER_NAME"] = mydt.Rows[i].ItemArray[3].ToString();
+                            row["NIC"] = mydt.Rows[i].ItemArray[4].ToString();
+                            row["GENDER"] = mydt.Rows[i].ItemArray[5].ToString();
+                            row["DATE_OF_BIRTH"] = mydt.Rows[i].ItemArray[6].ToString();
+                            row["CONTACT_NO"] = mydt.Rows[i].ItemArray[7].ToString();
+                            row["EMAIL"] = mydt.Rows[i].ItemArray[8].ToString();
                             dt.Rows.Add(row);
                         }
 
@@ -196,6 +200,7 @@ namespace MAS_Claim_Payments
             DataTable dtExistingRecords = new DataTable();
 
             dtExistingRecords.Columns.Add("SBU", typeof(string));
+            dtExistingRecords.Columns.Add("EMP_ID_NUM", typeof(string));
             dtExistingRecords.Columns.Add("EPF", typeof(string));
             dtExistingRecords.Columns.Add("MEMBER_NAME", typeof(string));
             dtExistingRecords.Columns.Add("NIC", typeof(string));
@@ -205,6 +210,8 @@ namespace MAS_Claim_Payments
             dtExistingRecords.Columns.Add("EMAIL", typeof(double));
 
             int uploadedRecs = 0;
+
+
 
             if (this.gv1.Rows.Count > 0)
             {
