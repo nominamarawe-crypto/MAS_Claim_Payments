@@ -623,63 +623,67 @@ namespace MAS_Claim_Payments.App_Code
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        int dateStringLength = dt.Rows[i].ItemArray[5].ToString().Length;
-                        int firstStrokeIndex = dt.Rows[i].ItemArray[5].ToString().IndexOf("/");
-                        string monthString = dt.Rows[i].ItemArray[5].ToString().Substring(0, firstStrokeIndex);
+                        int dateStringLength = dt.Rows[i].ItemArray[6].ToString().Length;
+                        int firstStrokeIndex = dt.Rows[i].ItemArray[6].ToString().IndexOf("/");
+                        string monthString = dt.Rows[i].ItemArray[6].ToString().Substring(0, firstStrokeIndex);
 
-                        int secondStrokeIndex = dt.Rows[i].ItemArray[5].ToString().Substring(firstStrokeIndex + 1).IndexOf("/");
-                        string dayString = dt.Rows[i].ItemArray[5].ToString().Substring(firstStrokeIndex + 1).Substring(0, secondStrokeIndex);
+                        int secondStrokeIndex = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).IndexOf("/");
+                        string dayString = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).Substring(0, secondStrokeIndex);
 
-                        string yearString = dt.Rows[i].ItemArray[5].ToString().Substring(firstStrokeIndex + 1).Substring(secondStrokeIndex + 1, 4);
+                        string yearString = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).Substring(secondStrokeIndex + 1, 4);
 
                         string dateToSave = yearString + "-" + monthString.PadLeft(2, '0') + "-" + dayString.PadLeft(2, '0');
 
                         string checkExists = "";
 
-                        if (dt.Rows[i].ItemArray[6].ToString() != "" && dt.Rows[i].ItemArray[7].ToString() != "")
+                        if (dt.Rows[i].ItemArray[7].ToString() != "" && dt.Rows[i].ItemArray[8].ToString() != "")
                         {
                             checkExists = "select * from slic_chp.group_master " +
                                 " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EPF = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" + 
+                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
+                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
+                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
                                 " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[6].ToString() + "'" +
-                                " and EMAIL = '" + dt.Rows[i].ItemArray[7].ToString() + "'";
+                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[7].ToString() + "'" +
+                                " and EMAIL = '" + dt.Rows[i].ItemArray[8].ToString() + "'";
                         }
-                        else if (dt.Rows[i].ItemArray[6].ToString() == "" && dt.Rows[i].ItemArray[7].ToString() != "")
+                        else if (dt.Rows[i].ItemArray[7].ToString() == "" && dt.Rows[i].ItemArray[8].ToString() != "")
                         {
                             checkExists = "select * from slic_chp.group_master " +
                                 " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EPF = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
+                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
+                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
+                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
                                 " and DATE_OF_BIRTH = '" + dateToSave + "'" +
                                 " and CONTACT_NO  is null " +
-                                " and EMAIL = '" + dt.Rows[i].ItemArray[7].ToString() + "'";
+                                " and EMAIL = '" + dt.Rows[i].ItemArray[8].ToString() + "'";
                         }
-                        else if (dt.Rows[i].ItemArray[6].ToString() != "" && dt.Rows[i].ItemArray[7].ToString() == "")
+                        else if (dt.Rows[i].ItemArray[7].ToString() != "" && dt.Rows[i].ItemArray[8].ToString() == "")
                         {
                             checkExists = "select * from slic_chp.group_master " +
                                 " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EPF = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
+                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
+                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
+                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
                                 " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[6].ToString() + "'" +
+                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[7].ToString() + "'" +
                                 " and EMAIL is null ";
                         }
                         else
                         {
                             checkExists = "select * from slic_chp.group_master " +
                                 " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EPF = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
+                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
+                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
+                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
+                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
                                 " and DATE_OF_BIRTH = '" + dateToSave + "'" +
                                 " and CONTACT_NO is null " +
                                 " and EMAIL is null ";
@@ -688,17 +692,18 @@ namespace MAS_Claim_Payments.App_Code
 
                         if (dmngr.existRecored(checkExists) > 0)
                         {
-                            dtExRecords.Rows.Add(dt.Rows[i].ItemArray[0].ToString().ToString(), dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
-                                    dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(), dateToSave, dt.Rows[i].ItemArray[6].ToString(),
-                                    dt.Rows[i].ItemArray[7].ToString());
+                            dtExRecords.Rows.Add(dt.Rows[i].ItemArray[0].ToString().ToString(), dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),dt.Rows[i].ItemArray[3].ToString(),
+                                    dt.Rows[i].ItemArray[4].ToString(), dt.Rows[i].ItemArray[5].ToString(), dateToSave, dt.Rows[i].ItemArray[7].ToString(),
+                                    dt.Rows[i].ItemArray[8].ToString());
                         }
                         else
                         {
-                            string insertRecord = "insert into slic_chp.group_master (SBU, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL,EMP_ID_NUM) values ('" +
+                            string insertRecord = "insert into slic_chp.group_master (SBU, EMP_ID_NUM,EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" +
                                                     dt.Rows[i].ItemArray[0].ToString().ToString() + "','" + dt.Rows[i].ItemArray[1].ToString() + "','" +
-                                                    dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" +
-                                                    dt.Rows[i].ItemArray[4].ToString() + "','" + dateToSave + "','" +
-                                                    dt.Rows[i].ItemArray[6].ToString() + "','" + dt.Rows[i].ItemArray[7].ToString() + "')";
+                                                    dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" + 
+                                                    dt.Rows[i].ItemArray[4].ToString() + "','" + dt.Rows[i].ItemArray[5].ToString() + "','" +
+                                                    dateToSave + "','" +
+                                                    dt.Rows[i].ItemArray[7].ToString() + "','" + dt.Rows[i].ItemArray[8].ToString() + "')";
                             dmngr.insertRecords(insertRecord);
 
                             sucsCount = sucsCount + 1;

@@ -139,7 +139,7 @@
         </tr>
 
     <%
-        if (this.gv1.Rows.Count > 0)
+        if (gv1.Rows.Count > 0)
         {
         %>
         

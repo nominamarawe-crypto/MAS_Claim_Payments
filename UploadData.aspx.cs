@@ -212,8 +212,7 @@ namespace MAS_Claim_Payments
             int uploadedRecs = 0;
 
 
-
-            if (this.gv1.Rows.Count > 0)
+            if (gv1.Rows.Count > 0)
             {
                 UpdateDB updtDBObj = new UpdateDB();
                 //int successCount = opdClmObj.insertOPDClaims((DataTable)Session["mySessionTable"], Session["UserId"].ToString(), out uploadedRecs, out dtExistingRecords);
