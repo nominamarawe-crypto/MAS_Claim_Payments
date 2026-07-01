@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System;
 using System.Data;
 using System.Web.UI.WebControls;
 using MAS_Claim_Payments.App_Code;
@@ -35,7 +38,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-           
+
             if (!System.Text.RegularExpressions.Regex.IsMatch(nic, @"^[0-9]{9}[VvXx]|[1-2][0-9]{11}$"))
             {
                 lblMessage.Text = "Invalid NIC format. Use 9 digits + V/X or 12 digits.";
@@ -43,6 +46,7 @@ namespace MAS_Claim_Payments
             }
 
             DataTable dtClaims = dbObj.GetEditableClaimsByNIC(nic);
+            //Session["VoucherData"] = dtClaims;
             if (dtClaims.Rows.Count == 0)
             {
                 lblMessage.Text = "No editable claims found for this NIC.";
@@ -50,7 +54,7 @@ namespace MAS_Claim_Payments
             }
             else
             {
-              
+
                 gvClaims.DataSource = dtClaims;
                 gvClaims.DataBind();
                 pnlGrid.Visible = true;
@@ -69,6 +73,7 @@ namespace MAS_Claim_Payments
         protected void gvClaims_SelectedIndexChanged(object sender, EventArgs e)
         {
             string VOUNo = gvClaims.SelectedDataKey.Value.ToString();
+
             Response.Redirect("VoucherEditView.aspx?VOU_NO=" + VOUNo);
         }
 

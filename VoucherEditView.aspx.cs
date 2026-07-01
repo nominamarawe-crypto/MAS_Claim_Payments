@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Data;
 using System.Web.UI.WebControls;
 using MAS_Claim_Payments.App_Code;
@@ -18,7 +19,7 @@ namespace MAS_Claim_Payments
 
             if (!IsPostBack)
             {
-              
+
                 if (Session["EPFNum"] == null)
                 {
                     string msg = "Your Session Variable Expired. @ Please Log to the system again.";
@@ -35,7 +36,7 @@ namespace MAS_Claim_Payments
                     return;
                 }
 
-             
+
                 DataTable dtEditDetails = null;
                 try
                 {
@@ -55,7 +56,7 @@ namespace MAS_Claim_Payments
 
                 DataRow row = dtEditDetails.Rows[0];
 
-            
+
                 lblPolicyNo2.Text = row["POL_NO"]?.ToString().Trim() ?? "";
                 lblInsuredName2.Text = row["INSURED_NAME"]?.ToString().Trim() ?? "";
                 lblClaimNo2.Text = vouNo;
@@ -70,13 +71,13 @@ namespace MAS_Claim_Payments
                 lblClaimTypeValue.Text = frmtDtObj.getClmType(row["CLAIM_TYPE"]?.ToString() ?? "");
                 lblPaymentTypeValue.Text = frmtDtObj.getPaymntType(row["PAYMENT_TYPE"]?.ToString() ?? "");
 
-            
+
                 txtAccountNo.Text = row["ACC_NO"]?.ToString().Trim() ?? "";
                 lblPayeeNameDisplay.Text = row["PAYEE_NAME"]?.ToString().Trim() ?? "";
                 txtContactNo.Text = row["CONTACT_NO"]?.ToString().Trim() ?? "";
                 txtEmail.Text = row["EMAIL_ADD"]?.ToString().Trim() ?? "";
 
-            
+
                 LoadBanks();
 
                 int bankCode = 0, branchCode = 0;
@@ -93,7 +94,7 @@ namespace MAS_Claim_Payments
                     }
                 }
 
-               
+
                 string existingVouNo = row["VOU_NO"]?.ToString();
                 if (!string.IsNullOrEmpty(existingVouNo))
                 {
@@ -151,7 +152,7 @@ namespace MAS_Claim_Payments
             lblMessage.Text = "";
             lblSuccessMsg.Text = "";
 
-          
+
             string vouNo = Session["VOU_NO"]?.ToString();
             string editedBy = Session["EPFNum"]?.ToString();
 
@@ -161,7 +162,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-         
+
             int bankCode, branchCode;
 
             if (!int.TryParse(ddlBank.SelectedValue, out bankCode) || bankCode <= 0)
@@ -176,7 +177,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            
+
             string accountNo = txtAccountNo.Text.Trim();
             string contactNo = txtContactNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -194,7 +195,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-      
+
             if (!string.IsNullOrEmpty(contactNo) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(contactNo, @"^[0-9]{10}$"))
             {
@@ -202,7 +203,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-        
+
             if (!string.IsNullOrEmpty(email) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(email,
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
@@ -211,7 +212,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-          
+
             FormatData fmt = new FormatData();
 
             if (!fmt.validateAccountNo(accountNo, bankCode, branchCode))
@@ -220,10 +221,10 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-         
+
             string editedIP = Request.ServerVariables["REMOTE_ADDR"];
 
-        
+
             UpdateDB updateDB = new UpdateDB();
             string message;
             bool updated = false;

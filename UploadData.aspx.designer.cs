@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MAS_Claim_Payments
-{
-
-
-    public partial class UploadData
-    {
-
+namespace MAS_Claim_Payments {
+    
+    
+    public partial class UploadData {
+        
         /// <summary>
         /// FileUpload1 control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
-
+        
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-
+        
         /// <summary>
         /// btnSaveData control.
         /// </summary>
@@ -40,7 +38,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSaveData;
-
+        
         /// <summary>
         /// lblErrorMsg control.
         /// </summary>
@@ -49,7 +47,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-
+        
         /// <summary>
         /// gv1 control.
         /// </summary>
@@ -58,7 +56,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gv1;
-
+        
         /// <summary>
         /// lblResultMsg control.
         /// </summary>
@@ -67,7 +65,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResultMsg;
-
+        
         /// <summary>
         /// lblRecCount control.
         /// </summary>
@@ -76,7 +74,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRecCount;
-
+        
         /// <summary>
         /// gv2 control.
         /// </summary>

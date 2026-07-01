@@ -37,7 +37,8 @@ namespace MAS_Claim_Payments
 
                     //}
                 }
-                else
+
+             else
                 {
                     string message = "Your Session Variable Expired. @ Please Log to the system again.";
                     Response.Redirect("~/EPage.aspx?msg=" + message + "");

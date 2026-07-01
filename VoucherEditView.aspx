@@ -1,4 +1,5 @@
-﻿<%@ Page Title="Edit Claim" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="VoucherEditView.aspx.cs" Inherits="MAS_Claim_Payments.VoucherEditView" %>
+﻿
+<%@ Page Title="Edit Claim" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="VoucherEditView.aspx.cs" Inherits="MAS_Claim_Payments.VoucherEditView" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
@@ -115,7 +116,7 @@
             <td colspan="4" style="text-align: center">
                 <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button button1" OnClick="btnSave_Click" />
                 <asp:Button ID="btnCancel" runat="server" Text="Back" CssClass="button button1" OnClick="btnCancel_Click" CausesValidation="False" />
-               <%-- <asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />--%>
+                <%--<asp:Button ID="btnPrint" runat="server" Text="Print Voucher" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />--%>
             </td>
         </tr>
     </table>
