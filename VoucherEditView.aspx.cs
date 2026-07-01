@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 using MAS_Claim_Payments.App_Code;
@@ -19,14 +18,12 @@ namespace MAS_Claim_Payments
 
             if (!IsPostBack)
             {
-
                 if (Session["EPFNum"] == null)
                 {
                     string msg = "Your Session Variable Expired. @ Please Log to the system again.";
                     Response.Redirect("~/EPage.aspx?msg=" + Server.UrlEncode(msg));
                     return;
                 }
-
 
                 vouNo = Request.QueryString["VOU_NO"];
                 Session["VOU_NO"] = vouNo;
@@ -36,11 +33,10 @@ namespace MAS_Claim_Payments
                     return;
                 }
 
-
                 DataTable dtEditDetails = null;
                 try
                 {
-                    dtEditDetails = dbGtObj.EditClaimDetail(vouNo); // VOUCHER NO
+                    dtEditDetails = dbGtObj.EditClaimDetail(vouNo);
                 }
                 catch (Exception ex)
                 {
@@ -56,7 +52,6 @@ namespace MAS_Claim_Payments
 
                 DataRow row = dtEditDetails.Rows[0];
 
-
                 lblPolicyNo2.Text = row["POL_NO"]?.ToString().Trim() ?? "";
                 lblInsuredName2.Text = row["INSURED_NAME"]?.ToString().Trim() ?? "";
                 lblClaimNo2.Text = vouNo;
@@ -71,12 +66,10 @@ namespace MAS_Claim_Payments
                 lblClaimTypeValue.Text = frmtDtObj.getClmType(row["CLAIM_TYPE"]?.ToString() ?? "");
                 lblPaymentTypeValue.Text = frmtDtObj.getPaymntType(row["PAYMENT_TYPE"]?.ToString() ?? "");
 
-
                 txtAccountNo.Text = row["ACC_NO"]?.ToString().Trim() ?? "";
                 lblPayeeNameDisplay.Text = row["PAYEE_NAME"]?.ToString().Trim() ?? "";
                 txtContactNo.Text = row["CONTACT_NO"]?.ToString().Trim() ?? "";
                 txtEmail.Text = row["EMAIL_ADD"]?.ToString().Trim() ?? "";
-
 
                 LoadBanks();
 
@@ -94,7 +87,7 @@ namespace MAS_Claim_Payments
                     }
                 }
 
-
+              
                 string existingVouNo = row["VOU_NO"]?.ToString();
                 if (!string.IsNullOrEmpty(existingVouNo))
                 {
@@ -103,7 +96,11 @@ namespace MAS_Claim_Payments
                     {
                         lblMessage.Text = "This claim already has a authorized voucher. Cannot edit.";
                         btnSave.Enabled = false;
-                        //btnPrint.Visible = true;
+                        btnPrint.Visible = true;  
+                    }
+                    else
+                    {
+                        btnPrint.Visible = false; 
                     }
                 }
             }
@@ -152,7 +149,6 @@ namespace MAS_Claim_Payments
             lblMessage.Text = "";
             lblSuccessMsg.Text = "";
 
-
             string vouNo = Session["VOU_NO"]?.ToString();
             string editedBy = Session["EPFNum"]?.ToString();
 
@@ -161,7 +157,6 @@ namespace MAS_Claim_Payments
                 lblMessage.Text = "Session expired. Please login again.";
                 return;
             }
-
 
             int bankCode, branchCode;
 
@@ -177,11 +172,9 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-
             string accountNo = txtAccountNo.Text.Trim();
             string contactNo = txtContactNo.Text.Trim();
             string email = txtEmail.Text.Trim();
-
 
             if (string.IsNullOrEmpty(accountNo))
             {
@@ -195,14 +188,12 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-
             if (!string.IsNullOrEmpty(contactNo) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(contactNo, @"^[0-9]{10}$"))
             {
                 lblMessage.Text = "Contact number must be 10 digits.";
                 return;
             }
-
 
             if (!string.IsNullOrEmpty(email) &&
                 !System.Text.RegularExpressions.Regex.IsMatch(email,
@@ -212,7 +203,6 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-
             FormatData fmt = new FormatData();
 
             if (!fmt.validateAccountNo(accountNo, bankCode, branchCode))
@@ -221,9 +211,7 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-
             string editedIP = Request.ServerVariables["REMOTE_ADDR"];
-
 
             UpdateDB updateDB = new UpdateDB();
             string message;
@@ -249,7 +237,6 @@ namespace MAS_Claim_Payments
                 return;
             }
 
-            // ✅ Result handling
             if (updated)
             {
                 if (message.Contains("No changes"))
@@ -260,6 +247,7 @@ namespace MAS_Claim_Payments
                 {
                     lblSuccessMsg.Text = "Claim updated successfully.";
                     btnSave.Visible = false;
+                    btnPrint.Visible = true; 
                 }
             }
             else
@@ -276,9 +264,19 @@ namespace MAS_Claim_Payments
                 Response.Redirect("VoucherEdit.aspx");
         }
 
-        //protected void btnPrint_Click(object sender, EventArgs e)
-        //{
-        //    Response.Redirect("VoucherPrint.aspx?ClaimNo=" + Server.UrlEncode(claimNo));
-        //}
+  
+        protected void btnPrint_Click(object sender, EventArgs e)
+        {
+            string vouNo = Session["VOU_NO"]?.ToString();
+
+            if (!string.IsNullOrEmpty(vouNo))
+            {
+                Response.Redirect("VoucherPrint.aspx?ClaimNo=" + Server.UrlEncode(vouNo));
+            }
+            else
+            {
+                lblMessage.Text = "Voucher number not found for printing.";
+            }
+        }
     }
 }

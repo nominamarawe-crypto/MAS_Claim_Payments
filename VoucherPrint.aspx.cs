@@ -20,15 +20,31 @@ namespace MAS_Claim_Payments
             {
                 if (Session["EPFNum"] != null)
                 {
-                    claimNo = Request.QueryString.Get("ClaimNo");
+                    
+                    claimNo = Request.QueryString["VOU_NO"];
+                    if (string.IsNullOrEmpty(claimNo))
+                    {
+                        claimNo = Request.QueryString["ClaimNo"];
+                    }
+
+                    if (string.IsNullOrEmpty(claimNo))
+                    {
+                        lblSubmitError.Text = "No voucher number provided.";
+                        return;
+                    }
 
                     DataTable dtVouDetals = new DataTable();
 
                     dbGtObj = new GetDBData();
                     frmtDtObj = new FormatData();
 
-                    vouNo = dbGtObj.getVouNo(claimNo);
-                    dtVouDetals = dbGtObj.getVouDetails(vouNo);
+                    dtVouDetals = dbGtObj.getVouDetails(claimNo);
+
+                    if (dtVouDetals == null || dtVouDetals.Rows.Count == 0)
+                    {
+                        lblSubmitError.Text = "No voucher details found for Voucher No: " + claimNo;
+                        return;
+                    }
 
                     this.lblPolicyNo2.Text = dtVouDetals.Rows[0][0].ToString();
                     this.lblInsuredName2.Text = dtVouDetals.Rows[0][12].ToString();
@@ -77,7 +93,7 @@ namespace MAS_Claim_Payments
 
         protected void btnBack2_Click(object sender, EventArgs e)
         {
-            Response.Redirect("VoucherCreation.aspx");
+            Response.Redirect("VoucherEdit.aspx");
         }
 
         protected void btnHidden_Click(object sender, EventArgs e)

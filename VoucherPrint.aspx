@@ -128,6 +128,9 @@
                     Font-Names="Trebuchet MS" Font-Size="10" 
                     style="text-align: center; font-size: 10pt;" Text="Head of Account"></asp:Label>
             </td>
+             <td colspan="4" style="text-align: center; padding: 10px;">
+                <asp:Label ID="lblSubmitError" runat="server" CssClass="error-msg"></asp:Label>
+            </td>
             <td colspan="2" style="text-align: right">
                 <asp:Label ID="lbl26" runat="server" Font-Bold="False" 
                     Font-Names="Trebuchet MS" Font-Size="10" style="text-align: center" Text=":"></asp:Label>
