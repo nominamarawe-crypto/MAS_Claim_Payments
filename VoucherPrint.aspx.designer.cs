@@ -148,15 +148,6 @@ namespace MAS_Claim_Payments {
         protected global::System.Web.UI.WebControls.Label lblHeadOfAccount;
         
         /// <summary>
-        /// lblSubmitError control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSubmitError;
-        
-        /// <summary>
         /// lbl26 control.
         /// </summary>
         /// <remarks>

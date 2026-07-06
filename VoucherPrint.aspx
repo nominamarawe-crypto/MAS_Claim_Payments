@@ -21,10 +21,7 @@
     </style>
 
     <style type="text/css" media="print">
-    
-        
-        
-        .notprint
+    .notprint
     {
       display:none;
     }
@@ -130,9 +127,6 @@
                 <asp:Label ID="lblHeadOfAccount" runat="server" Font-Bold="False" 
                     Font-Names="Trebuchet MS" Font-Size="10" 
                     style="text-align: center; font-size: 10pt;" Text="Head of Account"></asp:Label>
-            </td>
-             <td colspan="4" style="text-align: center; padding: 10px;">
-                <asp:Label ID="lblSubmitError" runat="server" CssClass="error-msg"></asp:Label>
             </td>
             <td colspan="2" style="text-align: right">
                 <asp:Label ID="lbl26" runat="server" Font-Bold="False" 
@@ -517,7 +511,7 @@
                
                 <asp:Button ID="btnBack" runat="server" onclick="btnBack_Click" Text="Back" />
 
-                <asp:Button ID="btnBack2" runat="server"  Text="Edit" OnClick="btnBack2_Click"  />
+                <asp:Button ID="btnBack2" runat="server"  Text="Back" OnClick="btnBack2_Click" />
             </td>
             <asp:Button ID="btnHidden" runat="server" style =" display:none" onclick="btnHidden_Click" />
         </tr> 

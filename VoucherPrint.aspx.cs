@@ -20,31 +20,15 @@ namespace MAS_Claim_Payments
             {
                 if (Session["EPFNum"] != null)
                 {
-                    
-                    claimNo = Request.QueryString["VOU_NO"];
-                    if (string.IsNullOrEmpty(claimNo))
-                    {
-                        claimNo = Request.QueryString["ClaimNo"];
-                    }
-
-                    if (string.IsNullOrEmpty(claimNo))
-                    {
-                        lblSubmitError.Text = "No voucher number provided.";
-                        return;
-                    }
+                    claimNo = Request.QueryString.Get("ClaimNo");
 
                     DataTable dtVouDetals = new DataTable();
 
                     dbGtObj = new GetDBData();
                     frmtDtObj = new FormatData();
 
-                    dtVouDetals = dbGtObj.getVouDetails(claimNo);
-
-                    if (dtVouDetals == null || dtVouDetals.Rows.Count == 0)
-                    {
-                        lblSubmitError.Text = "No voucher details found for Voucher No: " + claimNo;
-                        return;
-                    }
+                    vouNo = dbGtObj.getVouNo(claimNo);
+                    dtVouDetals = dbGtObj.getVouDetails(vouNo);
 
                     this.lblPolicyNo2.Text = dtVouDetals.Rows[0][0].ToString();
                     this.lblInsuredName2.Text = dtVouDetals.Rows[0][12].ToString();
@@ -52,7 +36,7 @@ namespace MAS_Claim_Payments
 
                     this.lblNetAmtPay2.Text = (double.Parse(dtVouDetals.Rows[0][6].ToString())).ToString("N2");
                     this.lblBankName2.Text = dtVouDetals.Rows[0][3].ToString();
-                    this.lblBankBranch2.Text = dtVouDetals.Rows[0][4].ToString();                    
+                    this.lblBankBranch2.Text = dtVouDetals.Rows[0][4].ToString();
                     this.lblNICPassport2.Text = dtVouDetals.Rows[0][9].ToString();
                     this.lblNameOfPayee2.Text = dtVouDetals.Rows[0][7].ToString();
                     this.lblTel2.Text = dtVouDetals.Rows[0][10].ToString();
@@ -93,7 +77,7 @@ namespace MAS_Claim_Payments
 
         protected void btnBack2_Click(object sender, EventArgs e)
         {
-            Response.Redirect("VoucherEdit.aspx");
+            Response.Redirect("VoucherCreation.aspx");
         }
 
         protected void btnHidden_Click(object sender, EventArgs e)
