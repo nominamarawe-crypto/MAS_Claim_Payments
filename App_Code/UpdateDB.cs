@@ -213,7 +213,7 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dManager.begintransaction();
 
-                selectSql = "select * from SLIC_CHP.VOU_DETAILS_MAS where VOU_NO = '" + vouNo +
+                selectSql = "select * from SLIC_CHP.VOU_DETAILS_MAS where VOU_NO = '" + vouNo + 
                             "' and VOU_PRINTED_BY is null and VOU_PRINTED_DATE is null";
 
                 if (dManager.existRecored(selectSql) != 0)

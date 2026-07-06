@@ -517,7 +517,7 @@
                
                 <asp:Button ID="btnBack" runat="server" onclick="btnBack_Click" Text="Back" />
 
-                <asp:Button ID="btnBack2" runat="server"  Text="Back" OnClick="btnBack2_Click" style="height: 26px" />
+                <asp:Button ID="btnBack2" runat="server"  Text="Edit" OnClick="btnBack2_Click"  />
             </td>
             <asp:Button ID="btnHidden" runat="server" style =" display:none" onclick="btnHidden_Click" />
         </tr> 

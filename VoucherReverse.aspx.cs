@@ -217,7 +217,7 @@ namespace MAS_Claim_Payments
                 {
                     lblMessage.Text = "Voucher reversed successfully. Reference : " + reverseRef;
 
-                    lblStatus.Text = "Vou.Reversed";
+                    lblStatus.Text = "Vou.Created";
 
                     btnReverse.Enabled = false;
 
