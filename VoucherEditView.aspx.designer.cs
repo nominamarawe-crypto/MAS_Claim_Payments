@@ -31,13 +31,13 @@ namespace MAS_Claim_Payments {
         protected global::System.Web.UI.WebControls.Label lblSuccessMsg;
         
         /// <summary>
-        /// lblPolicyNo2 control.
+        /// lblVouNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPolicyNo2;
+        protected global::System.Web.UI.WebControls.Label lblVouNo;
         
         /// <summary>
         /// lblClaimNo2 control.
@@ -47,6 +47,15 @@ namespace MAS_Claim_Payments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblClaimNo2;
+        
+        /// <summary>
+        /// lblPolicyNo2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPolicyNo2;
         
         /// <summary>
         /// lblInsuredName2 control.
@@ -110,15 +119,6 @@ namespace MAS_Claim_Payments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPayeeNameDisplay;
-        
-        /// <summary>
-        /// lblVouNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblVouNo;
         
         /// <summary>
         /// ddlBank control.

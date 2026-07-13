@@ -9,7 +9,7 @@ namespace MAS_Claim_Payments
     {
         private GetDBData dbGtObj;
         private FormatData frmtDtObj;
-        private string vouNo;
+        private string vouNo, claimNo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,7 +54,7 @@ namespace MAS_Claim_Payments
 
                 lblPolicyNo2.Text = row["POL_NO"]?.ToString().Trim() ?? "";
                 lblInsuredName2.Text = row["INSURED_NAME"]?.ToString().Trim() ?? "";
-                lblClaimNo2.Text = vouNo;
+                lblClaimNo2.Text = row["CLAIM_NO"]?.ToString().Trim() ?? ""; 
                 lblVouNo.Text = row["VOU_NO"]?.ToString().Trim() ?? "";
                 lblNICValue.Text = row["NIC"]?.ToString().Trim() ?? "";
 
@@ -87,20 +87,20 @@ namespace MAS_Claim_Payments
                     }
                 }
 
-              
+                // Check voucher status for print button visibility
                 string existingVouNo = row["VOU_NO"]?.ToString();
                 if (!string.IsNullOrEmpty(existingVouNo))
                 {
                     string status = row["VOU_STATUS"]?.ToString() ?? "";
                     if (status == "Vou.Authorized")
                     {
-                        lblMessage.Text = "This claim already has a authorized voucher. Cannot edit.";
+                        lblMessage.Text = "This claim already has an authorized voucher. Cannot edit.";
                         btnSave.Enabled = false;
-                        btnPrint.Visible = true;  
+                        btnPrint.Visible = true;
                     }
                     else
                     {
-                        btnPrint.Visible = false; 
+                        btnPrint.Visible = false;
                     }
                 }
             }
@@ -247,7 +247,7 @@ namespace MAS_Claim_Payments
                 {
                     lblSuccessMsg.Text = "Claim updated successfully.";
                     btnSave.Visible = false;
-                    btnPrint.Visible = true; 
+                    btnPrint.Visible = true;
                 }
             }
             else
@@ -264,18 +264,45 @@ namespace MAS_Claim_Payments
                 Response.Redirect("VoucherEdit.aspx");
         }
 
-  
         protected void btnPrint_Click(object sender, EventArgs e)
         {
-            string vouNo = Session["VOU_NO"]?.ToString();
+            // Get the claim number from the label (same as VoucherCreation)
+            string claimNo = lblClaimNo2.Text.Trim();
 
-            if (!string.IsNullOrEmpty(vouNo))
+            if (string.IsNullOrEmpty(claimNo))
             {
-                Response.Redirect("VoucherPrint.aspx?ClaimNo=" + Server.UrlEncode(vouNo));
+                lblMessage.Text = "Claim number not found. Cannot print.";
+                return;
+            }
+
+            // Get the voucher number from session or label
+            string vouNo = Session["VOU_NO"]?.ToString();
+            if (string.IsNullOrEmpty(vouNo))
+            {
+                vouNo = lblVouNo.Text.Trim();
+            }
+
+            if (string.IsNullOrEmpty(vouNo))
+            {
+                lblMessage.Text = "Voucher number not found. Cannot print.";
+                return;
+            }
+
+            // Update the print status before printing (same as VoucherCreation)
+            string epf = Session["EPFNum"]?.ToString();
+            string ip = Request.ServerVariables["REMOTE_ADDR"];
+
+            UpdateDB updateDB = new UpdateDB();
+            int result = updateDB.update_voucherPrint(vouNo, epf, ip);
+
+            if (result == 1)
+            {
+                // Redirect to print page with the claim number (same as VoucherCreation)
+                Response.Redirect("VoucherPrint.aspx?ClaimNo=" + Server.UrlEncode(claimNo));
             }
             else
             {
-                lblMessage.Text = "Voucher number not found for printing.";
+                lblMessage.Text = "Failed to update print status. Please try again.";
             }
         }
     }

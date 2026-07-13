@@ -421,26 +421,27 @@ namespace MAS_Claim_Payments.App_Code
             DataManager dm = new DataManager();
 
             string editDetails = @"SELECT POL_NO, 
-                                   TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
-                                   CLAIM_TYPE, 
-                                   BANK_NAME,
-                                   BANK_CODE,
-                                   BANK_BRANCH_NAME,
-                                   BANK_BRANCH_CODE,
-                                   ACC_NO, 
-                                   AMOUNT,
-                                   PAYEE_NAME, 
-                                   PAYMENT_TYPE, 
-                                   NIC, 
-                                   CONTACT_NO, 
-                                   EMAIL_ADD, 
-                                   INSURED_NAME, 
-                                   EPF, 
-                                   ACC_CODE,
-                                   VOU_NO,
-                                   VOU_STATUS
-                            FROM SLIC_CHP.VOU_DETAILS_MAS 
-        WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
+                           CLAIM_NO,
+                           TO_CHAR(DATE_OF_CLAIM, 'YYYY-MM-DD') AS DATE_OF_CLAIM,
+                           CLAIM_TYPE, 
+                           BANK_NAME,
+                           BANK_CODE,
+                           BANK_BRANCH_NAME,
+                           BANK_BRANCH_CODE,
+                           ACC_NO, 
+                           AMOUNT,
+                           PAYEE_NAME, 
+                           PAYMENT_TYPE, 
+                           NIC, 
+                           CONTACT_NO, 
+                           EMAIL_ADD, 
+                           INSURED_NAME, 
+                           EPF, 
+                           ACC_CODE,
+                           VOU_NO,
+                           VOU_STATUS
+                    FROM SLIC_CHP.VOU_DETAILS_MAS
+                    WHERE VOU_NO = '" + vouNo.Replace("'", "''") + "'";
 
             dm.readSql(editDetails);
             DataSet ds = dm.getrow(editDetails);
@@ -449,6 +450,7 @@ namespace MAS_Claim_Payments.App_Code
             dm.connclose();
             return dtEditDetails;
         }
+
         public string getVouNo(string claimNo)
         {
             string vouNo = "";
@@ -576,12 +578,7 @@ namespace MAS_Claim_Payments.App_Code
         }
 
 
-        /// <summary>
-        /// Gets all vouchers for a given NIC that are eligible for reversal (Authorized or Printed, not yet reversed).
-        /// </summary>
-        /// <summary>
-        /// Gets all vouchers for a given NIC that are eligible for reversal (Authorized or Printed, not yet reversed).
-        /// </summary>
+       
         public DataTable GetVouchersByNIC(string nic)
         {
             DataTable dt = new DataTable();
@@ -596,8 +593,11 @@ namespace MAS_Claim_Payments.App_Code
             PAYEE_NAME
         FROM SLIC_CHP.VOU_DETAILS_MAS
         WHERE NIC = '" + nic.Replace("'", "''") + @"'
-          AND VOU_STATUS IN ('Vou.Created', 'Vou.Printed','Vou.Edited')
           AND VOU_NO IS NOT NULL
+          AND (VOU_STATUS = 'Vou.Created' 
+               OR VOU_STATUS = 'Vou.Printed'
+               OR VOU_STATUS = 'Vou.Edited'
+               )
         ORDER BY VOU_CREATED_DATE DESC";
             try
             {
@@ -610,7 +610,6 @@ namespace MAS_Claim_Payments.App_Code
             }
             catch (Exception ex)
             {
-                
                 dt = null;
             }
             finally
@@ -619,7 +618,7 @@ namespace MAS_Claim_Payments.App_Code
             }
             return dt;
         }
-      
+
         public DataTable GetEditableClaimsByNIC(string nic)
         {
             DataTable dt = new DataTable();

@@ -83,9 +83,9 @@
                             <asp:BoundField DataField="VOU_NO" HeaderText="Voucher No" />
                             <asp:BoundField DataField="CLAIM_NO" HeaderText="Claim No" />
                             <asp:BoundField DataField="POL_NO" HeaderText="Policy No" />
-                              <asp:BoundField DataField="PAYEE_NAME" HeaderText="Payee Name" />
+                            <asp:BoundField DataField="PAYEE_NAME" HeaderText="Payee Name" />
                             <asp:BoundField DataField="AMOUNT" HeaderText="Amount" DataFormatString="{0:N2}" />
-                             <asp:BoundField DataField="DATE_OF_CLAIM" HeaderText="Date Of Claim" />
+                            <asp:BoundField DataField="DATE_OF_CLAIM" HeaderText="Date Of Claim" />
                             <asp:CommandField ShowSelectButton="True" SelectText="Select" />
                         </Columns>
                     </asp:GridView>

@@ -535,7 +535,7 @@ namespace MAS_Claim_Payments.App_Code
 
                     #region UPDATE SLIC_CHP.VOU_DETAILS_MAS_HIST
                     insertIntoHist = "INSERT INTO SLIC_CHP.VOU_DETAILS_MAS_HIST " +
-                         "SELECT * FROM SLIC_CHP.VOU_DETAILS_MAS " +
+                         "SELECT * FROM SLIC_CHP.VOU_DETAILS_MAS " + 
                          "WHERE VOU_NO = '" + vouNo +
                          "' AND VOU_AUTHORIZED_BY IS NULL " +
                          "AND VOU_AUTHORIZED_DATE IS NULL";
@@ -769,7 +769,7 @@ namespace MAS_Claim_Payments.App_Code
         VOU_EDITED_BY = '" + (editedBy ?? "Unknown").Replace("'", "''") + @"',
         VOU_EDITED_DATE = SYSDATE,
         VOU_EDITED_IP = '" + (editedIP ?? "").Replace("'", "''") + @"',
-        VOU_STATUS = 'Pending'
+        VOU_STATUS = 'Vou.Printed'
     WHERE VOU_NO = '"
          + vouNo.Replace("'", "''") + "'"
                  );

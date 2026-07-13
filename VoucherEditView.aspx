@@ -1,5 +1,4 @@
-﻿
-<%@ Page Title="Edit Claim" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="VoucherEditView.aspx.cs" Inherits="MAS_Claim_Payments.VoucherEditView" %>
+﻿<%@ Page Title="Edit Claim" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="VoucherEditView.aspx.cs" Inherits="MAS_Claim_Payments.VoucherEditView" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
@@ -46,34 +45,34 @@
 
     <table class="edit-table">
         <tr>
-            <td class="label">Policy No:</td>
-            <td><asp:Label ID="lblPolicyNo2" runat="server"></asp:Label></td>
+            <td class="label">Voucher No:</td>
+            <td><asp:Label ID="lblVouNo" runat="server" Font-Bold="true"></asp:Label></td>
             <td class="label">Claim No:</td>
             <td><asp:Label ID="lblClaimNo2" runat="server"></asp:Label></td>
         </tr>
         <tr>
+            <td class="label">Policy No:</td>
+            <td><asp:Label ID="lblPolicyNo2" runat="server"></asp:Label></td>
             <td class="label">Insured Name:</td>
             <td><asp:Label ID="lblInsuredName2" runat="server"></asp:Label></td>
+        </tr>
+        <tr>
             <td class="label">NIC:</td>
             <td><asp:Label ID="lblNICValue" runat="server"></asp:Label></td>
-        </tr>
-        <tr>
             <td class="label">Claim Amount:</td>
             <td><asp:Label ID="lblAmountValue" runat="server"></asp:Label></td>
+        </tr>
+        <tr>
             <td class="label">Claim Date:</td>
             <td><asp:Label ID="lblClaimDateValue" runat="server"></asp:Label></td>
-        </tr>
-        <tr>
             <td class="label">Claim Type:</td>
             <td><asp:Label ID="lblClaimTypeValue" runat="server"></asp:Label></td>
-            <td class="label">Payment Type:</td>
-            <td><asp:Label ID="lblPaymentTypeValue" runat="server"></asp:Label></td>
         </tr>
         <tr>
-           <td class="label">Payee Name:</td>
+            <td class="label">Payment Type:</td>
+            <td><asp:Label ID="lblPaymentTypeValue" runat="server"></asp:Label></td>
+            <td class="label">Payee Name:</td>
             <td><asp:Label ID="lblPayeeNameDisplay" runat="server"></asp:Label></td>
-           <td class="label">Vou No:</td>
-<td><asp:Label ID="lblVouNo" runat="server"></asp:Label></td>
         </tr>
         <tr>
             <td class="label">Bank:</td>
@@ -112,12 +111,10 @@
             </td>
         </tr>
         <tr>
-
             <td colspan="4" style="text-align: center">
                 <asp:Button ID="btnSave" runat="server" Text="Save Changes" CssClass="button button1" OnClick="btnSave_Click" />
-                  <asp:Button ID="btnPrint" runat="server" Text="Print" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />
+                <asp:Button ID="btnPrint" runat="server" Text="Print" CssClass="button button1" OnClick="btnPrint_Click" Visible="false" />
                 <asp:Button ID="btnCancel" runat="server" Text="Back" CssClass="button button1" OnClick="btnCancel_Click" CausesValidation="False" />
-              
             </td>
         </tr>
     </table>

@@ -20,6 +20,7 @@ namespace MAS_Claim_Payments
             {
                 if (Session["EPFNum"] != null)
                 {
+                   
                     claimNo = Request.QueryString.Get("ClaimNo");
 
                     DataTable dtVouDetals = new DataTable();

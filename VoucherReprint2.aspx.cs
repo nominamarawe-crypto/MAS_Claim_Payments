@@ -15,27 +15,7 @@ namespace MAS_Claim_Payments
         private GetDBData dbGtObj;
         private FormatData frmtDtObj;
 
-        protected void btnBack2_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("VoucherReprint.aspx");
-        }
 
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("VoucherReprint.aspx");
-        }
-
-        protected void btnHidden_Click(object sender, EventArgs e)
-        {
-            //UpdateDB updtDBObj = new UpdateDB();
-            //int retVal = updtDBObj.update_voucherPrint(this.lblVouNum2.Text, Session["EPFNum"].ToString(), Context.Request.ServerVariables["REMOTE_ADDR"]);
-            //if (retVal == 1)
-            //{
-            //    this.btnBack.Visible = true;
-            //    this.btnBack2.Visible = false;
-            //}
-
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -92,5 +72,26 @@ namespace MAS_Claim_Payments
                 }
             }
         }
+            protected void btnBack2_Click(object sender, EventArgs e)
+            {
+                Response.Redirect("VoucherReprint.aspx");
+            }
+
+            protected void btnBack_Click(object sender, EventArgs e)
+            {
+                Response.Redirect("VoucherReprint.aspx");
+            }
+
+            protected void btnHidden_Click(object sender, EventArgs e)
+            {
+                UpdateDB updtDBObj = new UpdateDB();
+                int retVal = updtDBObj.update_voucherPrint(this.lblVouNum2.Text, Session["EPFNum"].ToString(), Context.Request.ServerVariables["REMOTE_ADDR"]);
+                if (retVal == 1)
+                {
+                    this.btnBack.Visible = true;
+                    this.btnBack2.Visible = false;
+                }
+
+            }
+        }
     }
-}
