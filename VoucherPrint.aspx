@@ -28,7 +28,7 @@
 </style>
 
     <script language="javascript" type="text/javascript">
-// <![CDATA[
+
 
         function btnPrint_onclick() {
             window.print();
@@ -40,7 +40,7 @@
 
         
 
-// ]]>
+
     </script>
 
 </head>

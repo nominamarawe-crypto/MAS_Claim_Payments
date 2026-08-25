@@ -31,7 +31,7 @@ namespace MAS_Claim_Payments
                     dtClmDetals = dbGtObj.getClaimDetails(claimNo);
 
                     this.lblPolicyNo2.Text = dtClmDetals.Rows[0][0].ToString();
-                    this.lblInsuredName2.Text = dtClmDetals.Rows[0][12].ToString();
+                    this.lblInsuredName2.Text = dtClmDetals.Rows[0][14].ToString();
                     this.lblClaimNo2.Text = claimNo;
 
                     this.lblNetAmtPay2.Text = (double.Parse(dtClmDetals.Rows[0][8].ToString())).ToString("N2");
