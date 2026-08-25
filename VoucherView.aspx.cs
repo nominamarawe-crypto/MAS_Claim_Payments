@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -40,16 +34,16 @@ namespace MAS_Claim_Payments
                     this.lblInsuredName2.Text = dtClmDetals.Rows[0][12].ToString();
                     this.lblClaimNo2.Text = claimNo;
 
-                    this.lblNetAmtPay2.Text = (double.Parse(dtClmDetals.Rows[0][6].ToString())).ToString("N2");
+                    this.lblNetAmtPay2.Text = (double.Parse(dtClmDetals.Rows[0][8].ToString())).ToString("N2");
                     this.lblBank2.Text = dtClmDetals.Rows[0][3].ToString();
-                    this.lblBranch2.Text = dtClmDetals.Rows[0][4].ToString();
-                    this.lblAccountNo2.Text = dtClmDetals.Rows[0][5].ToString();
-                    this.lblNICPassport2.Text = dtClmDetals.Rows[0][9].ToString();
-                    this.lblPayeeName2.Text = dtClmDetals.Rows[0][7].ToString();
-                    this.lblTelephoneNo2.Text = dtClmDetals.Rows[0][10].ToString();
-                    this.lblEmailAdrs2.Text = dtClmDetals.Rows[0][11].ToString();
+                    this.lblBranch2.Text = dtClmDetals.Rows[0][5].ToString();
+                    this.lblAccountNo2.Text = dtClmDetals.Rows[0][7].ToString();
+                    this.lblNICPassport2.Text = dtClmDetals.Rows[0][11].ToString();
+                    this.lblPayeeName2.Text = dtClmDetals.Rows[0][9].ToString();
+                    this.lblTelephoneNo2.Text = dtClmDetals.Rows[0][12].ToString();
+                    this.lblEmailAdrs2.Text = dtClmDetals.Rows[0][13].ToString();
                     this.lblClmType.Text = frmtDtObj.getClmType(dtClmDetals.Rows[0][2].ToString());
-                    this.lblPaymntType.Text = frmtDtObj.getPaymntType(dtClmDetals.Rows[0][8].ToString());
+                    this.lblPaymntType.Text = frmtDtObj.getPaymntType(dtClmDetals.Rows[0][10].ToString());
                     this.lblClmDt.Text = dtClmDetals.Rows[0][1].ToString();
 
                     this.btnPrint.Visible = false;

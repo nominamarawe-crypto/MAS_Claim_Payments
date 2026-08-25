@@ -23,6 +23,7 @@ namespace MAS_Claim_Payments
             {
                 if (Session["EPFNum"] != null)
                 {
+
                     claimNo = Request.QueryString.Get("ClaimNo");
 
                     DataTable dtVouDetals = new DataTable();
@@ -54,6 +55,16 @@ namespace MAS_Claim_Payments
                     this.lblMachineIP.Text = Context.Request.ServerVariables["REMOTE_ADDR"];
                     this.lblBankAccNo2.Text = dtVouDetals.Rows[0][5].ToString();
 
+                    // Get the NIC from voucher details to fetch company name
+                    string nic = dtVouDetals.Rows[0][9].ToString();
+                    string companyName = dbGtObj.getCompanyName(nic);
+
+                    // Display company name in brackets
+                    if (!string.IsNullOrEmpty(companyName))
+                    {
+                        this.lblCompanyName.Text = " (" + companyName + ")";
+                    }
+
                     this.lblVouGenBranch.Text = dbGtObj.get_branchName(int.Parse(Session["brcode"].ToString()));
                     this.lblNetAmtPayWords2.Text = frmtDtObj.get_netAmtPayInWords(double.Parse(dtVouDetals.Rows[0][6].ToString()));
                     this.lblVouNum2.Text = vouNo;
@@ -72,7 +83,8 @@ namespace MAS_Claim_Payments
                 }
             }
         }
-            protected void btnBack2_Click(object sender, EventArgs e)
+
+        protected void btnBack2_Click(object sender, EventArgs e)
             {
                 Response.Redirect("VoucherReprint.aspx");
             }

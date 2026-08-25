@@ -70,7 +70,7 @@
                 style="text-align: left; border-bottom-color: #000000; border-bottom-width: 1px; border-bottom-style: solid;">
                 <asp:Label ID="lblTopic11" runat="server" Font-Bold="True" 
                     Font-Names="Trebuchet MS" Font-Size="10pt" 
-                    style="text-align: center; font-size: 11pt;" Text="LAB Claim Voucher-"></asp:Label>
+                    style="text-align: center; font-size: 11pt;" Text="LGB Claim Voucher-"></asp:Label>
                 <asp:Label ID="lblVouGenBranch" runat="server" Font-Bold="True" 
                     Font-Names="Trebuchet MS" Font-Size="10" 
                     style="text-align: center; font-size: 11pt;"></asp:Label>
@@ -128,21 +128,24 @@
             </td>
         </tr>
         <tr>
-            <td>
-                <asp:Label ID="lblHeadOfAccount" runat="server" Font-Bold="False" 
-                    Font-Names="Trebuchet MS" Font-Size="10" 
-                    style="text-align: center; font-size: 10pt;" Text="Head of Account"></asp:Label>
-            </td>
-            <td colspan="2" style="text-align: right">
-                <asp:Label ID="lbl26" runat="server" Font-Bold="False" 
-                    Font-Names="Trebuchet MS" Font-Size="10" style="text-align: center" Text=":"></asp:Label>
-            </td>
-            <td colspan="3">
-                <asp:Label ID="lblHeadOfAccount2" runat="server" Font-Bold="False" 
-                    Font-Names="Trebuchet MS" Font-Size="10pt" 
-                    style="text-align: center; font-size: 10pt;" Text="LAB Claim Payments"></asp:Label>
-            </td>
-        </tr>
+    <td>
+        <asp:Label ID="lblHeadOfAccount" runat="server" Font-Bold="False" 
+            Font-Names="Trebuchet MS" Font-Size="10" 
+            style="text-align: center; font-size: 10pt;" Text="Head of Account"></asp:Label>
+    </td>
+    <td colspan="2" style="text-align: right">
+        <asp:Label ID="lbl26" runat="server" Font-Bold="False" 
+            Font-Names="Trebuchet MS" Font-Size="10" style="text-align: center" Text=":"></asp:Label>
+    </td>
+    <td colspan="3">
+        <asp:Label ID="lblHeadOfAccount2" runat="server" Font-Bold="False" 
+            Font-Names="Trebuchet MS" Font-Size="10pt" 
+            style="text-align: center; font-size: 10pt;" Text="LGB Claim Payments"></asp:Label>
+        <asp:Label ID="lblCompanyName" runat="server" Font-Bold="False" 
+            Font-Names="Trebuchet MS" Font-Size="10pt" 
+            style="text-align: center; font-size: 10pt;"></asp:Label>
+    </td>
+</tr>
         <tr>
             <td>
                 <asp:Label ID="lblVouNum" runat="server" Font-Bold="False" 

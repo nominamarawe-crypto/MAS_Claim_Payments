@@ -512,7 +512,40 @@ namespace MAS_Claim_Payments.App_Code
             return dtClmDetails;
         }
 
+        public string getCompanyName(string nic)
+        {
+            DataManager dm = new DataManager();
+            string companyName = "";
 
+            string sql = "SELECT SBU FROM SLIC_CHP.GROUP_MASTER WHERE NIC = '" + nic.Replace("'", "''") + "'";
+
+            try
+            {
+                if (dm.existRecored(sql) != 0)
+                {
+                    dm.readSql(sql);
+                    odrr = dm.oraComm.ExecuteReader();
+                    while (odrr.Read())
+                    {
+                        if (!odrr.IsDBNull(0))
+                        {
+                            companyName = odrr.GetString(0);
+                        }
+                    }
+                    odrr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                companyName = "";
+            }
+            finally
+            {
+                dm.connClose();
+            }
+
+            return companyName;
+        }
         public DataTable getVoucherForReverse(string vouNo)
         {
             DataTable dtVouDetails = new DataTable();
