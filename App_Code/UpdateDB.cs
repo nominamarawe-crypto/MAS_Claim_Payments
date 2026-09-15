@@ -603,7 +603,7 @@ namespace MAS_Claim_Payments.App_Code
             sucsCount = 0;
 
             DataTable dtExRecords = new DataTable();
-            dtExRecords.Columns.Add("SBU", typeof(string)); 
+            dtExRecords.Columns.Add("SBU", typeof(string));
             dtExRecords.Columns.Add("EMP_ID_NUM", typeof(string));
             dtExRecords.Columns.Add("EPF", typeof(string));
             dtExRecords.Columns.Add("MEMBER_NAME", typeof(string));
@@ -614,6 +614,7 @@ namespace MAS_Claim_Payments.App_Code
             dtExRecords.Columns.Add("EMAIL", typeof(string));
 
             DataManager dmngr = new DataManager();
+            FormatData fmt = new FormatData();   // for escaping quotes
 
             try
             {
@@ -623,92 +624,91 @@ namespace MAS_Claim_Payments.App_Code
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        int dateStringLength = dt.Rows[i].ItemArray[6].ToString().Length;
-                        int firstStrokeIndex = dt.Rows[i].ItemArray[6].ToString().IndexOf("/");
-                        string monthString = dt.Rows[i].ItemArray[6].ToString().Substring(0, firstStrokeIndex);
+                        // ---- SAFE STRING EXTRACTION ----
+                        string sbu = (dt.Rows[i]["SBU"] ?? "").ToString().Trim();
+                        string empId = (dt.Rows[i]["EMP_ID_NUM"] ?? "").ToString().Trim();
+                        string epf = (dt.Rows[i]["EPF"] ?? "").ToString().Trim();
+                        string name = fmt.PrepareApostrophe((dt.Rows[i]["MEMBER_NAME"] ?? "").ToString().Trim());
+                        string nic = fmt.PrepareApostrophe((dt.Rows[i]["NIC"] ?? "").ToString().Trim());
+                        string gender = (dt.Rows[i]["GENDER"] ?? "").ToString().Trim();
+                        string contact = (dt.Rows[i]["CONTACT_NO"] ?? "").ToString().Trim();
+                        string email = fmt.PrepareApostrophe((dt.Rows[i]["EMAIL"] ?? "").ToString().Trim());
 
-                        int secondStrokeIndex = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).IndexOf("/");
-                        string dayString = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).Substring(0, secondStrokeIndex);
+                        // ---- ROBUST DATE PARSING ----
+                        string dobRaw = (dt.Rows[i]["DATE_OF_BIRTH"] ?? "").ToString().Trim();
+                        string dateToSave = "";
 
-                        string yearString = dt.Rows[i].ItemArray[6].ToString().Substring(firstStrokeIndex + 1).Substring(secondStrokeIndex + 1, 4);
-
-                        string dateToSave = yearString + "-" + monthString.PadLeft(2, '0') + "-" + dayString.PadLeft(2, '0');
-
-                        string checkExists = "";
-
-                        if (dt.Rows[i].ItemArray[7].ToString() != "" && dt.Rows[i].ItemArray[8].ToString() != "")
+                        if (!string.IsNullOrEmpty(dobRaw))
                         {
-                            checkExists = "select * from slic_chp.group_master " +
-                                " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" + 
-                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
-                                " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[7].ToString() + "'" +
-                                " and EMAIL = '" + dt.Rows[i].ItemArray[8].ToString() + "'";
-                        }
-                        else if (dt.Rows[i].ItemArray[7].ToString() == "" && dt.Rows[i].ItemArray[8].ToString() != "")
-                        {
-                            checkExists = "select * from slic_chp.group_master " +
-                                " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
-                                " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO  is null " +
-                                " and EMAIL = '" + dt.Rows[i].ItemArray[8].ToString() + "'";
-                        }
-                        else if (dt.Rows[i].ItemArray[7].ToString() != "" && dt.Rows[i].ItemArray[8].ToString() == "")
-                        {
-                            checkExists = "select * from slic_chp.group_master " +
-                                " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
-                                " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO = '" + dt.Rows[i].ItemArray[7].ToString() + "'" +
-                                " and EMAIL is null ";
-                        }
-                        else
-                        {
-                            checkExists = "select * from slic_chp.group_master " +
-                                " where SBU = '" + dt.Rows[i].ItemArray[0].ToString() + "' " +
-                                " and EMP_ID_NUM = '" + dt.Rows[i].ItemArray[1].ToString() + "'" +
-                                " and EPF = '" + dt.Rows[i].ItemArray[2].ToString() + "'" +
-                                " and MEMBER_NAME = '" + dt.Rows[i].ItemArray[3].ToString() + "'" +
-                                " and NIC = '" + dt.Rows[i].ItemArray[4].ToString() + "'" +
-                                " and GENDER = '" + dt.Rows[i].ItemArray[5].ToString() + "'" +
-                                " and DATE_OF_BIRTH = '" + dateToSave + "'" +
-                                " and CONTACT_NO is null " +
-                                " and EMAIL is null ";
+                            DateTime dob;
+                            string[] formats = { "M/d/yyyy", "MM/dd/yyyy", "M/d/yyyy h:mm:ss tt",
+                                         "MM/dd/yyyy h:mm:ss tt", "yyyy-MM-dd",
+                                         "d/M/yyyy", "dd/MM/yyyy", "d-M-yyyy" };
+
+                            if (DateTime.TryParseExact(dobRaw, formats,
+                                    System.Globalization.CultureInfo.InvariantCulture,
+                                    System.Globalization.DateTimeStyles.None, out dob)
+                                || DateTime.TryParse(dobRaw, out dob))
+                            {
+                                dateToSave = dob.ToString("yyyy-MM-dd");
+                            }
+                            else
+                            {
+                                // Unparseable date → skip row, log and continue
+                                continue;
+                            }
                         }
 
+                        // ---- BUILD DUPLICATE-CHECK QUERY (NULL-safe) ----
+                        string contactClause = string.IsNullOrEmpty(contact)
+                            ? " and CONTACT_NO is null "
+                            : " and CONTACT_NO = '" + fmt.PrepareApostrophe(contact) + "' ";
+
+                        string emailClause = string.IsNullOrEmpty(email)
+                            ? " and EMAIL is null "
+                            : " and EMAIL = '" + email + "' ";
+
+                        string checkExists =
+                            "select * from slic_chp.group_master " +
+                            " where SBU = '" + fmt.PrepareApostrophe(sbu) + "'" +
+                            " and EMP_ID_NUM = '" + fmt.PrepareApostrophe(empId) + "'" +
+                            " and EPF = '" + fmt.PrepareApostrophe(epf) + "'" +
+                            " and MEMBER_NAME = '" + name + "'" +
+                            " and NIC = '" + nic + "'" +
+                            " and GENDER = '" + fmt.PrepareApostrophe(gender) + "'" +
+                            " and DATE_OF_BIRTH = '" + dateToSave + "'" +
+                            contactClause +
+                            emailClause;
 
                         if (dmngr.existRecored(checkExists) > 0)
                         {
-                            dtExRecords.Rows.Add(dt.Rows[i].ItemArray[0].ToString().ToString(), dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),dt.Rows[i].ItemArray[3].ToString(),
-                                    dt.Rows[i].ItemArray[4].ToString(), dt.Rows[i].ItemArray[5].ToString(), dateToSave, dt.Rows[i].ItemArray[7].ToString(),
-                                    dt.Rows[i].ItemArray[8].ToString());
+                            // Duplicate → add to duplicate list
+                            dtExRecords.Rows.Add(sbu, empId, epf,
+                                name.Replace("'||chr(39)||'", "'"),
+                                nic.Replace("'||chr(39)||'", "'"),
+                                gender, dateToSave, contact,
+                                email.Replace("'||chr(39)||'", "'"));
                         }
                         else
                         {
-                            string insertRecord = "insert into slic_chp.group_master (SBU, EMP_ID_NUM,EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" +
-                                                    dt.Rows[i].ItemArray[0].ToString().ToString() + "','" + dt.Rows[i].ItemArray[1].ToString() + "','" +
-                                                    dt.Rows[i].ItemArray[2].ToString() + "','" + dt.Rows[i].ItemArray[3].ToString() + "','" + 
-                                                    dt.Rows[i].ItemArray[4].ToString() + "','" + dt.Rows[i].ItemArray[5].ToString() + "','" +
-                                                    dateToSave + "','" +
-                                                    dt.Rows[i].ItemArray[7].ToString() + "','" + dt.Rows[i].ItemArray[8].ToString() + "')";
-                            dmngr.insertRecords(insertRecord);
+                            string insertRecord =
+                                "insert into slic_chp.group_master " +
+                                "(SBU, EMP_ID_NUM, EPF, MEMBER_NAME, NIC, GENDER, DATE_OF_BIRTH, CONTACT_NO, EMAIL) values ('" +
+                                fmt.PrepareApostrophe(sbu) + "','" +
+                                fmt.PrepareApostrophe(empId) + "','" +
+                                fmt.PrepareApostrophe(epf) + "','" +
+                                name + "','" +
+                                nic + "','" +
+                                fmt.PrepareApostrophe(gender) + "','" +
+                                dateToSave + "'," +
+                                (string.IsNullOrEmpty(contact) ? "null" : "'" + fmt.PrepareApostrophe(contact) + "'") + "," +
+                                (string.IsNullOrEmpty(email) ? "null" : "'" + email + "'") + ")";
 
-                            sucsCount = sucsCount + 1;
+                            dmngr.insertRecords(insertRecord);
+                            sucsCount++;
                         }
                     }
+
                     dmngr.commit();
                     retVal = 1;
                 }
@@ -717,10 +717,13 @@ namespace MAS_Claim_Payments.App_Code
             {
                 dmngr.rollback();
                 dmngr.connClose();
+                // LOG this exception! e.g. System.Diagnostics.EventLog, or pass via out param
                 retVal = 0;
             }
-
-            dmngr.connClose();
+            finally
+            {
+                dmngr.connClose();
+            }
 
             dtExistingRecords = dtExRecords;
             return retVal;

@@ -10,7 +10,7 @@ using MAS_Claim_Payments.App_Code;
 
 namespace MAS_Claim_Payments
 {
-    
+
     public partial class ClaimEntry : System.Web.UI.Page
     {
 
@@ -29,6 +29,7 @@ namespace MAS_Claim_Payments
             this.lblSubmitError.Text = "";
 
             this.tbxInsuredName.Text = "";
+            this.tbxCompanyName.Text = "";
             this.ddlBanks.SelectedValue = "-1";
             this.ddlBranches.SelectedValue = "-1";
             this.ddlClmType.SelectedValue = "S";
@@ -59,7 +60,7 @@ namespace MAS_Claim_Payments
             this.tbxAmount.Enabled = true;
             this.tbxAccNo.Enabled = true;
             this.tbxPolNo.Enabled = true;
-            this.tbxRelationShip.Enabled = true;            
+            this.tbxRelationShip.Enabled = true;
             this.tbxClaimantName.Enabled = true;
             this.tbxEPF.Enabled = true;
 
@@ -68,7 +69,7 @@ namespace MAS_Claim_Payments
 
         protected void ddlClmType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(this.ddlClmType.SelectedValue.Equals("D"))
+            if (this.ddlClmType.SelectedValue.Equals("D"))
             {
                 this.ltrAccCode.Text = "2164";
             }
@@ -108,7 +109,7 @@ namespace MAS_Claim_Payments
             {
                 if (Session["EPFNum"] != null)
                 {
-                    dManager = new DataManager();                    
+                    dManager = new DataManager();
 
                     #region Load bank data                
 
@@ -166,7 +167,7 @@ namespace MAS_Claim_Payments
 
                     dManager.connclose();
 
-                    
+
                 }
                 else
                 {
@@ -201,7 +202,7 @@ namespace MAS_Claim_Payments
                 else if (this.ddlClmType.SelectedValue.Equals("S"))
                 {
                     this.lblSubmitError.Text = "Please select claim type";
-                }                
+                }
                 else if (this.ddlBanks.SelectedValue.Equals("-1"))
                 {
                     this.lblSubmitError.Text = "Please select bank";
@@ -227,7 +228,7 @@ namespace MAS_Claim_Payments
 
                     string claimNo = updtDBObj.InsertEntryRec(this.tbxNIC.Text, this.tbxPolNo.Text, this.tbxClaimdt.Text, this.ddlClmType.SelectedValue,
                         int.Parse(this.ddlBanks.SelectedValue), int.Parse(this.ddlBranches.SelectedValue), this.tbxAccNo.Text, double.Parse(this.tbxAmount.Text),
-                        this.tbxPayeeName.Text, this.ddlPayType.SelectedValue, this.tbxInsuredName.Text, this.tbxEPF.Text, this.ltrAccCode.Text, Session["EPFNum"].ToString(), 
+                        this.tbxPayeeName.Text, this.ddlPayType.SelectedValue, this.tbxInsuredName.Text, this.tbxEPF.Text, this.ltrAccCode.Text, Session["EPFNum"].ToString(),
                         this.tbxClaimantName.Text, this.tbxRelationShip.Text, this.tbxMobile.Text, this.tbxEmail.Text);
 
                     if (!claimNo.Equals(""))
@@ -235,6 +236,7 @@ namespace MAS_Claim_Payments
                         this.lblSuccessMsg.Text = "Data Entered successfully. (Claim No:" + claimNo + ")";
 
                         this.tbxInsuredName.Enabled = false;
+                        this.tbxCompanyName.Enabled = false;
                         this.ddlBanks.Enabled = false;
                         this.ddlBranches.Enabled = false;
                         this.ddlClmType.Enabled = false;
@@ -247,7 +249,7 @@ namespace MAS_Claim_Payments
                         this.tbxAmount.Enabled = false;
                         this.tbxAccNo.Enabled = false;
                         this.tbxPolNo.Enabled = false;
-                        this.tbxRelationShip.Enabled = false;                        
+                        this.tbxRelationShip.Enabled = false;
                         this.tbxClaimantName.Enabled = false;
                         this.tbxEPF.Enabled = false;
 
@@ -259,7 +261,7 @@ namespace MAS_Claim_Payments
                     }
                 }
             }
-        }        
+        }
 
         protected void tbxNIC_TextChanged(object sender, EventArgs e)
         {
@@ -277,15 +279,17 @@ namespace MAS_Claim_Payments
                     this.tbxMobile.Text = dbDataObj.getContactNo(nic);
                     this.tbxEmail.Text = dbDataObj.getEmail(nic);
                     this.tbxEPF.Text = dbDataObj.getEPF(nic);
+                    this.tbxCompanyName.Text = dbDataObj.getCompanyName(nic);
                 }
                 else
-                {                   
-                    this.lblNICError.Text = "No insured person with this NIC no.";                    
+                {
+                    this.lblNICError.Text = "No insured person with this NIC no.";
+                    this.tbxCompanyName.Text = "";
                 }
             }
         }
     }
 
 
-    
+
 }

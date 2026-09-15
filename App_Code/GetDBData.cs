@@ -517,19 +517,19 @@ namespace MAS_Claim_Payments.App_Code
             DataManager dm = new DataManager();
             string companyName = "";
 
-            string sql = "SELECT SBU FROM SLIC_CHP.GROUP_MASTER WHERE NIC = '" + nic.Replace("'", "''") + "'";
+            string sql = "SELECT SBU FROM SLIC_CHP.GROUP_MASTER WHERE UPPER(NIC) = UPPER('" + nic.Replace("'", "''") + "')";
 
             try
             {
                 if (dm.existRecored(sql) != 0)
                 {
                     dm.readSql(sql);
-                    odrr = dm.oraComm.ExecuteReader();
+                    OracleDataReader odrr = dm.oraComm.ExecuteReader();
                     while (odrr.Read())
                     {
                         if (!odrr.IsDBNull(0))
                         {
-                            companyName = odrr.GetString(0);
+                            companyName = odrr.GetString(0).Trim();
                         }
                     }
                     odrr.Close();

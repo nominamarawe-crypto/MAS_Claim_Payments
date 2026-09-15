@@ -104,6 +104,15 @@
         </tr>
         <tr>
             <td>&nbsp;</td>
+            <td class="auto-style4">Company Name</td>
+            <td>:
+                <asp:TextBox ID="tbxCompanyName" runat="server" MaxLength="200" Width="390px" ReadOnly="True"></asp:TextBox>
+            </td>
+            <td>&nbsp;</td>
+            <td class="auto-style8">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
             <td class="auto-style4">EPF No</td>
             <td>:
                 <asp:TextBox ID="tbxEPF" runat="server" MaxLength="5" Width="100px"></asp:TextBox>

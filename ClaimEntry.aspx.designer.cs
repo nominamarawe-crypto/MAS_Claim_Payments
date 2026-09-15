@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MAS_Claim_Payments
-{
-
-
-    public partial class ClaimEntry
-    {
-
+namespace MAS_Claim_Payments {
+    
+    
+    public partial class ClaimEntry {
+        
         /// <summary>
         /// tbxPolNo control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxPolNo;
-
+        
         /// <summary>
         /// RequiredFieldValidator6 control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
-
+        
         /// <summary>
         /// tbxNIC control.
         /// </summary>
@@ -40,7 +38,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxNIC;
-
+        
         /// <summary>
         /// RequiredFieldValidator1 control.
         /// </summary>
@@ -49,7 +47,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-
+        
         /// <summary>
         /// lblNICError control.
         /// </summary>
@@ -58,7 +56,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNICError;
-
+        
         /// <summary>
         /// regExpValNIC control.
         /// </summary>
@@ -67,7 +65,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValNIC;
-
+        
         /// <summary>
         /// tbxInsuredName control.
         /// </summary>
@@ -76,7 +74,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxInsuredName;
-
+        
         /// <summary>
         /// RequiredFieldValidator7 control.
         /// </summary>
@@ -85,7 +83,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator7;
-
+        
         /// <summary>
         /// regExpValTel7 control.
         /// </summary>
@@ -94,7 +92,16 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValTel7;
-
+        
+        /// <summary>
+        /// tbxCompanyName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbxCompanyName;
+        
         /// <summary>
         /// tbxEPF control.
         /// </summary>
@@ -103,7 +110,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxEPF;
-
+        
         /// <summary>
         /// tbxClaimantName control.
         /// </summary>
@@ -112,7 +119,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxClaimantName;
-
+        
         /// <summary>
         /// RequiredFieldValidator8 control.
         /// </summary>
@@ -121,7 +128,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator8;
-
+        
         /// <summary>
         /// regExpValTel8 control.
         /// </summary>
@@ -130,7 +137,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValTel8;
-
+        
         /// <summary>
         /// tbxRelationShip control.
         /// </summary>
@@ -139,7 +146,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxRelationShip;
-
+        
         /// <summary>
         /// RequiredFieldValidator9 control.
         /// </summary>
@@ -148,7 +155,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
-
+        
         /// <summary>
         /// ddlPayType control.
         /// </summary>
@@ -157,7 +164,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPayType;
-
+        
         /// <summary>
         /// ddlClmType control.
         /// </summary>
@@ -166,7 +173,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlClmType;
-
+        
         /// <summary>
         /// tbxClaimdt control.
         /// </summary>
@@ -175,7 +182,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxClaimdt;
-
+        
         /// <summary>
         /// RequiredFieldValidator2 control.
         /// </summary>
@@ -184,7 +191,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
-
+        
         /// <summary>
         /// regExValFrm control.
         /// </summary>
@@ -193,7 +200,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExValFrm;
-
+        
         /// <summary>
         /// tbxPayeeName control.
         /// </summary>
@@ -202,7 +209,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxPayeeName;
-
+        
         /// <summary>
         /// RequiredFieldValidator3 control.
         /// </summary>
@@ -211,7 +218,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
-
+        
         /// <summary>
         /// regExpValTel4 control.
         /// </summary>
@@ -220,7 +227,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValTel4;
-
+        
         /// <summary>
         /// tbxAmount control.
         /// </summary>
@@ -229,7 +236,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxAmount;
-
+        
         /// <summary>
         /// RequiredFieldValidator4 control.
         /// </summary>
@@ -238,7 +245,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
-
+        
         /// <summary>
         /// regExValAmount control.
         /// </summary>
@@ -247,7 +254,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExValAmount;
-
+        
         /// <summary>
         /// ddlBanks control.
         /// </summary>
@@ -256,7 +263,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlBanks;
-
+        
         /// <summary>
         /// ddlBranches control.
         /// </summary>
@@ -265,7 +272,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlBranches;
-
+        
         /// <summary>
         /// sqlDSBankBranches control.
         /// </summary>
@@ -274,7 +281,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sqlDSBankBranches;
-
+        
         /// <summary>
         /// tbxAccNo control.
         /// </summary>
@@ -283,7 +290,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxAccNo;
-
+        
         /// <summary>
         /// RequiredFieldValidator5 control.
         /// </summary>
@@ -292,7 +299,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
-
+        
         /// <summary>
         /// RegularExpressionValidator1 control.
         /// </summary>
@@ -301,7 +308,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
-
+        
         /// <summary>
         /// ltrAccCode control.
         /// </summary>
@@ -310,7 +317,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltrAccCode;
-
+        
         /// <summary>
         /// tbxMobile control.
         /// </summary>
@@ -319,7 +326,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxMobile;
-
+        
         /// <summary>
         /// regExpValTel6 control.
         /// </summary>
@@ -328,7 +335,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValTel6;
-
+        
         /// <summary>
         /// tbxEmail control.
         /// </summary>
@@ -337,7 +344,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxEmail;
-
+        
         /// <summary>
         /// RegularExpressionValidator16 control.
         /// </summary>
@@ -346,7 +353,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator16;
-
+        
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -355,7 +362,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-
+        
         /// <summary>
         /// btnClear control.
         /// </summary>
@@ -364,7 +371,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnClear;
-
+        
         /// <summary>
         /// lblSubmitError control.
         /// </summary>
@@ -373,7 +380,7 @@ namespace MAS_Claim_Payments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubmitError;
-
+        
         /// <summary>
         /// lblSuccessMsg control.
         /// </summary>
