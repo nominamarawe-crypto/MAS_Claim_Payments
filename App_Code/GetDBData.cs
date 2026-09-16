@@ -683,7 +683,76 @@ namespace MAS_Claim_Payments.App_Code
             return dt;
         }
 
+        /// <summary>
+        /// Returns true if the NIC exists in the deleted-insured history table.
+        /// </summary>
+        public bool checkDeletedNICExists(string nic)
+        {
+            DataManager dm = new DataManager();
+            bool exists = false;
 
+            string sql = "SELECT COUNT(*) FROM SLIC_CHP.GROUP_HISTORY " +
+                         "WHERE TRIM(UPPER(NIC)) = TRIM(UPPER('" + nic.Replace("'", "''") + "'))";
+
+            try
+            {
+                if (dm.existRecored(sql) != 0)
+                {
+                    exists = true;
+                }
+            }
+            catch (Exception)
+            {
+                exists = false;
+            }
+            finally
+            {
+                dm.connClose();
+            }
+
+            return exists;
+        }
+
+        /// <summary>
+        /// Returns the DELETED_DATE from GROUP_HISTORY for the given NIC,
+        /// formatted as 'YYYY-MM-DD'. Returns "" if not found or NULL.
+        /// </summary>
+        public string getDeletedDate(string nic)
+        {
+            DataManager dm = new DataManager();
+            string deletedDate = "";
+
+            string sql = "SELECT TO_CHAR(DELETED_DATE, 'YYYY-MM-DD') AS DEL_DT " +
+                         "FROM SLIC_CHP.GROUP_HISTORY " +
+                         "WHERE TRIM(UPPER(NIC)) = TRIM(UPPER('" + nic.Replace("'", "''") + "'))";
+
+            try
+            {
+                if (dm.existRecored(sql) != 0)
+                {
+                    dm.readSql(sql);
+                    OracleDataReader odrr = dm.oraComm.ExecuteReader();
+                    while (odrr.Read())
+                    {
+                        if (!odrr.IsDBNull(0))
+                        {
+                            deletedDate = odrr.GetString(0).Trim();
+                        }
+                    }
+                    odrr.Close();
+                }
+            }
+            catch (Exception)
+            {
+                deletedDate = "";
+            }
+            finally
+            {
+                dm.connClose();
+            }
+
+            return deletedDate;
+        }
 
         /// <summary>
         /// Gets distinct bank list from GENPAY.BNKBRN.

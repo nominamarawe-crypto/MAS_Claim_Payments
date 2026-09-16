@@ -283,8 +283,30 @@ namespace MAS_Claim_Payments
                 }
                 else
                 {
-                    this.lblNICError.Text = "No insured person with this NIC no.";
+                    // Clear any previously auto-filled values
+                    this.tbxInsuredName.Text = "";
                     this.tbxCompanyName.Text = "";
+                    this.tbxMobile.Text = "";
+                    this.tbxEmail.Text = "";
+                    this.tbxEPF.Text = "";
+
+                    if (dbDataObj.checkDeletedNICExists(nic))
+                    {
+                        string deletedDate = dbDataObj.getDeletedDate(nic);
+
+                        if (!string.IsNullOrEmpty(deletedDate))
+                        {
+                            this.lblNICError.Text = "No insured person with this NIC no. Deleted on: " + deletedDate + ".";
+                        }
+                        else
+                        {
+                            this.lblNICError.Text = "No insured person with this NIC no. (Deleted date not recorded.)";
+                        }
+                    }
+                    else
+                    {
+                        this.lblNICError.Text = "No insured person with this NIC no.";
+                    }
                 }
             }
         }
