@@ -1,105 +1,28 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="UploadData.aspx.cs" Inherits="MAS_Claim_Payments.UploadData" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
-
-
-
-        .style1
-    {
-        width: 65%;
-    }
-        .style23
-        {
-            height: 22px;
-            font-size: medium;
-            width: 19px;
-        }
-        .style3
-    {
-        height: 22px;
-        font-size: medium;
-    }
-        .style27
-        {
-            width: 19px;
-        }
-        .style25
-        {
-            text-align: left;
-            width: 19px;
-        }
-        .style6
-        {
-            text-align: center;
-        }
-        .style10
-        {
-            width: 240px;
-        }
-        
-        .style30
-        {
-            color: #0000FF;
-        }
-        .style5
-        {
-            color: #0000FF;
-        }
-        .style33
-        {
-            width: 133px;
-            text-align: left;
-        }
-        .style26
-        {
-            width: 19px;
-            text-align: left;
-            height: 17px;
-        }
-        .style13
-        {
-            width: 133px;
-            text-align: left;
-            height: 17px;
-        }
-        .style29
-        {
-            height: 2px;
-        }
-        .auto-style1 {
-            text-align: left;
-            width: 19px;
-            height: 167px;
-        }
-        .auto-style2 {
-            text-align: center;
-            height: 167px;
-        }
-        .auto-style3 {
-            width: 77%;
-        }
-        .auto-style4 {
-            text-align: left;
-        }
-        .auto-style5 {
-            text-align: left;
-            width: 19px;
-            height: 27px;
-        }
-        .auto-style6 {
-            text-align: center;
-            height: 27px;
-        }
-        .auto-style7 {
-            text-align: left;
-            width: 19px;
-            height: 118px;
-        }
-        .auto-style8 {
-            text-align: center;
-            height: 118px;
-        }
-        </style>
+        .style1 { width: 65%; }
+        .style23 { height: 22px; font-size: medium; width: 19px; }
+        .style3 { height: 22px; font-size: medium; }
+        .style27 { width: 19px; }
+        .style25 { text-align: left; width: 19px; }
+        .style6 { text-align: center; }
+        .style10 { width: 240px; }
+        .style30 { color: #0000FF; }
+        .style5 { color: #0000FF; }
+        .style33 { width: 133px; text-align: left; }
+        .style26 { width: 19px; text-align: left; height: 17px; }
+        .style13 { width: 133px; text-align: left; height: 17px; }
+        .style29 { height: 2px; }
+        .auto-style1 { text-align: left; width: 19px; height: 167px; }
+        .auto-style2 { text-align: center; height: 167px; }
+        .auto-style3 { width: 77%; }
+        .auto-style4 { text-align: left; }
+        .auto-style5 { text-align: left; width: 19px; height: 27px; }
+        .auto-style6 { text-align: center; height: 27px; }
+        .auto-style7 { text-align: left; width: 19px; height: 118px; }
+        .auto-style8 { text-align: center; height: 118px; }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <table align="center" class="auto-style3" style="font-family: 'Trebuchet MS'; font-size: small; color: #000000;">
@@ -111,7 +34,6 @@
             <td align="center" class="style27">&nbsp;</td>
             <td align="center" colspan="2" style="text-align: left">&nbsp;</td>
         </tr>
-        
         <tr>
             <td class="style26">&nbsp;</td>
             <td class="style13">Select file</td>
@@ -123,12 +45,11 @@
             <td class="style6">&nbsp;</td>
             <td class="style16">&nbsp;</td>
         </tr>
-       
         <tr>
             <td class="style27" style="text-align: center">&nbsp;</td>
             <td colspan="2" style="text-align: center">
-                <asp:Button ID="btnSubmit" runat="server" class="button button1" onclick="btnSubmit_Click" Text="View Data" />
-                <asp:Button ID="btnSaveData" runat="server" CausesValidation="False" class="button button1" onclick="btnSaveData_Click" Text="Save Data" />
+                <asp:Button ID="btnSubmit" runat="server" class="button button1" OnClick="btnSubmit_Click" Text="View Data" />
+                <asp:Button ID="btnSaveData" runat="server" CausesValidation="False" class="button button1" OnClick="btnSaveData_Click" Text="Save Data" />
             </td>
         </tr>
         <tr>
@@ -142,7 +63,6 @@
         if (this.gv1.Rows.Count > 0)
         {
         %>
-        
         <tr>
             <td class="auto-style1"></td>
             <td class="auto-style2" colspan="2">
@@ -192,7 +112,6 @@
                 Duplicate Records:
             </td>
         </tr>
-       
         <tr>
             <td class="auto-style7"></td>
             <td class="auto-style8" colspan="2">
@@ -214,16 +133,11 @@
            %>
         <tr>
             <td class="style25">&nbsp;</td>
-            <td class="style6" colspan="2">
-                &nbsp;</td>
+            <td class="style6" colspan="2">&nbsp;</td>
         </tr>
-       
         <tr>
             <td class="style25">&nbsp;</td>
-            <td class="style6" colspan="2">
-                &nbsp;</td>
+            <td class="style6" colspan="2">&nbsp;</td>
         </tr>
-       
     </table>
-
 </asp:Content>
